@@ -1,11 +1,44 @@
-<h1>Pages#home</h1>
+<div class="container py-5">
 
-<nav>
-  <ul>
-    <li><%= link_to "Recipes", recipes_path %></li>
-    <%# <li><%= link_to "Meal Plans", meal_plans_path</li> %> %>
-    <%# <li><%= link_to "Tasks", tasks_path</li> %> %>
-    <%# <li><%= link_to "Rewards", rewards_path</li> %> %>
-    <%# <li><%= link_to "Calendar", calendar_path</li> %> %>
-  </ul>
-</nav>
+  <!-- Top main button -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <button class="btn btn-secondary w-100 py-4 fs-4">
+        <p class="mb-2">
+            <strong><%= Date.today.strftime("%A, %B %d") %></strong>
+        </p>
+      </button>
+    </div>
+  </div>
+
+  <!-- Row 2: 3 buttons -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <%= link_to "Recipes", recipes_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    </div>
+    <div class="col-md-4">
+      <%= link_to "Tasks", tasks_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    </div>
+    <div class="col-md-4">
+      <!-- TODO add link rewards -->
+      <button class="btn btn-outline-secondary w-100 py-5">Rewards</button>
+    </div>
+  </div>
+
+  <!-- Row 3: 3 buttons -->
+  <div class="row g-4">
+    <div class="col-md-4">
+      <!-- TODO add link family -->
+      <button class="btn btn-outline-secondary w-100 py-5">Family</button>
+    </div>
+    <div class="col-md-4">
+      <!-- TODO add link calendar -->
+      <button class="btn btn-outline-secondary w-100 py-5">Calendar</button>
+    </div>
+    <div class="col-md-4">
+      <!-- TODO add link chatbot -->
+      <button class="btn btn-outline-secondary w-100 py-5">Chatbot</button>
+    </div>
+  </div>
+
+</div>
