@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_30_163146) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_30_182723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -86,17 +86,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_30_163146) do
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.bigint "family_member_id"
-    t.string "status"
+    t.boolean "status"
     t.date "start_date"
     t.date "end_date"
     t.integer "task_points"
     t.integer "frequency"
-    t.bigint "task_template_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["family_member_id"], name: "index_tasks_on_family_member_id"
+    t.bigint "task_template_id"
+    t.bigint "user_id", null: false
     t.index ["task_template_id"], name: "index_tasks_on_task_template_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -107,6 +107,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_30_163146) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role"
+    t.string "name"
+    t.date "birthdate"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -118,5 +121,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_30_163146) do
   add_foreign_key "recipe_meal_plans", "recipes"
   add_foreign_key "rewards", "users"
   add_foreign_key "tasks", "task_templates"
-  add_foreign_key "tasks", "users", column: "family_member_id"
+  add_foreign_key "tasks", "users"
 end
