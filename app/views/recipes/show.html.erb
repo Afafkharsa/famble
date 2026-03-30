@@ -1,0 +1,57 @@
+recipes show
+<div class="container py-4">
+  <div class="card border-0 shadow-sm p-3 rounded-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+      <h2 class="fw-bold text-success mb-0"><%= @recipe.name %></h2>
+      <%= link_to "", meal_plans_path, class: "btn-close link-underline link-underline-opacity-0 m-2 px-4", aria: { label: "Close" } %>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-7">
+
+        <p>
+          <% @recipe.keywords.to_s.split(",").each do |keyword| %>
+            <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
+              <%= keyword %>
+            </span>
+          <% end %>
+        </p>
+
+        <p class="text-muted mb-1">
+          <i class="fas fa-fire me-1"></i><%= @recipe.calories %> kcal &nbsp;| &nbsp;
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          <%= @recipe.allergens.present? ? @recipe.allergens : "No allergens" %>
+        </p>
+        <hr>
+
+        <h3 class="h5 text-success fw-bold">Ingredients</h3>
+        <ul>
+          <% raw = @recipe.ingredients.to_s.strip %>
+          <% ingredients = raw.include?("\n") ? raw.split("\n") : raw.split(/, \s(?=[^,]+ + - )/) %>
+          <% ingredients.each do |ingredient| %>
+            <li><%= ingredient.strip %></li>
+          <% end %>
+        </ul>
+
+        <h3 class="h5 fw-bold text-success mt-4">Method</h3>
+        <ol class="mt-2">
+           <% @recipe.method.to_s.split("\n").each do |step| %>
+             <li><%= step.strip %></li>
+           <% end %>
+        </ol>
+
+      </div>
+      <div class="col-md-5">
+        <div class="recipe-image-wrapper shadow-sm rounded-4 overflow-hidden" style="border: 4px solid #fff;">
+          <% if @recipe.photo.attached? %>
+            <%= image_tag @recipe.photo, class: "img-fluid w-100", style: "object-fit: cover; aspect-ratio: 1/1;" %>
+          <% else %>
+            <img src="https://via.placeholder.com/512?text=Waiting+for+AI+Photo" class="img-fluid w-100" alt="AI Placeholder">
+          <% end %>
+        </div>
+      </div>
+      </div>
+    </div>
+</div>
