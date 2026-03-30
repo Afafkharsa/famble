@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_30_175603) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_30_180425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -92,9 +92,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_30_175603) do
     t.date "end_date"
     t.integer "task_points"
     t.integer "frequency"
-    t.bigint "task_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "task_template_id"
     t.index ["family_member_id"], name: "index_tasks_on_family_member_id"
     t.index ["task_template_id"], name: "index_tasks_on_task_template_id"
   end

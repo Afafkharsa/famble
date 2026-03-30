@@ -9,7 +9,7 @@
 #   end
 
 puts "Cleaning database..."
-Tasks.destroy_all
+Task.destroy_all
 User.destroy_all
 
 puts "Creating users..."
@@ -20,10 +20,10 @@ puts "Creating tasks..."
 Task.create!(
   name: "Meal preparation",
   description: "Details in meal plans",
-  statuts: false,
+  status: false,
   start_date: Date.today,
   end_date: Date.today,
-  tasks_points: 2,
+  task_points: 2,
   frequency: 7,
-  family_member_id: user_1
+  family_member_id: user_1.id
 )
