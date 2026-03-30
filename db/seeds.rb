@@ -13,7 +13,13 @@ Task.destroy_all
 User.destroy_all
 
 puts "Creating users..."
-user_1 = User.create!(email: "famble@test.com", password: "123456")
+user_1 = User.create!(
+  email: "famble@test.com",
+  password: "123456",
+  role: "parent",
+  name: "Anakin",
+  birthdate: "1981-04-09".to_date
+)
 
 puts "Creating tasks..."
 
@@ -25,5 +31,5 @@ Task.create!(
   end_date: Date.today,
   task_points: 2,
   frequency: 7,
-  family_member_id: user_1.id
+  user: user_1
 )

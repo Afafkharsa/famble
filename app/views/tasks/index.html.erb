@@ -1,5 +1,21 @@
 <h1>Tasks</h1>
 
-<%= @user_tasks %>
+<div class="card">
+  <h2>My tasks</h2>
+  <ul>
+    <%= @user_tasks.each do |task| %>
+      <li><%= task.name %></li>
+    <% end %>
+  </ul>
+</div>
 
-<%= @tasks %>
+<% if @user.role = "parent" %>
+  <h2>The family tasks</h2>
+  <div class="card">
+    <ul>
+      <%= @tasks.each do |task| %>
+      <li><%= task.name %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
