@@ -4,13 +4,17 @@ class RecipesController < ApplicationController
     @recipes = Recipe.all
   end
 
+  def new
+    @recipe = Recipe.new
+  end
+
   def create
     # TODO change it to save recipes with chatbot?
     @recipe = Recipe.new(recipe_params)
     if @recipe.save
       redirect_to recipes_path, notice: "Recipe created successfully!"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
