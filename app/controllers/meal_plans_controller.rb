@@ -12,11 +12,11 @@ class MealPlansController < ApplicationController
   end
 
   def create
-
+    @meal_plan = MealPlan.new
   end
 
   def edit
-
+    @meal_plan = MealPlan.
   end
 
   def update
@@ -30,6 +30,8 @@ class MealPlansController < ApplicationController
   private
 
   def meal_plans_params
-
+    params.require(:meal_plan).permit(:meal, :photo)
   end
+  end
+
 end
