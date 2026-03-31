@@ -9,13 +9,21 @@
 #   end
 
 puts "Cleaning database..."
-Task.destroy_all
+Family.destroy_all
 User.destroy_all
+Task.destroy_all
 Recipe.destroy_all
 
-ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
+
+ActiveRecord::Base.connection.reset_pk_sequence!('families')
 ActiveRecord::Base.connection.reset_pk_sequence!('users')
+ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
+
+puts "Creating a family..."
+family = User.create!(
+  name: "Star Wars"
+)
 
 puts "Creating users..."
 user_1 = User.create!(
@@ -23,7 +31,17 @@ user_1 = User.create!(
   password: "123456",
   role: "parent",
   name: "Anakin",
-  birthdate: "1981-04-09".to_date
+  birthdate: "1981-04-09".to_date,
+  family: family
+)
+
+user_2 = User.create!(
+  email: "leia@test.com",
+  password: "only_hope",
+  role: "child",
+  name: "Léia",
+  birthdate: "2005-04-25".to_date,
+  family: family
 )
 
 puts "Creating tasks..."
@@ -32,13 +50,32 @@ Task.create!(
   name: "Meal preparation",
   description: "Details in meal plans",
   status: false,
-  start_date: Date.today,
-  end_date: Date.today,
+  start_date: (Date.today + 1),
+  end_date: (Date.today+ 1),
   task_points: 2,
   frequency: 7,
   user: user_1
 )
 
+Task.create!(
+  name: "Sith revolution",
+  status: true,
+  start_date: Date.today,
+  end_date: Date.today,
+  task_points: 8,
+  frequency: 0,
+  user: user_1
+)
+
+Task.create!(
+  name: "Sith revolution",
+  status: false,
+  start_date: Date.today,
+  end_date: Date.today,
+  task_points: 4,
+  frequency: 1,
+  user: user_2
+)
 
 puts "Creating recipes..."
 
