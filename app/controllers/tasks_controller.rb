@@ -42,7 +42,7 @@ class TasksController < ApplicationController
 
   private
 
-  def set_restaurant
+  def set_task
     @task = Task.find(params[:id])
   end
 
