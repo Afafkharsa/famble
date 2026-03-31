@@ -58,7 +58,7 @@ Task.create!(
 )
 
 Task.create!(
-  name: "Sith revolution",
+  name: "Washing my bedroom",
   status: true,
   start_date: Date.today,
   end_date: Date.today,
