@@ -10,27 +10,18 @@
                 <%= task.name %>
               </h5>
 
-              <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle">
-                <% if task.start_date = task.end_date  %>
-                  <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
-                    <%= task.start_date %>
-                  </div>
-                <% else %>
-                  <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
-                    <%= task.start_date %>
-                  </div>
-                  <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
-                    <%= task.end_date %>
-                  </div>
-                <% end %>
-                <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
+              <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle justify-content-between">
+                <div class="badge text-secondary py-2">
+                  <%= task.start_date %> > <%= task.end_date %>
+                </div>
+                <div class=" badge text-secondary py-2">
                   <% if task.status? %>
                     <i class="fa-regular fa-circle-check"></i> Done
                   <% else %>
                     <i class="fa-regular fa-circle"></i> To do
                   <% end %>
                 </div>
-                <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
+                <div class="badge text-secondary py-2">
                     <i class="fa-solid fa-award"></i>
                     <%= task.task_points > 0 ? "#{task.task_points} points" : "#{task.task_points} point"  %>
                 </div>
@@ -67,31 +58,24 @@
               <h5 class="card-title text-secondary">
                 <%= task.name %> - <%= task.user.name %>
               </h5>
-              <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle">
-                <% if task.start_date = task.end_date  %>
-                  <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
-                    <%= task.start_date %>
-                  </div>
-                <% else %>
-                  <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
-                    <%= task.start_date %>
-                  </div>
-                  <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
-                    <%= task.end_date %>
-                  </div>
-                <% end %>
-                <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
+
+              <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle justify-content-between">
+                <div class="badge text-secondary py-2">
+                  <%= task.start_date %> > <%= task.end_date %>
+                </div>
+                <div class=" badge text-secondary py-2">
                   <% if task.status? %>
                     <i class="fa-regular fa-circle-check"></i> Done
                   <% else %>
                     <i class="fa-regular fa-circle"></i> To do
                   <% end %>
                 </div>
-                <div class="col-md-4 badge text-secondary px-3 py-2 me-1">
+                <div class="badge text-secondary py-2">
                     <i class="fa-solid fa-award"></i>
                     <%= task.task_points > 0 ? "#{task.task_points} points" : "#{task.task_points} point"  %>
                 </div>
               </div>
+
               <h5 class="h5 fw-bold text-secondary mt-4">Description</h5>
               <div class="mt-2">
                 <%= task.description? ? task.description : "No description" %>
