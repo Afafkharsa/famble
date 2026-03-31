@@ -11,22 +11,33 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task= Task.new({
-      status: false,
-      user: current_user
-    })
+    @task= Task.new()
   end
 
   def create
+    @task = Task.new(params[:task])
+    @task.user = current_user
+    if @restaurant.save
+      redirect_to task_path(@task)
+    else
+      render new, status: :unprocessable_entity
+    end
   end
 
   def edit
+    @task = Task.find(params[:id])
   end
 
   def update
+    @task = Task.find(params[:id])
+    @task.update(restaurant_params)
+    redirect_to task_path(@task)
   end
 
   def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    redirect_to tasks_path, status: :see_other
   end
 
   private
