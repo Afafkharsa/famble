@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_many :tasks
   belongs_to :family, optional: true
   has_one_attached :photo
+  has_many :rewards, dependent: :destroy
 end
