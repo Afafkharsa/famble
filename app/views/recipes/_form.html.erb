@@ -1,0 +1,47 @@
+<%= form_with(model: @recipe, local: true) do |f| %>
+  <% if @recipe.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>There were errors saving the recipe:</h4>
+      <ul>
+        <% @recipe.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :ingredients, class: "form-label" %>
+    <%= f.text_area :ingredients, rows: 5, class: "form-control", placeholder: "One ingredient per line" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, rows: 5, class: "form-control", placeholder: "Step-by-step instructions" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :keywords, "Keywords (comma separated)", class: "form-label" %>
+    <%= f.text_field :keywords, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :calories, class: "form-label" %>
+    <%= f.number_field :calories, class: "form-control", min: 0 %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :allergens, class: "form-label" %>
+    <%= f.text_field :allergens, class: "form-control" %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", recipes_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>
