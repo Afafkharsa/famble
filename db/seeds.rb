@@ -21,7 +21,7 @@ ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 
 puts "Creating a family..."
-family = User.create!(
+family = Family.create!(
   name: "Star Wars"
 )
 
