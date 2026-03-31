@@ -4,5 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :tasks
-  belongs_to :family
+  belongs_to :family, optional: true
+  has_one_attached :photo
 end
