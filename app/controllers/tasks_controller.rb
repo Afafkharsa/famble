@@ -11,7 +11,10 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task= Task.new({status: false, user: current_user})
+    @task= Task.new({
+      status: false,
+      user: current_user
+    })
   end
 
   def create
