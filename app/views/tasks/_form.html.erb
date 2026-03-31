@@ -1,0 +1,13 @@
+<%= simple_form_for(task) do |f| %>
+  <div class="d-flex">
+    <%= f.input_field :name %>
+    <p>Completion: </p>
+    <%= f.input_field :status, as: :boolean %>
+  </div>
+  <%= f.input :description %>
+  <%= f.input :start_date, as: :date, label: "Start date" %>
+  <%= f.input :end_date, as: :date , label: "End date" %>
+  <%= f.input :task_points, as: :integer, label: "Number of rewards points" %>
+  <%= f.input :frequency, as: :integer, label: "Repetition frequency (nb of days per week)" %>
+  <%= f.submit %>
+<% end %>

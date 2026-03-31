@@ -11,6 +11,7 @@ class TasksController < ApplicationController
   end
 
   def new
+    @task= Task.new({status: false, user: current_user})
   end
 
   def create
@@ -35,6 +36,7 @@ class TasksController < ApplicationController
     params.require(:task).permit(
       :name,
       :description,
+      :status,
       :start_date,
       :end_date,
       :task_points,
