@@ -29,7 +29,7 @@
   <div class="row g-4">
     <div class="col-md-4">
       <!-- TODO add link family -->
-      <button class="btn btn-outline-secondary w-100 py-5">Family</button>
+      <%= link_to "Family", family_path(current_user.family), class: "btn btn-outline-secondary w-100 py-5" %>
     </div>
     <div class="col-md-4">
       <!-- TODO add link calendar -->

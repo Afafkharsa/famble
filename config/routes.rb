@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   resources :families do
     member do
       post :add_member
+      get '/family', to: 'families#show', as:'my_family'
+
     end
   end
 end

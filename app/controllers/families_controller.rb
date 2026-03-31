@@ -1,9 +1,17 @@
 class FamiliesController < ApplicationController
-  before_action :authenticate_user!
+ # before_action :authenticate_user!
+ def index
+   @family = current_user.family
+   if @family
+     @members = @family.users
+   else
+    redirect_to root_path, alert: "You are not a member of family"
+   end
+ end
 
  def show
-   @family = Family.find(params[:id])
-   @members = @family.users
+  @family = Family.find(params[:id])
+  @members = @family.users
  end
 
  def add_member

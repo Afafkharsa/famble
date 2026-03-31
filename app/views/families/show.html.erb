@@ -1,0 +1,27 @@
+<div class="family-container mt-4">
+  <div class="family-header d-flex ">
+    <h1>My Family</h1>
+    <%= link_to "#", class="add-member-btn" %>
+    <i class="fa-solid fa-cicle-plus"> + </i>
+    <% end %>
+  </div>
+
+  <div class="member-grid">
+    <% @members.each do |member| %>
+      <div class="member-card">
+        <div class="member-photo">
+          <% if member.photo.attached? %>
+          <%= image_tag member.photo %>
+          <% else %>
+          <div class="default-photo">Photo</div>
+          <% end %>
+        </div>
+        <p class="member-name">
+          <%= member.first_name || "Name" %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+
+  <%= link_to "Reward & Progress", rewards_path %>
+</div>
