@@ -13,4 +13,9 @@ Rails.application.routes.draw do
   resources :recipes, only: [:index, :new, :create, :show]
   resources :tasks
 
+  resources :families do
+    member do
+      post :add_member
+    end
+  end
 end
