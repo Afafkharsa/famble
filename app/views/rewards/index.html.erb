@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Family Rewards</h1>
+    <%= link_to "Add Reward", new_reward_path, class: "btn btn-primary" %>
+  </div>
+
+  <% current_user.family.users.each do |member| %>
+    <h4 class="mt-4"><%= member.email %></h4>
+    <% member_rewards = @rewards.select { |r| r.user_id == member.id } %>
+
+    <% if member_rewards.any? %>
+      <div class="row">
+        <% member_rewards.each do |reward| %>
+          <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="card <%= 'border-success' if reward.redeemed? %>">
+              <div class="card-body">
+                <h5 class="card-title"><%= reward.name %></h5>
+                <p class="card-text"><%= reward.description %></p>
+                <p><strong><%= reward.reward_points %> pts</strong></p>
+                <% if reward.redeemed? %>
+                  <span class="badge bg-success">Redeemed</span>
+                <% else %>
+                  <%= link_to "Redeem", redeem_reward_path(reward),
+                      data: { turbo_method: :patch },
+                      class: "btn btn-outline-success btn-sm" %>
+                <% end %>
+                <%= link_to "Delete", reward_path(reward),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                    class: "btn btn-outline-danger btn-sm" %>
+                <%= link_to "Edit", edit_reward_path(reward), class: "btn btn-outline-primary btn-sm" %>
+
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted">No rewards yet for this member.</p>
+    <% end %>
+  <% end %>
+</div>

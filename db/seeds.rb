@@ -9,9 +9,10 @@
 #   end
 
 puts "Cleaning database..."
-Family.destroy_all
-User.destroy_all
 Task.destroy_all
+Reward.destroy_all
+User.destroy_all
+Family.destroy_all
 Recipe.destroy_all
 
 
@@ -19,6 +20,7 @@ ActiveRecord::Base.connection.reset_pk_sequence!('families')
 ActiveRecord::Base.connection.reset_pk_sequence!('users')
 ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
+ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
 
 puts "Creating a family..."
 family = Family.create!(
@@ -185,4 +187,48 @@ Recipe.create!(
   allergens: "fish"
 )
 
-puts "Finished! Created #{Recipe.count} recipes!"
+puts "Creating rewards..."
+
+Reward.create!(
+  name: "Movie night",
+  description: "Pick a movie for the whole family to watch together",
+  reward_points: 10,
+  redeemed: false,
+  user: user_2
+)
+
+Reward.create!(
+  name: "Extra screen time",
+  description: "30 minutes of bonus screen time",
+  reward_points: 5,
+  redeemed: true,
+  redeemed_at: Date.today - 2,
+  user: user_2
+)
+
+Reward.create!(
+  name: "Ice cream outing",
+  description: "A trip to the ice cream shop",
+  reward_points: 15,
+  redeemed: false,
+  user: user_2
+)
+
+Reward.create!(
+  name: "New book",
+  description: "Choose a new book to read",
+  reward_points: 20,
+  redeemed: false,
+  user: user_1
+)
+
+Reward.create!(
+  name: "Sleep in Saturday",
+  description: "No chores until noon on Saturday",
+  reward_points: 8,
+  redeemed: true,
+  redeemed_at: Date.today - 5,
+  user: user_1
+)
+
+puts "Finished! Created #{Recipe.count} recipes and #{Reward.count} rewards!"

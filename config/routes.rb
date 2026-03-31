@@ -13,7 +13,15 @@ Rails.application.routes.draw do
   resources :recipes, only: [:index, :new, :create, :show]
   resources :tasks
 
-  resources :families do
+  resources :rewards, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+    member do
+      patch :redeem
+    end
+  end
+
+  resources :meal_plans, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+
+  resources:families do
     member do
       post :add_member
     end
