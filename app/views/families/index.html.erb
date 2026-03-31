@@ -7,11 +7,12 @@
                 style="width: 50px; height: 50px; border-width: 2px; font-weight: bold;">+</button>
     </div>
 
-    <!--Member photo -->
+    <!--Member photo and add modal pop up -->
     <div class="row gx-2 gy-2">
       <% @members.each do |member| %>
         <div class="col-auto text-center ms-5">
-          <div class="member-wrapper" onclick="selectMember('<%= member.name %>')" style="cursor: pointer;">
+          <div class="member-wrapper" onclick="loadMember('<%= member.id %>')" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#memberModal" onclick="loadMember(<%= member.id %>)">
+
             <div class="photo-circle mx-auto mb-2 shadow-sm d-flex align-items-center justify-content-center
               fs-3 fw-bold" style="width: 100px; height: 100px; background-color: #6c757d; border-radius: 50%;
               overflow: hidden; border: 2px solid #eee; font-size: 16px;">
@@ -30,10 +31,51 @@
           </div>
         </div>
         <% end %>
+        <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style:"border-radius:20px; border: none;">
+              <div id="modal-content-area"></div>
+            </div>
+          </div>
+        </div>
+
     </div>
 
     <div class="mt-5 ms-5">
       <%= link_to "Reward & Progress", "#", class:"btn-success" %>
     </div>
   </div>
+
 </div>
+
+<script>
+  function loadMember(id) {
+  const contentArea = document.getElementById('modal-content-area');
+  contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
+
+  // เรียกไปที่ route show ของ member
+  fetch(`/families/${id}`)
+    .then(response => response.text())
+    .then(html => {
+      // เอา HTML ที่ได้มาใส่ใน Modal
+      contentArea.innerHTML = html;
+    });
+}
+
+  function addNewMember() {
+    const contentArea = document.getElementById('modal-content-area');
+    contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
+
+    // สั่งให้ไปดึงหน้า new จาก Controller มาพ่นใส่ Modal
+    fetch('/families/new')
+      .then(response => response.text())
+      .then(html => {
+        contentArea.innerHTML = html;
+        // สั่งเปิด Modal (ใช้ ID เดียวกันกับที่คุณตั้งไว้ที่บรรทัด 34)
+        const myModal = new
+        bootstrap.Modal(document.getElementById('memberModal'));
+        myModal.show();
+      })
+      .catch(err => console.error("Error loading form:", err));
+  }
+</script>

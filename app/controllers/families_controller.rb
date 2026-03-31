@@ -10,12 +10,18 @@ class FamiliesController < ApplicationController
  end
 
  def show
-  @family = Family.find(params[:id])
-  @members = @family.users
+  @member = User.find(params[:id])
+  # @members = @family.users
+  render layout: false
  end
 
- def add_member
-   @family = Family.find(params[:id])
+ def new
+   @member = User.new
+   render layout: false
+ end
+
+ def create
+   @member = User.new(params[:id])
    @user = User.find_by(email:params[:email])
     if @user
      @user.update(family:@family)
@@ -28,8 +34,8 @@ class FamiliesController < ApplicationController
 
  private
 
- def family_params
-  params.require(:family).permit(:name)
+ def user_params
+  params.require(:user).permit(:name, :birthdate, :photo, :role)
  end
 
 end
