@@ -14,8 +14,7 @@ Rails.application.routes.draw do
   resources :tasks
 
   resources :families do
-    member do
-      post :add_member
+    resources :mebers, only: [:index, :new, :create, :show]
     end
-  end
+
 end
