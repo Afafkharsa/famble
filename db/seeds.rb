@@ -41,7 +41,7 @@ user_2 = User.create!(
   email: "leia@test.com",
   password: "only_hope",
   role: "child",
-  name: "Léia",
+  name: "Leia",
   birthdate: "2005-04-25".to_date,
   family: family
 )
@@ -61,22 +61,22 @@ Task.create!(
 
 Task.create!(
   name: "Washing my bedroom",
-  status: true,
+  status: false,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 8,
   frequency: 0,
-  user: user_1
+  user: user_2
 )
 
 Task.create!(
-  name: "Sith revolution",
-  status: false,
+  name: "Starting Sith revolution",
+  status: true,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
   frequency: 1,
-  user: user_2
+  user: user_1
 )
 
 puts "Creating recipes..."
