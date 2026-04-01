@@ -125,6 +125,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_31_170854) do
     t.datetime "updated_at", null: false
     t.bigint "task_template_id"
     t.bigint "user_id", null: false
+    t.bigint "family_id", null: false
+    t.index ["family_id"], name: "index_tasks_on_family_id"
     t.index ["task_template_id"], name: "index_tasks_on_task_template_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -154,6 +156,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_31_170854) do
   add_foreign_key "recipe_meal_plans", "meal_plans"
   add_foreign_key "recipe_meal_plans", "recipes"
   add_foreign_key "rewards", "users"
+  add_foreign_key "tasks", "families"
   add_foreign_key "tasks", "task_templates"
   add_foreign_key "tasks", "users"
   add_foreign_key "users", "families"

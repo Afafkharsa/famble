@@ -22,8 +22,6 @@ Rails.application.routes.draw do
   resources :meal_plans, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
   resources:families do
-    member do
-      post :add_member
+    resources :member, only: [:index, :show, :new, :create]
     end
-
 end

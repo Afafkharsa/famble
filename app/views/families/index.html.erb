@@ -42,7 +42,7 @@
     </div>
 
     <div class="mt-5 ms-5">
-      <%= link_to "Reward & Progress", "#", class:"btn-success" %>
+      <%= link_to "Reward & Progress", rewards_path, class:"btn-success" %>
     </div>
   </div>
 
@@ -66,12 +66,12 @@
     const contentArea = document.getElementById('modal-content-area');
     contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
 
-    // Call Controler#new to show on Modal
+    // Call Controller#new to show on Modal
     fetch('/families/new')
       .then(response => response.text())
       .then(html => {
         contentArea.innerHTML = html;
-        // Open Modal by using id=memberModal)
+        // Open Modal with black background)
         const myModal = new
         bootstrap.Modal(document.getElementById('memberModal'));
         myModal.show();
