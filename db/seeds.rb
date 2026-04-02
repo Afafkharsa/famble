@@ -27,7 +27,7 @@ family_1 = Family.create!(
   name: "Star Wars"
 )
 
-puts "Creating users for the first family..."
+puts "Creating Star Wars family members..."
 user_1 = User.create!(
   email: "famble@test.com",
   password: "123456",
@@ -51,7 +51,7 @@ family_2 = Family.create!(
   name: "Star Wars"
 )
 
-puts "Creating users..."
+puts "Creating Lion King family members..."
 user_1 = User.create!(
   email: "sarabi@test.com",
   password: "mufasa",
