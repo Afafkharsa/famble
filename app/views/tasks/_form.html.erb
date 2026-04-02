@@ -1,12 +1,16 @@
 <%= simple_form_for(task) do |f| %>
   <div class="d-flex">
     <div class="pe-4">Done?</div>
-    <%= f.input_field :status, as: :boolean, boolean_style: :inline %>
+    <% if task.status %>
+      <%= f.input_field :status, as: :boolean, boolean_style: :inline, disabled: true %>
+    <% else %>
+      <%= f.input_field :status, as: :boolean, boolean_style: :inline %>
+    <% end %>
   </div>
   <div class="mt-2">
-    <%= f.input :name, label: "Name" %>
+    <%= f.input :name, placeholder: "Name", label: false %>
   </div>
-  <%= f.input :description %>
+  <%= f.input :description, placeholder: "Description", label: false %>
   <div class="d-flex">
     <div class="pe-4">
       <%= f.input :start_date, as: :date, label: "Start date",
