@@ -52,7 +52,7 @@ family_2 = Family.create!(
 )
 
 puts "Creating Lion King family members..."
-user_1 = User.create!(
+user_3 = User.create!(
   email: "sarabi@test.com",
   password: "mufasa",
   role: "parent",
@@ -61,7 +61,7 @@ user_1 = User.create!(
   family: family_2
 )
 
-user_2 = User.create!(
+user_4 = User.create!(
   email: "simba@test.com",
   password: "hakuna_matata",
   role: "child",
