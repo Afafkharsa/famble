@@ -22,19 +22,19 @@ ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
 
-puts "Creating a family..."
-family = Family.create!(
+puts "Creating Star Wars family..."
+family_1 = Family.create!(
   name: "Star Wars"
 )
 
-puts "Creating users..."
+puts "Creating users for the first family..."
 user_1 = User.create!(
   email: "famble@test.com",
   password: "123456",
   role: "parent",
   name: "Anakin",
   birthdate: "1981-04-09".to_date,
-  family: family
+  family: family_1
 )
 
 user_2 = User.create!(
@@ -43,7 +43,31 @@ user_2 = User.create!(
   role: "child",
   name: "Leia",
   birthdate: "2005-04-25".to_date,
-  family: family
+  family: family_1
+)
+
+puts "Creating Lion King family..."
+family_2 = Family.create!(
+  name: "Star Wars"
+)
+
+puts "Creating users..."
+user_1 = User.create!(
+  email: "sarabi@test.com",
+  password: "mufasa",
+  role: "parent",
+  name: "Sarabi",
+  birthdate: "1994-12-31".to_date,
+  family: family_2
+)
+
+user_2 = User.create!(
+  email: "simba@test.com",
+  password: "hakuna_matata",
+  role: "child",
+  name: "Simba",
+  birthdate: "2019-07-19".to_date,
+  family: family_2
 )
 
 puts "Creating tasks..."
