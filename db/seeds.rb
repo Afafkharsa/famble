@@ -10,6 +10,7 @@
 
 puts "Cleaning database..."
 Task.destroy_all
+TaskTemplate.destroy_all
 Reward.destroy_all
 User.destroy_all
 Family.destroy_all
@@ -70,7 +71,7 @@ user_4 = User.create!(
   family: family_2
 )
 
-puts "Creating task templates..."
+puts "Creating generic task templates..."
 
 TaskTemplate.create!(
   name: "Taking the trash out",
@@ -121,11 +122,23 @@ TaskTemplate.create!(
   task_points: 1,
   montly_frequency: 7
 )
+
 TaskTemplate.create!(
   name: "Pets care",
   description: "Each day, feed the pet morning and evening. Let them go to the garden after school. Don't forget to pet them.",
   task_points: 1,
   montly_frequency: 7
+)
+
+puts "Creating Star wars family first task template..."
+
+TaskTemplate.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 1,
+  days: ["monday"],
+  montly_frequency: 12,
+  family: family_1
 )
 
 puts "Creating tasks..."
@@ -313,4 +326,4 @@ Reward.create!(
   user: user_1
 )
 
-puts "Finished! Created #{Recipe.count} recipes and #{Reward.count} rewards!"
+puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards!"
