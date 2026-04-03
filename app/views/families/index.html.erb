@@ -49,15 +49,15 @@
 </div>
 
 <script>
+  // Call the member by id
   function loadMember(id) {
   const contentArea = document.getElementById('modal-content-area');
   contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
 
-  // เรียกไปที่ route show ของ member
+  // call to route of member#show
   fetch(`/families/${id}`)
     .then(response => response.text())
     .then(html => {
-      // เอา HTML ที่ได้มาใส่ใน Modal
       contentArea.innerHTML = html;
     });
 }
@@ -66,12 +66,12 @@
     const contentArea = document.getElementById('modal-content-area');
     contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
 
-    // สั่งให้ไปดึงหน้า new จาก Controller มาพ่นใส่ Modal
+    // Call Controler#new to show on Modal
     fetch('/families/new')
       .then(response => response.text())
       .then(html => {
         contentArea.innerHTML = html;
-        // สั่งเปิด Modal (ใช้ ID เดียวกันกับที่คุณตั้งไว้ที่บรรทัด 34)
+        // Open Modal by using id=memberModal)
         const myModal = new
         bootstrap.Modal(document.getElementById('memberModal'));
         myModal.show();
