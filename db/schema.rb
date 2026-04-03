@@ -127,7 +127,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_070422) do
     t.datetime "updated_at", null: false
     t.bigint "task_template_id"
     t.bigint "user_id", null: false
-    t.text "days"
+    t.text "days", default: [], array: true
     t.index ["task_template_id"], name: "index_tasks_on_task_template_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
