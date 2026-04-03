@@ -70,6 +70,64 @@ user_4 = User.create!(
   family: family_2
 )
 
+puts "Creating task templates..."
+
+TaskTemplate.create!(
+  name: "Taking the trash out",
+  description: "Taking the trash out  when it’s full or for pickup",
+  task_points: 2,
+  frequency: 0
+)
+
+TaskTemplate.create!(
+  name: "Unloading the dishwasher",
+  description: "",
+  task_points: 1,
+  frequency: 2
+)
+
+TaskTemplate.create!(
+  name: "Sweeping and mopping floor",
+  description: "Sweeping and mopping the kitchen floor",
+  task_points: 3,
+  frequency: 0
+)
+
+TaskTemplate.create!(
+  name: "Bedroom cleaning",
+  description: "Put toys and books in their designated spots, put dirty clothes in a hamper.",
+  task_points: 1,
+  frequency: 0
+)
+
+TaskTemplate.create!(
+  name: "Cleaning dishes",
+  description: "After dinner, clean the dishes or put them in the dishwasher.",
+  task_points: 1,
+  frequency: 7
+)
+
+
+TaskTemplate.create!(
+  name: "Setting table",
+  description: "At 7 pm, set the table for dinner",
+  task_points: 1,
+  frequency: 7
+)
+
+TaskTemplate.create!(
+  name: "Time out and homework",
+  description: "After school and snack, go in the garden for at least 30 minutes. After that do your homeworks. Go to a parent when finished.",
+  task_points: 1,
+  frequency: 7
+)
+TaskTemplate.create!(
+  name: "Pets care",
+  description: "Each day, feed the pet morning and evening. Let them go to the garden after school. Don't forget to pet them.",
+  task_points: 1,
+  frequency: 7
+)
+
 puts "Creating tasks..."
 
 Task.create!(
