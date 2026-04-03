@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_03_070422) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -113,6 +113,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_070422) do
     t.datetime "updated_at", null: false
     t.text "days", default: [], array: true
     t.integer "montly_frequency"
+    t.bigint "family_id"
+    t.index ["family_id"], name: "index_task_templates_on_family_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -157,6 +159,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_070422) do
   add_foreign_key "recipe_meal_plans", "meal_plans"
   add_foreign_key "recipe_meal_plans", "recipes"
   add_foreign_key "rewards", "users"
+  add_foreign_key "task_templates", "families"
   add_foreign_key "tasks", "task_templates"
   add_foreign_key "tasks", "users"
   add_foreign_key "users", "families"
