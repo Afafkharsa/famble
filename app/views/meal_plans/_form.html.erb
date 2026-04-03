@@ -1,24 +1,20 @@
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <%= simple_form_for(meal_plan) do |f| %>
-        <%#= f.error_notification %>
-        <%#= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+      <%= simple_form_for(@meal_plan) do |f| %>
 
         <div class="form-inputs">
           <%# select_date %>
-          <h6><strong><%= f.input :date, as: :date,  html5: true, label:"Select Date" %></strong></h6>
+          <%= f.input :day, as: :date,  html5: true, label:"Select Date" %></
 
-          <%# Meal_type %>
-          <h6><strong><%= f.input :meal_type, collection: ["Breakfast", "Lunch", "Dinner", "Snack"],
-              prompt: "Select meal type", label: "Meal type" %></strong></h6>
+          <%= f.simple_fields_for:recipe_meal_plans do |rmp| %>
+            <%= rmp.input :meal_type, collection: ["Breakfast", "Lunch", "Dinner", "Snack"],
+              prompt: "Select meal type", label: "Meal type" %>
 
-          <%# Meal_name %>
-          <h6><strong><%= f.input :meal, label: "Meal", placeholder: "Lasagna" %></strong></h6>
-          <%#= f.input :calories, label: "Calories (kcal)", input_html: { min: '0' } %>
-          <h6><strong><%= f.input :photo, as: :file, label: "Photo" %></strong></h6>
-        </div>
+            <%= rmp.association, label= "Choose Recipe" %>
 
+            <%= f.input :photo, as: :file, label: "Photo" %>
+          <% end %>
         <div class="form-actions mt-4 text-center">
           <%= f.button :submit, "Submit", class: "btn btn-success w-100 rounded-4 fs-5" %>
           <%= link_to "Cancel", meal_plans_path, class: "btn btn-outline-secondary w-100 rounded-4 mt-2 fs-5" %>

@@ -1,8 +1,11 @@
 class MealPlansController < ApplicationController
   def index
+
+    @family =current_user.family
+    @meal_plans = @family.meal_plans.includes(recipe_meal_plans: :recipe)
     # @meal_plans = current_user.meal_plans
-    @today_meals = current_user.meal_plans.where(date: Date.today).order(:meal_type)
-    @weekly_meals = current_user.meal_plans.where(date: Date.today + 1..Date.today + 6.days).order(date: :asc)
+    # @today_meals = current_user.meal_plans.where(date: Date.today).order(:meal_type)
+    # @weekly_meals = current_user.meal_plans.where(date: Date.today + 1..Date.today + 6.days).order(date: :asc)
   end
 
   def show
@@ -13,15 +16,7 @@ class MealPlansController < ApplicationController
 
   def new
     @meal_plan = MealPlan.new
-    @meal_plan.date = params[:date] if params[:date].present?
-    @meal_plan.meal_type = params[:meal_type] if params[:meal_type].present?
-    if params[:recipe_id].present?
-      @selected_recipe = Recipe.find_by(id:params[:recipe_id])
-      if @selected_recipe
-        @meal_plan.meal = @selected_recipe.name
-        @meal_plan.recipe_id = @selected_recipe.id
-      end
-    end
+    @meal_plan.recipe_meal_plans.build
   end
 
   def create
@@ -55,6 +50,6 @@ class MealPlansController < ApplicationController
   private
 
   def meal_plan_params
-    params.require(:meal_plan).permit(:date, :meal, :meal_type, :photo, :user_id)
+    params.require(:meal_plan).permit(:day, :family_id, recipe_meal_plans_attributes: [:id, :meal_type, :recipe_id, :_destroy])
   end
 end

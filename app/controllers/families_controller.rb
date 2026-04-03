@@ -25,7 +25,7 @@ class FamiliesController < ApplicationController
    @user = User.find_by(email:params[:email])
     if @user
      @user.update(family:@family)
-     redirect_to families_path(@family), notice: "Added #{user.name} to family"
+     redirect_to families_path, notice: "Added #{user.name} to family"
     else
       render :new, status: :unprocessable_entity
       # redirect_to families_path(@family), alert: "Not found #{member.name} "

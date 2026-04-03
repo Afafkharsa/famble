@@ -1,0 +1,52 @@
+<% # ใช้ container หลักเพียงอันเดียวครอบทั้งหมด เพื่อความเท่ากัน %>
+<div class="container py-5">
+
+  <% # ---Today's Meal Plan --- %>
+  <div class="meal-plan-section mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="display-5 fw-bold mb-0">Today's Meal Plan</h1>
+      <%= link_to "Add Meal", new_meal_plan_path, class: "btn btn-primary rounded-pill px-4" %>
+    </div>
+
+    <div class="table-responsive shadow-lg rounded-3 bg-white p-4">
+      <table class="table table-borderless align-middle text-center mb-0">
+        <thead class="text-secondary small">
+          <tr>
+            <th style="width: 100px;"></th>
+            <th><i class="bi bi-sun-fill text-warning d-block fs-4 mb-1"></i>Breakfast</th>
+            <th><i class="bi bi-egg-fried text-info d-block fs-4 mb-1"></i>Lunch</th>
+            <th><i class="bi bi-moon-stars-fill text-primary d-block fs-4 mb-1"></i>Dinner</th>
+            <th><i class="bi bi-apple text-danger d-block fs-4 mb-1"></i>Snack 1</th>
+            <th><i class="bi bi-nut text-success d-block fs-4 mb-1"></i>Snack 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% # ใส่โค้ดดึงข้อมูลมื้ออาหารของวันนี้ที่นี่ %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <% # --- ส่วน Weekly's Meal Plan --- %>
+  <div class="meal-plan-section">
+    <h1 class="display-5 fw-bold mb-4">Weekly's Meal Plan</h1>
+    <div class="table-responsive shadow-lg rounded-3 bg-white p-4">
+      <table class="table table-borderless align-middle text-center mb-0">
+        <thead class="text-secondary small">
+          <tr>
+            <th style="width: 100px;"></th>
+            <th><i class="bi bi-sun-fill text-warning d-block fs-4 mb-1"></i>Breakfast</th>
+            <th><i class="bi bi-egg-fried text-info d-block fs-4 mb-1"></i>Lunch</th>
+            <th><i class="bi bi-moon-stats-fill text-primary d-block fs-4 mb-1"></i>Dinner</th>
+            <th><i class="bi bi-apple text-danger d-block fs-4 mb-1"></i>Snack 1</th>
+            <th><i class="bi bi-nut text-success d-block fs-4 mb-1"></i>Snack 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% # ใส่โค้ด Loop รายวัน (Day 1 - Day 7) ที่นี่ %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
