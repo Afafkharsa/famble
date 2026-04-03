@@ -1,2 +1,10 @@
-<h1>New task</h1>
-<%= render "form", task: @task %>
+<div class="container mt-4 d-flex justify-content-between">
+  <div class="col-md-7 bg-white p-4">
+    <h2 class="mb-3">New task</h2>
+    <%= render "form", task: @task %>
+  </div>
+  <div class="col-md-4 bg-white p-4">
+    <h2 class="mb-3">Templates</h2>
+    <%= link_to "Go to templates page", task_templates_path,
+      class: "btn btn-outline-secondary btn-sm rounded-pill" %>
+  </div>

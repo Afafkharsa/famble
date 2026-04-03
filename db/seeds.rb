@@ -22,19 +22,19 @@ ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
 
-puts "Creating a family..."
-family = Family.create!(
+puts "Creating Star Wars family..."
+family_1 = Family.create!(
   name: "Star Wars"
 )
 
-puts "Creating users..."
+puts "Creating Star Wars family members..."
 user_1 = User.create!(
   email: "famble@test.com",
   password: "123456",
   role: "parent",
   name: "Anakin",
   birthdate: "1981-04-09".to_date,
-  family: family
+  family: family_1
 )
 
 user_2 = User.create!(
@@ -43,7 +43,89 @@ user_2 = User.create!(
   role: "child",
   name: "Leia",
   birthdate: "2005-04-25".to_date,
-  family: family
+  family: family_1
+)
+
+puts "Creating Lion King family..."
+family_2 = Family.create!(
+  name: "Star Wars"
+)
+
+puts "Creating Lion King family members..."
+user_3 = User.create!(
+  email: "sarabi@test.com",
+  password: "mufasa",
+  role: "parent",
+  name: "Sarabi",
+  birthdate: "1994-12-31".to_date,
+  family: family_2
+)
+
+user_4 = User.create!(
+  email: "simba@test.com",
+  password: "hakuna_matata",
+  role: "child",
+  name: "Simba",
+  birthdate: "2019-07-19".to_date,
+  family: family_2
+)
+
+puts "Creating task templates..."
+
+TaskTemplate.create!(
+  name: "Taking the trash out",
+  description: "Taking the trash out  when it’s full or for pickup",
+  task_points: 2,
+  montly_frequency: 0
+)
+
+TaskTemplate.create!(
+  name: "Unloading the dishwasher",
+  description: "",
+  task_points: 1,
+  montly_frequency: 2
+)
+
+TaskTemplate.create!(
+  name: "Sweeping and mopping floor",
+  description: "Sweeping and mopping the kitchen floor",
+  task_points: 3,
+  montly_frequency: 0
+)
+
+TaskTemplate.create!(
+  name: "Bedroom cleaning",
+  description: "Put toys and books in their designated spots, put dirty clothes in a hamper.",
+  task_points: 1,
+  montly_frequency: 0
+)
+
+TaskTemplate.create!(
+  name: "Cleaning dishes",
+  description: "After dinner, clean the dishes or put them in the dishwasher.",
+  task_points: 1,
+  montly_frequency: 7
+)
+
+
+TaskTemplate.create!(
+  name: "Setting table",
+  description: "At 7 pm, set the table for dinner",
+  task_points: 1,
+  montly_frequency: 7
+)
+
+TaskTemplate.create!(
+  name: "Time out and homework",
+  description: "After school and snack, go in the garden for at least 30 minutes. After that do your homeworks. Go to a parent when finished.",
+  task_points: 1,
+  montly_frequency: 7
+)
+TaskTemplate.create!(
+  name: "Pets care",
+  description: "Each day, feed the pet morning and evening. Let them go to the garden after school. Don't forget to pet them.",
+  task_points: 1,
+  montly_frequency: 7
 )
 
 puts "Creating tasks..."
@@ -55,7 +137,7 @@ Task.create!(
   start_date: (Date.today + 1),
   end_date: (Date.today+ 1),
   task_points: 2,
-  frequency: 7,
+  montly_frequency: 7,
   user: user_1
 )
 
@@ -65,7 +147,7 @@ Task.create!(
   start_date: Date.today,
   end_date: Date.today,
   task_points: 8,
-  frequency: 0,
+  montly_frequency: 0,
   user: user_2
 )
 
@@ -75,7 +157,7 @@ Task.create!(
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
-  frequency: 1,
+  montly_frequency: 1,
   user: user_1
 )
 
