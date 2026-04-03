@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :recipes, only: [:index, :new, :create, :show]
+
   resources :tasks
+  resources :task_templates, only: [:index, :show, :new, :create, :destroy]
 
   resources :rewards, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
@@ -24,4 +26,8 @@ Rails.application.routes.draw do
   resources:families do
     resources :member, only: [:index, :show, :new, :create]
     end
+<<<<<<< HEAD
+=======
+  end
+>>>>>>> master
 end

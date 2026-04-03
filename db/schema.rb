@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_31_170854) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_03_070422) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -111,6 +111,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_31_170854) do
     t.integer "task_points"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "days", default: [], array: true
+    t.integer "montly_frequency"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -120,13 +122,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_31_170854) do
     t.date "start_date"
     t.date "end_date"
     t.integer "task_points"
-    t.integer "frequency"
+    t.integer "montly_frequency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "task_template_id"
     t.bigint "user_id", null: false
-    t.bigint "family_id", null: false
-    t.index ["family_id"], name: "index_tasks_on_family_id"
+    t.text "days", default: [], array: true
     t.index ["task_template_id"], name: "index_tasks_on_task_template_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
