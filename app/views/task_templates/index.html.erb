@@ -31,25 +31,29 @@
       </div>
     <% else %>
       <h2 class="mt-3">Family tasks templates</h2>
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100 bg-white">
-          <div class="card-body">
-            <h5 class="card-title text-secondary p-0">No family template</h5>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="card border-0 h-100 ">
+            <div class="card-body">
+              <h5 class="card-title text-secondary m-0 p-0 fs-6 fst-italic">
+                No family template
+              </h5>
+            </div>
           </div>
         </div>
-      </divs>
+      </div>
     <% end %>
   </div>
   <div>
     <h2 class="mt-3">Generic tasks templates</h2>
     <div class="row g-4">
       <% @generic_templates.each do |generic_template| %>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card border-0 shadow-sm h-100 bg-white">
             <div class="card-body">
-              <h5 >
+              <h5 class="p-0 m-0 fs-6">
                 <%= link_to generic_template.name , task_template_path(generic_template),
-                 class:"card-title text-secondary",
+                 class:"card-title text-secondary m-0 p-0",
                  style: "text-decoration: none; cursor: pointer; color: inherit;" %>
               </h5>
             </div>
