@@ -1,5 +1,7 @@
 class TaskTemplatesController < ApplicationController
   def index
-    @task_templates = TaskTemplate.all
+    @role = current_user.role
+    @generic_templates = TaskTemplate.all.where("family_id IS NULL")
+    @family_templates = current_user.family.task_templates
   end
 end

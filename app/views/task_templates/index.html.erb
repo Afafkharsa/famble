@@ -1,38 +1,26 @@
 <div class="container mt-4">
   <div>
-    <% if @task_templates.any? %>
+    <% if @family_templates.any? %>
       <h2 class="mt-3">
-        My family task templates <%= link_to new_task_template_path do %>
+        My family task templates <%= link_to new_family_templates_path do %>
             <i class="fa-solid fa-plus text-body-secondary fs-4"
             style= "text-decoration: none; cursor: pointer; color: inherit;" ></i>
         <% end %>
       </h2>
       <div class="row g-4">
-        <% @task_templates.each do |task_template| %>
+        <% @family_templatess.each do |family_template| %>
           <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 bg-white">
               <div class="card-body">
                 <h5 class="card-title text-secondary">
-                  <%= task_template.name %>
+                  <%= link_to family_template.name , task_template_path(family_template.name),
+                 class:"card-title text-secondary",
+                 style: "text-decoration: none; cursor: pointer; color: inherit;" %>
                 </h5>
-
-                <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle justify-content-between">
-
-                  <div class="badge text-secondary py-2">
-                      <i class="fa-solid fa-award"></i>
-                      <%= task_template.task_points > 0 ? "#{task_template.task_points} points" : "#{task_template.task_points} point"  %>
-                  </div>
-                </div>
-
-                <h5 class="h5 fw-bold text-secondary mt-4">Description</h5>
-                <div class="mt-2">
-                  <%= task_template.description? ? task_template.description : "No description" %>
-                </div>
-
                 <div  class="d-flex justify-content-between mt-3">
-                  <%= link_to "View task_template", task_template_path(task_template),
+                  <%= link_to "View family_templates", family_templates_path(family_templates),
                     class: "btn btn-outline-secondary btn-sm rounded-pill" %>
-                  <%= link_to "Delete task", task_template_path(task_template),
+                  <%= link_to "Delete task", family_templates_path(family_templates),
                     data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
                     class: "btn btn-outline-danger btn-sm rounded-pill" %>
                 </div>
@@ -41,7 +29,32 @@
           </div>
         <% end %>
       </div>
+    <% else %>
+      <h2 class="mt-3">Family tasks templates</h2>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 bg-white">
+          <div class="card-body">
+            <h5 class="card-title text-secondary p-0">No family template</h5>
+          </div>
+        </div>
+      </divs>
     <% end %>
   </div>
-
+  <div>
+    <h2 class="mt-3">Generic tasks templates</h2>
+    <div class="row g-4">
+      <% @generic_templates.each do |generic_template| %>
+        <div class="col-md-4">
+          <div class="card border-0 shadow-sm h-100 bg-white">
+            <div class="card-body">
+              <h5 >
+                <%= link_to generic_template.name , task_template_path(generic_template),
+                 class:"card-title text-secondary",
+                 style: "text-decoration: none; cursor: pointer; color: inherit;" %>
+              </h5>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
 </div>
