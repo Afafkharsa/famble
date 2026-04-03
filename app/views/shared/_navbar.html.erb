@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+<nav class="navbar navbar-expand-sm navbar-light navbar-lewagon <%= yield(:navbar_class) %>">
   <div class="container-fluid">
     <%= link_to root_path, class: "navbar-brand h3 p-0 m-0" do %>
       Famble
@@ -11,6 +11,9 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Meal Plans", meal_plans_path, class: "nav-link" %>
+          </li>
           <li class="nav-item">
             <%= link_to "My Recipes", recipes_path, class: "nav-link" %>
           </li>
