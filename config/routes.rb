@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'calendars/index'
+  get 'calendars/show'
+
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -26,4 +29,6 @@ Rails.application.routes.draw do
   resources:families do
     resources :member, only: [:index, :show, :new, :create]
     end
+
+
 end
