@@ -55,4 +55,42 @@
       <%= link_to "Log in", new_user_session_path, class: "btn btn-outline-light btn-lg" %>
     </div>
   </div>
+<<<<<<< HEAD
 <% end %>
+=======
+
+  <!-- Row 2: 3 buttons -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <%= link_to "Recipes", recipes_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    </div>
+    <div class="col-md-4">
+      <%= link_to "Tasks", tasks_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    </div>
+    <div class="col-md-4">
+      <%= link_to "Rewards", rewards_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    </div>
+  </div>
+
+  <!-- Row 3: 3 buttons -->
+  <div class="row g-4">
+    <div class="col-md-4">
+      <!-- TODO add link family -->
+<<<<<<< HEAD
+      <%#= link_to "Family", family_path(current_user.family), class: "btn btn-outline-secondary w-100 py-5" %>
+      <%= link_to "Family", families_path, class: "btn btn-outline-secondary w-100 py-5" %>
+=======
+      <%= link_to "Family", family_path(current_user.family), class: "btn btn-outline-secondary w-100 py-5" %>
+>>>>>>> master
+    </div>
+    <div class="col-md-4">
+      <%= link_to "Calendar", calendars_index_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    </div>
+    <div class="col-md-4">
+      <!-- TODO add link chatbot -->
+      <button class="btn btn-outline-secondary w-100 py-5">Chatbot</button>
+    </div>
+  </div>
+
+</div>
+>>>>>>> b38e30b540e763e423769d8a3baadb2349338a76

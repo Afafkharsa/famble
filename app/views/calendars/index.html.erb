@@ -1,0 +1,40 @@
+<div class="container mt-5">
+  <h1 class="text-center mb-4 fs-bold">Calendar</h1>
+
+  <%= month_calendar(events: @events) do |date, events| %>
+    <div class="calendar-day" onclick="openDayDetail('<%= date %>')">
+      <div class="date-number"><%= date.day %></div>
+
+      <% events.each do |event| %>
+        <div class="event-badge text-truncate"><%= event.title %></div>
+      <% end %>
+
+      <% # แสดง Task ย่อๆ %>
+      <% day_tasks = @tasks.select { |t| t.date == date } %>
+      <% if day_tasks.any? %>
+        <small class="text-success">● <%= day_tasks.count %> Tasks</small>
+      <% end %>
+
+      <% # แสดง meal_plan ย่อๆ %>
+      <% meal_plan = @meal_plans.select { |t| t.date == date } %>
+      <% if meal_plan.any? %>
+        <small class="text-success">● <%= meal_plan.count %> Meal_plans</small>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+function openDayDetail(date) {
+  const contentArea = document.getElementById('modal-content-area');
+
+  // ใช้ Fetch ไปที่ route ที่เราจะสร้างเพื่อดึงข้อมูลวันนั้นๆ
+  fetch(/calendars/day_detail?date=${date})
+    .then(response => response.text())
+    .then(html => {
+      contentArea.innerHTML = html;
+      const myModal = new bootstrap.Modal(document.getElementById('memberModal'));
+      myModal.show(); // สั่งให้พื้นหลังมืดลงและ Modal แสดงผล
+    });
+}
+</script>
