@@ -26,8 +26,4 @@ Rails.application.routes.draw do
   resources:families do
     resources :member, only: [:index, :show, :new, :create]
     end
-<<<<<<< HEAD
-=======
-  end
->>>>>>> master
 end
