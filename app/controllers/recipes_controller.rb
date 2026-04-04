@@ -1,14 +1,17 @@
 class RecipesController < ApplicationController
 
   def index
+    @recipes = Recipe.all
+
     if params[:query].present?
-      query = "%#{params[:query].downcase}%"
-      @recipes = Recipe.where(
-        "LOWER(name) LIKE :q OR LOWER(ingredients) LIKE :q OR LOWER(description) LIKE :q OR LOWER(keywords) LIKE :q",
-        q: query
-      )
-    else
-      @recipes = Recipe.all
+      sql = <<~SQL
+        name ILIKE :query
+        OR ingredients ILIKE :query
+        OR description ILIKE :query
+        OR keywords ILIKE :query
+      SQL
+
+      @recipes = @recipes.where(sql, query: "%#{params[:query]}%")
     end
   end
 

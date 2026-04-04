@@ -23,7 +23,7 @@
               <p class="text-muted small"><%= Array(recipe.keywords.split(",")).first(3).join(", ") %></p>
               <div  class="d-flex justify-content-between">
                 <%= link_to "View Recipe", recipe_path(recipe), class: "btn btn-outline-secondary btn-sm rounded-pill" %>
-                <%# <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-primary btn-sm rounded-pill" %> %>
+                <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-secondary btn-sm rounded-pill" %>
                 <%= link_to "Delete recipe", recipe_path(recipe), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm rounded-pill" %>
               </div>
             </div>
