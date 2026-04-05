@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   def index
     @role = current_user.role
     @user_tasks = current_user.tasks
-    @family_tasks = current_user.family.tasks
+    @family_tasks = current_user.family.tasks.excluding(@user_tasks)
   end
 
   def show
