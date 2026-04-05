@@ -23,7 +23,9 @@
     </div>
     <div>
       <%= f.input :end_date, as: :date , label: "End date", input_html: { value: Date.today } %>
-      <%= f.input :frequency, as: :integer, label: "Frequency (nb of days per week)", input_html: { value: '0' } %>
+
+      <%= f.input :days, collection: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"], label: "If repeated, when?" %>
+      <%= f.input :montly_frequency, as: :integer, label: "If repeated, how many months in one year", input_html: { value: '0' } %>
     </div>
   </div>
   <%= f.submit class: "btn btn-primary" %>
