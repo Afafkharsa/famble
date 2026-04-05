@@ -10,7 +10,11 @@
   <div class="mt-2">
     <%= f.input :name, placeholder: "Name", label: false %>
   </div>
-  <%= f.input :description, placeholder: "Description", label: false %>
+  <%= f.input :user, collection: @users, placeholder: "User", label: false %>
+
+  <div class="mt-2">
+    <%= f.input :description, placeholder: "Description", label: false %>
+  </div>
   <div class="d-flex">
     <div class="pe-4">
       <%= f.input :start_date, as: :date, label: "Start date",
