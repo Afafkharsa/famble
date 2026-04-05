@@ -15,6 +15,8 @@ Reward.destroy_all
 User.destroy_all
 Family.destroy_all
 Recipe.destroy_all
+MealPlan.destroy_all
+RecipeMealPlan.destroy_all
 
 
 ActiveRecord::Base.connection.reset_pk_sequence!('families')
@@ -22,6 +24,7 @@ ActiveRecord::Base.connection.reset_pk_sequence!('users')
 ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
+ActiveRecord::Base.connection.reset_pk_sequence!('mealplans')
 
 puts "Creating Star Wars family..."
 family_1 = Family.create!(
@@ -176,7 +179,7 @@ Task.create!(
 
 puts "Creating recipes..."
 
-Recipe.create!(
+recipe_1 = Recipe.create!(
   name: "Spaghetti Bolognese",
   ingredients: <<~INGREDIENTS,
     200g spaghetti
@@ -201,7 +204,7 @@ Recipe.create!(
   allergens: "gluten"
 )
 
-Recipe.create!(
+recipe_2 = Recipe.create!(
   name: "Chicken Caesar Salad",
   ingredients: <<~INGREDIENTS,
     1 romaine lettuce, chopped
@@ -222,7 +225,7 @@ Recipe.create!(
   allergens: "dairy, gluten"
 )
 
-Recipe.create!(
+recipe_3 = Recipe.create!(
   name: "Vegetable Stir Fry",
   ingredients: <<~INGREDIENTS,
     150g Broccoli
@@ -242,7 +245,7 @@ Recipe.create!(
   allergens: "soy"
 )
 
-Recipe.create!(
+recipe_4 = Recipe.create!(
   name: "Pancakes",
   ingredients: <<~INGREDIENTS,
     200g Flour
@@ -262,7 +265,7 @@ Recipe.create!(
   allergens: "gluten, dairy, eggs"
 )
 
-Recipe.create!(
+recipe_5 = Recipe.create!(
   name: "Grilled Salmon",
   ingredients: <<~INGREDIENTS,
     1 Salmon fillet (200g)
@@ -326,4 +329,50 @@ Reward.create!(
   user: user_1
 )
 
-puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards!"
+puts "Creating Meal plans..."
+
+meal_plan_today = MealPlan.find_or_create_by!(
+  day: Date.today,
+  family: family_1
+)
+
+meal_plan_tomorrow = MealPlan.find_or_create_by!(
+  day: Date.today + 1,
+  family: family_1
+)
+
+
+puts "Creating RecipeMealplans..."
+
+  RecipeMealPlan.create!(
+  meal_plan: meal_plan_today,
+  recipe: recipe_1,
+  meal_type: "Breakfast"
+)
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_today,
+    recipe: recipe_5,
+    meal_type: "Lunch"
+  )
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_today,
+    recipe: recipe_4,
+    meal_type: "Dinner"
+  )
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_tomorrow,
+    recipe: recipe_3,
+    meal_type: "Lunch"
+  )
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_tomorrow,
+    recipe: recipe_2,
+    meal_type: "Dinner"
+  )
+
+
+puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards, #{MealPlan.count} meal plans, #{RecipeMealPlan.count} recipemealplans!"

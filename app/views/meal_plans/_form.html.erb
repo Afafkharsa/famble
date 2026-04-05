@@ -1,24 +1,27 @@
 <div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
+  <div class="row justify-content-left ms-2">
+    <div class="col-md-12">
       <%= simple_form_for(@meal_plan) do |f| %>
 
-        <div class="form-inputs">
+        <div class="form-inputs fw-bold">
           <%# select_date %>
-          <%= f.input :day, as: :date,  html5: true, label:"Select Date" %></
+          <%= f.input :day, as: :date,  html5: true, label:"Select Date" %>
 
+          <%# select_meal_type %>
           <%= f.simple_fields_for:recipe_meal_plans do |rmp| %>
             <%= rmp.input :meal_type, collection: ["Breakfast", "Lunch", "Dinner", "Snack"],
               prompt: "Select meal type", label: "Meal type" %>
-
-            <%= rmp.association, label= "Choose Recipe" %>
-
-            <%= f.input :photo, as: :file, label: "Photo" %>
+            <%= rmp.association :recipe, label: "Choose Recipe", prompt: "Select a recipe" %>
           <% end %>
-        <div class="form-actions mt-4 text-center">
-          <%= f.button :submit, "Submit", class: "btn btn-success w-100 rounded-4 fs-5" %>
-          <%= link_to "Cancel", meal_plans_path, class: "btn btn-outline-secondary w-100 rounded-4 mt-2 fs-5" %>
+
+          <%# upload_photo %>
+          <%= f.input :photo, as: :file, label: "Photo" %>
+
+         <div class="d-flex gap-3 mb-4 mt-2">
+          <%= f.submit class: "btn btn-secondary rounded-4 fs-5" %>
+          <%= link_to "Cancel", meal_plans_path, class: "btn btn-outline-secondary rounded-4 fs-5" %>
         </div>
+
       <% end %>
     </div>
   </div>
