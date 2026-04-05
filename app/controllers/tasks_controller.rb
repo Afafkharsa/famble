@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_users, only: [:new, :edit]
+  before_action :set_days, only: [:new, :edit]
 
   def index
     @user = current_user
@@ -50,6 +51,18 @@ class TasksController < ApplicationController
 
   def set_users
     @users = current_user.family.users
+  end
+
+  def set_days
+    @days = {
+      monday: "Monday",
+      tuesday: "Tuesday",
+      wednesday: "Wednesday",
+      thursday: "thursday",
+      friday: "friday",
+      saturday: "saturday",
+      sunday: "sunday"
+    }
   end
 
   def task_params

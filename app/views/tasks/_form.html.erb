@@ -1,32 +1,45 @@
 <%= simple_form_for(task) do |f| %>
-  <div class="d-flex">
-    <div class="pe-4">Done?</div>
+  <div class="d-flex align-items-center">
+    <div class="pe-2 text-secondary fw-bold">Done?</div>
     <% if task.status %>
       <%= f.input_field :status, as: :boolean, boolean_style: :inline, disabled: true %>
     <% else %>
-      <%= f.input_field :status, as: :boolean, boolean_style: :inline %>
+      <%= f.input_field :status, as: :boolean, boolean_style: :inline, label:"done?" %>
+    <% end %>
+    <div class="pe-2 ps-4 text-secondary fw-bold">Rewards point</div>
+    <%= f.input :task_points, label: false, collection: 1..10, selected: 1 %>
+  </div>
+  <div>
+  <% if task.user %>
+      <%= f.input :user, collection: @users, placeholder: "User", label: "Family member", selected: @user %>
+    <% else %>
+      <%= f.input :user, collection: @users, placeholder: "User", label: "Family member" %>
     <% end %>
   </div>
   <div class="mt-2">
     <%= f.input :name, placeholder: "Name", label: false %>
   </div>
-  <%= f.input :user, collection: @users, placeholder: "User", label: false %>
-
   <div class="mt-2">
     <%= f.input :description, placeholder: "Description", label: false %>
   </div>
+  <h5>Dates and frequency</h5>
   <div class="d-flex">
     <div class="pe-4">
       <%= f.input :start_date, as: :date, label: "Start date",
       input_html: { value: Date.today} %>
-      <%= f.input :task_points, as: :integer, label: "Number of rewards points", collection: 1..10, input_html: { value: '1' } %>
+
+      <%= f.input :days,
+              collection: %w[monday tuesday wednesday thursday friday],
+              input_html: { multiple: true, size: 1 },
+      label: "If repeating, on which days does the task occur?"%>
     </div>
     <div>
       <%= f.input :end_date, as: :date , label: "End date", input_html: { value: Date.today } %>
-
-      <%= f.input :days, collection: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"], label: "If repeated, when?" %>
-      <%= f.input :montly_frequency, as: :integer, label: "If repeated, how many months in one year", input_html: { value: '0' } %>
+      <%= f.input :montly_frequency, as: :integer, collection: 0..12, selected: 0,
+      input_html: { class: "form-range"} %>
     </div>
+  </div>
+  <div  class="d-flex">
   </div>
   <%= f.submit class: "btn btn-primary" %>
 <% end %>
