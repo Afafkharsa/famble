@@ -1,17 +1,19 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_users, only: [:new, :edit]
 
   def index
-    @role = current_user.role
+    @user = current_user
     @user_tasks = current_user.tasks
-    @family_tasks = current_user.family.tasks
+    @family_tasks = current_user.family.tasks.excluding(@user_tasks)
   end
 
   def show
   end
 
   def new
-    @task= Task.new()
+
+    @task= Task.new({user_id: params[:user]})
   end
 
   def create
@@ -46,8 +48,13 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
+  def set_users
+    @users = current_user.family.users
+  end
+
   def task_params
     params.require(:task).permit(
+      :user,
       :name,
       :description,
       :status,

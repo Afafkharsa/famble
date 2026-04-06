@@ -50,13 +50,32 @@ user_2 = User.create!(
   family: family_1
 )
 
+user_3 = User.create!(
+  email: "luke@test.com",
+  password: "light_saber",
+  role: "child",
+  name: "Luke",
+  birthdate: "2005-04-25".to_date,
+  family: family_1
+)
+
+
+user_4 = User.create!(
+  email: "amidala@test.com",
+  password: "naboo_987",
+  role: "parent",
+  name: "Padme",
+  birthdate: "1981-07-09".to_date,
+  family: family_1
+)
+
 puts "Creating Lion King family..."
 family_2 = Family.create!(
   name: "Star Wars"
 )
 
 puts "Creating Lion King family members..."
-user_3 = User.create!(
+User.create!(
   email: "sarabi@test.com",
   password: "mufasa",
   role: "parent",
@@ -65,7 +84,7 @@ user_3 = User.create!(
   family: family_2
 )
 
-user_4 = User.create!(
+User.create!(
   email: "simba@test.com",
   password: "hakuna_matata",
   role: "child",
@@ -135,7 +154,7 @@ TaskTemplate.create!(
 
 puts "Creating Star wars family first task template..."
 
-TaskTemplate.create!(
+template_2 = TaskTemplate.create!(
   name: "Oil R2-D2",
   description: "Each month, put some oil inside R2-D2 collar",
   task_points: 1,
@@ -147,23 +166,25 @@ TaskTemplate.create!(
 puts "Creating tasks..."
 
 Task.create!(
-  name: "Meal preparation",
+  name: "Dinner meal preparation",
   description: "Details in meal plans",
   status: false,
-  start_date: (Date.today + 1),
-  end_date: (Date.today+ 1),
+  start_date: (Date.today+1),
+  end_date: (Date.today + 365),
   task_points: 2,
-  montly_frequency: 7,
+  days: ["monday", "wednesday", "saturday"],
+  montly_frequency: 12,
   user: user_1
 )
 
 Task.create!(
-  name: "Washing my bedroom",
+  name: "Washing one's bedroom",
   status: false,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 8,
-  montly_frequency: 0,
+  days: ["sunday"],
+  montly_frequency: 12,
   user: user_2
 )
 
@@ -173,8 +194,32 @@ Task.create!(
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
-  montly_frequency: 1,
+  montly_frequency: 0,
   user: user_1
+)
+
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 1,
+  days: ["monday"],
+  montly_frequency: 12,
+  status: false,
+  start_date: Date.today,
+  end_date: Date.today + 120,
+  user: user_3,
+  task_template: template_2
+)
+
+
+Task.create!(
+  name: "Luke's doctor appointment",
+  status: false,
+  start_date: Date.today+5,
+  end_date: Date.today+5,
+  task_points: 4,
+  montly_frequency: 0,
+  user: user_4
 )
 
 puts "Creating recipes..."
