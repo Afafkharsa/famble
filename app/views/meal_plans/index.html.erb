@@ -1,14 +1,13 @@
-<% # ใช้ container หลักเพียงอันเดียวครอบทั้งหมด เพื่อความเท่ากัน %>
-<div class="container py-5">
+<div class="container py-4">
 
-  <% # ---Today's Meal Plan --- %>
-  <div class="meal-plan-section mb-5">
+  <%# ---Today's Meal Plan part--- %>
+  <div class="meal-plan-section mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="display-5 fw-bold mb-0">Today's Meal Plan</h1>
       <%= link_to "Add Meal", new_meal_plan_path, class: "btn btn-primary rounded-pill px-4" %>
     </div>
 
-    <div class="table-responsive shadow-lg rounded-3 bg-white p-4">
+    <div class="table-responsive shadow-lg rounded-3 bg-white p-3">
       <table class="table table-borderless align-middle text-center mb-0">
         <thead class="text-secondary small">
           <tr class="fs-6">
@@ -19,8 +18,9 @@
             <th style="width: 21.25%;"><i class="bi bi-apple text-danger d-block fs-4 mb-1"></i>Snack</th>
           </tr>
         </thead>
+
         <tbody>
-          <% # บรรทัดที่ 24: %>
+          <%# Searching for today plan %>
             <% if @today_plan %>
             <tr>
               <td class="fw-bold align-middle text-secondary" style="width: 100px;">
@@ -29,24 +29,37 @@
 
               <% meal_types = ["Breakfast", "Lunch", "Dinner", "Snack"] %>
               <% meal_types.each do |type| %>
-              <td class="p-4">
-                <% # ค้นหาว่ามีมื้ออาหารประเภทนี้ในวันนี้ไหม %>
+              <td class="p-1">
+                <%# Search for meal_type for today %>
                 <% meal = @today_plan.recipe_meal_plans.find { |rmp| rmp.meal_type == type } %>
 
                   <% if meal %>
                     <div class="text-center">
                       <%= link_to recipe_path(meal.recipe), class:"text-decoration-none" do %>
-                        <% # ดึงรูปภาพจาก Recipe (ถ้ามี) %>
+
+                        <%# Upload photo (ถ้ามี) %>
                         <%# if meal.recipe.image_url.present? %>
                         <img src="http://via.placeholder.com/150"<%#= meal.recipe.image_url %> class="shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: cover;">
                         <%# else %>
                         <img src="http://via.placeholder.com/150"<%#= meal.recipe.image_url %> class="shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: cover;">
                         <%# end %>
                       <div class="small fw-bold"><%= meal.recipe.name %></div>
+                      <div class="mt-1 d-flex justify-content-center gap-2">
+
+                        <%# Edit meal plan  %>
+                        <%= link_to edit_recipe_meal_plan_path(meal), class:"text-primary" do %>
+                        <i class="bi bi-pencil-square"></i>
+                        <% end %>
+
+                        <%# Delet meal plan  %>
+                        <%=link_to recipe_meal_plan_path(meal), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-danger" do %>
+                        <i class="bi bi-trash"></i>
+                        <% end %>
+                      </div>
                     </div>
                     <% end %>
                   <% else %>
-                    <%= link_to "+", new_meal_plan_path(@today_plan), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                    <%= link_to "+", new_meal_plan_path(day:@today_plan.day, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
                   <% end %>
                 </td>
               <% end %>
@@ -58,10 +71,10 @@
     </div>
   </div>
 
-  <% # --- ส่วน Weekly's Meal Plan --- %>
+  <%# -- Weekly's Meal Plan part--- %>
   <div class="meal-plan-section">
     <h1 class="display-5 fw-bold mb-4">Weekly's Meal Plan</h1>
-    <div class="d-flex justify-content-between table-responsive shadow-lg rounded-3 bg-white p-4">
+    <div class="d-flex justify-content-between table-responsive shadow-lg rounded-3 bg-white p-3">
       <table class="table table-borderless align-middle text-center mb-0">
         <thead class="text-secondary small">
           <tr class="fs-6">
@@ -72,41 +85,49 @@
             <th style="width: 21.25%;"><i class="bi bi-apple text-danger d-block fs-4 mb-1"></i>Snack</th>
           </tr>
         </thead>
+
         <tbody>
-          <% # ใส่โค้ด Loop รายวัน (Day 1 - Day 7) ที่นี่ %>
-            <% # บรรทัดที่ 48: วนลูปรายวัน 7 วัน %>
-              <% @weekly_plans.each do |meal_plan| %>
-                <tr>
-                  <td class="fw-bold fs-6 align-middle text-secondary text-success" style="width: 100px;">
-                    <%= meal_plan.day.strftime("%A, %d %b") %>
-                  </td>
+          <%# Looping weekly meal plan %>
+            <% @weekly_plans.each do |meal_plan| %>
+              <tr>
+                <td class="fw-bold fs-6 align-middle text-secondary text-success" style="width: 100px;">
+                  <%= meal_plan.day.strftime("%A, %d %b") %>
+                </td>
 
-                  <% meal_types = ["Breakfast", "Lunch", "Dinner", "Snack"] %>
-                  <% meal_types.each do |type| %>
-                    <td class="p-3">
-                      <% meal = meal_plan.recipe_meal_plans.find { |rmp| rmp.meal_type == type } %>
+                <% meal_types = ["Breakfast", "Lunch", "Dinner", "Snack"] %>
+                <% meal_types.each do |type| %>
+                  <td class="p-1">
+                    <% meal = meal_plan.recipe_meal_plans.find { |rmp| rmp.meal_type == type } %>
 
-                      <% if meal %>
-                        <div class="recipe-thumbnail text-center">
-                          <%= link_to recipe_path(meal.recipe), class:"text-decoration-none" do %>
-                          <% # ดึงรูปภาพจาก Recipe (ถ้ามี) %>
-                          <%# if meal.recipe.image_url.present? %>
-                            <img src="http://via.placeholder.com/150"<%#= meal.recipe.image_url %> class="shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: cover;">
-                            <%# else %>
-                            <img src="http://via.placeholder.com/150"<%#= meal.recipe.image_url %> class="shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: cover;">
-                            <%# end %>
-                          <div class="small fw-bold">
-                            <%= meal.recipe.name %>
+                    <% if meal %>
+                      <div class="recipe-thumbnail text-center">
+                        <%= link_to recipe_path(meal.recipe), class:"text-decoration-none" do %>
+                        <%# Upload photo %>
+                        <%# if meal.recipe.image_url.present? %>
+                          <img src="http://via.placeholder.com/150"<%#= meal.recipe.image_url %> class="shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: cover;">
+                          <%# else %>
+                          <img src="http://via.placeholder.com/150"<%#= meal.recipe.image_url %> class="shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: cover;">
+                          <%# end %>
+                        <div class="small fw-bold"><%= meal.recipe.name %></div>
+                          <div class="mt-1 d-flex justify-content-center gap-2">
+                            <%# Edit meal plan  %>
+                            <%= link_to edit_recipe_meal_plan_path(meal), class:"text-primary" do %>
+                            <i class="bi bi-pencil-square"></i>
+                            <% end %>
+                            <%# Delet meal plan  %>
+                            <%=link_to recipe_meal_plan_path(meal), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-danger" do %>
+                            <i class="bi bi-trash"></i>
+                            <% end %>
                           </div>
-                        </div>
-                        <% end %>
-                      <% else %>
-                        <%= link_to "+", new_meal_plan_path(day: meal_plan.day, meal_type: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                      </div>
                       <% end %>
-                    </td>
-                  <% end %>
-                </tr>
-              <% end %>
+                    <% else %>
+                      <%= link_to "+", new_meal_plan_path(day:@today_plan.day, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
         </tbody>
       </table>
     </div>

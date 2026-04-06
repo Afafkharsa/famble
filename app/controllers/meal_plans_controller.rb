@@ -1,15 +1,11 @@
 class MealPlansController < ApplicationController
   def index
     @family =current_user.family
-    @today_plan = @family.meal_plans.find_by(day:Date.today)#includes(recipe_meal_plans: :recipe).where(family:current_user.family).order(:day)
+    @today_plan = @family.meal_plans.find_by(day:Date.today)
     @weekly_plans = @family.meal_plans.where(day: (Date.today + 1)..(Date.today + 7)).order(:day)
-    # @meal_plans = current_user.meal_plans
-    # @today_plan = Mealplan.find_by(date: Date.today)
-    # @weekly_meals = current_user.meal_plans.where(date: Date.today + 1..Date.today + 6.days).order(date: :asc)
   end
 
   def show
-    @meal_plan = MealPlan.includes(recipe_meal_plans: :recipe).find(params[id])
 
   end
 
@@ -19,9 +15,9 @@ class MealPlansController < ApplicationController
   end
 
   def create
-    @meal_plan = MealPlan.new(meal_plan_params)
-    @meal_plan.family = current_user.family
-    if @meal_plan.save
+    @meal_plan = MealPlan.find_or_create_by(day:params[:meal_plan][:day], family_id:current_user.family_id)
+
+    if @meal_plan.update(meal_plan_params)
       redirect_to meal_plans_path, notice: "Meal plan created successfully!"
     else
       render :new, status: :unprocessable_entity
@@ -44,7 +40,7 @@ class MealPlansController < ApplicationController
   def destroy
     @meal_plan = MealPlan.find(params[:id])
     @meal_plan.destroy
-    redirect_to meal_plans_path
+    redirect_to meal_plans_path, status: :see_other
   end
 
   private

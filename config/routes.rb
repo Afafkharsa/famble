@@ -32,4 +32,6 @@ Rails.application.routes.draw do
 
   resources :task_templates, only: [:new, :create, :edit, :update, :destroy]
 
+  resources :recipe_meal_plans, only: [:destroy, :edit, :update]
+
 end
