@@ -1,0 +1,8 @@
+input::placeholder{
+  // opacity: 0.5;
+  color: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity)) !important;
+}
+.form-control::placeholder, .form-select-color {
+  // opacity: 0.5;
+  color: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity)) !important;
+}
