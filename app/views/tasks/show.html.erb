@@ -40,7 +40,7 @@
         <div class="text-secondary fw-bold">
           <i class="fa-solid fa-calendar-days"></i>
           <%= @task.start_date %>
-          <% unless @task.start_date = @task.end_date %>
+          <% if @task.start_date != @task.end_date %>
             <i class="fa-solid fa-arrow-right"></i>
             <%= @task.end_date %>
           <% end %>
