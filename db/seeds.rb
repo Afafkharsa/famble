@@ -166,7 +166,7 @@ Task.create!(
   name: "Dinner meal preparation",
   description: "Details in meal plans",
   status: false,
-  start_date: (Date.today),
+  start_date: (Date.today+1),
   end_date: (Date.today + 365),
   task_points: 2,
   days: ["monday", "wednesday", "saturday"],
@@ -175,7 +175,7 @@ Task.create!(
 )
 
 Task.create!(
-  name: "Washing my bedroom",
+  name: "Washing one's bedroom",
   status: false,
   start_date: Date.today,
   end_date: Date.today,
@@ -191,7 +191,7 @@ Task.create!(
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
-  montly_frequency: 1,
+  montly_frequency: 0,
   user: user_1
 )
 
@@ -215,6 +215,7 @@ Task.create!(
   start_date: Date.today+5,
   end_date: Date.today+5,
   task_points: 4,
+  montly_frequency: 0,
   user: user_4
 )
 
