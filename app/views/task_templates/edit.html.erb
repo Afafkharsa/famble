@@ -4,9 +4,9 @@
       <h2>Edit task</h2>
       <div class="text-secondary">
         ←
-        <%= link_to "Back to tasks", tasks_path, class: "link-secondary link-underline-secondary" %>
+        <%= link_to "Back to tasks", task_templates_path, class: "link-secondary link-underline-secondary" %>
       </div>
     </div>
-    <%= render "form", task: @task %>
+    <%= render "form", task_template: @task_template %>
   </div>
 </div>

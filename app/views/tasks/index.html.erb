@@ -1,11 +1,17 @@
 <div class="container mt-4">
   <% if @user_tasks.any? %>
-    <h2 class="mt-3">
-      My tasks <%= link_to new_task_path(:user => @user) do %>
-          <i class="fa-solid fa-plus text-body-secondary fs-4"
-          style= "text-decoration: none; cursor: pointer; color: inherit;" ></i>
+    <h2 class="mt-3 d-flex">
+      My tasks
+      <%= link_to new_task_path(:user => @user) do %>
+        <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+          <i class="fa-solid fa-plus text-body-secondary fs-4 ps-2"></i>
+        </div>
       <% end %>
-
+      <%= link_to task_templates_path do %>
+        <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+          <i class="fa-regular fa-file-lines text-body-secondary fs-4 ps-2"></i>
+        </div>
+      <% end %>
     </h2>
     <div class="row g-4">
       <% @user_tasks.each do |task| %>
@@ -58,8 +64,21 @@
     </div>
   <% end %>
 
-  <% if @user.role = "parent" &&  @family_tasks.any? %>
-    <h2 class="mt-3">Family tasks</h2>
+  <% if @user.role = "parent" && @family_tasks.any? %>
+    <h2 class="mt-3 d-flex">
+      Family tasks
+      <%= link_to new_task_path() do %>
+        <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+          <i class="fa-solid fa-plus text-body-secondary fs-4 ps-2"></i>
+        </div>
+      <% end %>
+      <%= link_to task_templates_path do %>
+        <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+          <i class="fa-regular fa-file-lines text-body-secondary fs-4 ps-2"></i>
+        </div>
+      <% end %>
+    </h2>
+    </h2>
     <div class="row g-4">
       <% @family_tasks.each do |task| %>
         <div class="col-md-4">
