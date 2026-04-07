@@ -15,6 +15,10 @@ Rails.application.routes.draw do
 
   resources :recipes, only: [:index, :new, :create, :show, :destroy]
 
+  resources :chats, only: [:index, :create, :show] do
+    resources :messages, only: [:create]
+  end
+
   resources :tasks
   resources :task_templates, only: [:index, :show]
 

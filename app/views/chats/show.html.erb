@@ -1,0 +1,20 @@
+<!-- Substribing to action cable -->
+<%= turbo_stream_from @chat %>
+
+<div class="container py-4">
+
+  <h1 class="text-shadow" id="chat_title">
+    <% unless @chat.title == "Untitled" %>
+      <%= @chat.title %>
+    <% end %>
+  </h1>
+
+  <div id="messages">
+    <%= render "messages/messages", messages: @chat.messages %>
+  </div>
+
+  <div id="new_message_container" class="ps-3 pb-0 pt-3">
+    <%= render "messages/form", chat: @chat, message: @message %>
+  </div>
+
+</div>
