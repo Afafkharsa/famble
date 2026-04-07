@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resources :recipes, only: [:index, :new, :create, :show]
 
   resources :tasks
-  resources :task_templates, only: [:index, :show]
+  resources :task_templates, only: [:index, :show, :destroy, :edit, :update]
 
   resources :rewards, only: [:index,  :show, :edit, :update, :destroy] do
     member do
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     resources :member, only: [:index, :show, :new, :create]
     end
 
-  resources :task_templates, only: [:new, :create, :edit, :update, :destroy]
+    resources :task_templates, only: [:new, :create]
 
   resources :recipe_meal_plans, only: [:destroy, :edit, :update]
 
