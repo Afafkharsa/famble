@@ -1,11 +1,25 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Family Rewards</h1>
-    <%= link_to "Add Reward", new_reward_path, class: "btn btn-primary" %>
+    <div>
+      <%= link_to "Add Reward", new_reward_path, class: "btn btn-primary me-2" %>
+      <%= link_to "Reward Library", reward_templates_path, class: "btn btn-outline-secondary" %>
+    </div>
   </div>
 
   <% current_user.family.users.each do |member| %>
-    <h4 class="mt-4"><%= member.email %></h4>
+    <div class="d-flex align-items-center mt-4">
+      <h4 class="mb-0 me-3"><%= member.name || member.email %></h4>
+      <span class="badge bg-warning text-dark fs-6">
+        <%= member.available_points %> pts available
+      </span>
+      <span class="badge bg-secondary ms-2">
+        <%= member.earned_points %> earned
+      </span>
+      <span class="badge bg-info ms-2">
+        <%= member.spent_points %> spent
+      </span>
+    </div>
     <% member_rewards = @rewards.select { |r| r.user_id == member.id } %>
 
     <% if member_rewards.any? %>
@@ -14,6 +28,9 @@
           <div class="col-12 col-md-6 col-lg-4 mb-3">
             <div class="card <%= 'border-success' if reward.redeemed? %>">
               <div class="card-body">
+                <% if reward.photo.attached? %>
+                  <%= image_tag reward.photo, class: "card-img-top mb-2", style: "max-height: 150px; object-fit: cover;" %>
+                <% end %>
                 <h5 class="card-title"><%= reward.name %></h5>
                 <p class="card-text"><%= reward.description %></p>
                 <p><strong><%= reward.reward_points %> pts</strong></p>
