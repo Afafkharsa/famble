@@ -1,0 +1,63 @@
+<div class="container mt-4">
+  <div>
+    <% if @family_templates.any? %>
+      <h2 class="mt-3">
+        My family task templates <%= link_to new_family_task_template_path(@familly) do %>
+            <i class="fa-solid fa-plus text-body-secondary fs-4"
+            style= "text-decoration: none; cursor: pointer; color: inherit;" ></i>
+        <% end %>
+      </h2>
+      <div class="row g-4 mt-1">
+        <% @family_templates.each do |family_template| %>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 bg-white">
+              <div class="card-body">
+                <h5 class="p-0 m-0 fs-6">
+                  <div  class="d-flex justify-content-between">
+                  <%= link_to family_template.name , task_template_path(family_template.name),
+                    class:"card-title text-secondary m-0 p-0 ",
+                    style: "text-decoration: none; cursor: pointer; color: inherit;" %>
+                  <%= link_to '<i class="fa-regular fa-rectangle-xmark"></i>'.html_safe, task_template_path(family_template),
+                    data: { turbo_method: :delete, turbo_confirm: "Do you really want to delete this template?" },
+                    class:"card-title text-secondary m-0 p-0",
+                    style: "text-decoration: none; cursor: pointer; color: inherit;" %>
+                </div>
+                </h5>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <h2 class="mt-3">Family tasks templates</h2>
+      <div class="row g-4 mt-2 mt-1">
+        <div class="col-md-3">
+          <div class="card border-0 h-100 ">
+            <div class="card-body">
+              <h5 class="card-title text-secondary m-0 p-0 fs-6 fst-italic">
+                No family template
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div>
+    <h2 class="mt-5">Generic tasks templates</h2>
+    <div class="row g-4 mt-1">
+      <% @generic_templates.each do |generic_template| %>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm h-100 bg-white">
+            <div class="card-body">
+              <h5 class="p-0 m-0 fs-6">
+                <%= link_to generic_template.name , task_template_path(generic_template),
+                 class:"card-title text-secondary m-0 p-0",
+                 style: "text-decoration: none; cursor: pointer; color: inherit;" %>
+              </h5>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+</div>

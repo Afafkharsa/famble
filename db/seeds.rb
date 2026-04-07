@@ -10,11 +10,14 @@
 
 puts "Cleaning database..."
 Task.destroy_all
+TaskTemplate.destroy_all
 Reward.destroy_all
 RewardTemplate.destroy_all
 User.destroy_all
 Family.destroy_all
 Recipe.destroy_all
+MealPlan.destroy_all
+RecipeMealPlan.destroy_all
 
 
 ActiveRecord::Base.connection.reset_pk_sequence!('families')
@@ -23,6 +26,7 @@ ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
 ActiveRecord::Base.connection.reset_pk_sequence!('reward_templates')
+ActiveRecord::Base.connection.reset_pk_sequence!('mealplans')
 
 puts "Creating Star Wars family..."
 family_1 = Family.create!(
@@ -48,13 +52,32 @@ user_2 = User.create!(
   family: family_1
 )
 
+user_3 = User.create!(
+  email: "luke@test.com",
+  password: "light_saber",
+  role: "child",
+  name: "Luke",
+  birthdate: "2005-04-25".to_date,
+  family: family_1
+)
+
+
+user_4 = User.create!(
+  email: "amidala@test.com",
+  password: "naboo_987",
+  role: "parent",
+  name: "Padme",
+  birthdate: "1981-07-09".to_date,
+  family: family_1
+)
+
 puts "Creating Lion King family..."
 family_2 = Family.create!(
   name: "Star Wars"
 )
 
 puts "Creating Lion King family members..."
-user_3 = User.create!(
+User.create!(
   email: "sarabi@test.com",
   password: "mufasa",
   role: "parent",
@@ -63,7 +86,7 @@ user_3 = User.create!(
   family: family_2
 )
 
-user_4 = User.create!(
+User.create!(
   email: "simba@test.com",
   password: "hakuna_matata",
   role: "child",
@@ -72,7 +95,7 @@ user_4 = User.create!(
   family: family_2
 )
 
-puts "Creating task templates..."
+puts "Creating generic task templates..."
 
 TaskTemplate.create!(
   name: "Taking the trash out",
@@ -123,6 +146,7 @@ TaskTemplate.create!(
   task_points: 1,
   montly_frequency: 7
 )
+
 TaskTemplate.create!(
   name: "Pets care",
   description: "Each day, feed the pet morning and evening. Let them go to the garden after school. Don't forget to pet them.",
@@ -130,26 +154,39 @@ TaskTemplate.create!(
   montly_frequency: 7
 )
 
+puts "Creating Star wars family first task template..."
+
+template_2 = TaskTemplate.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 1,
+  days: ["monday"],
+  montly_frequency: 12,
+  family: family_1
+)
+
 puts "Creating tasks..."
 
 Task.create!(
-  name: "Meal preparation",
+  name: "Dinner meal preparation",
   description: "Details in meal plans",
   status: false,
-  start_date: (Date.today + 1),
-  end_date: (Date.today+ 1),
+  start_date: (Date.today+1),
+  end_date: (Date.today + 365),
   task_points: 2,
-  montly_frequency: 7,
+  days: ["monday", "wednesday", "saturday"],
+  montly_frequency: 12,
   user: user_1
 )
 
 Task.create!(
-  name: "Washing my bedroom",
+  name: "Washing one's bedroom",
   status: false,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 8,
-  montly_frequency: 0,
+  days: ["sunday"],
+  montly_frequency: 12,
   user: user_2
 )
 
@@ -159,13 +196,37 @@ Task.create!(
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
-  montly_frequency: 1,
+  montly_frequency: 0,
   user: user_1
+)
+
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 1,
+  days: ["monday"],
+  montly_frequency: 12,
+  status: false,
+  start_date: Date.today,
+  end_date: Date.today + 120,
+  user: user_3,
+  task_template: template_2
+)
+
+
+Task.create!(
+  name: "Luke's doctor appointment",
+  status: false,
+  start_date: Date.today+5,
+  end_date: Date.today+5,
+  task_points: 4,
+  montly_frequency: 0,
+  user: user_4
 )
 
 puts "Creating recipes..."
 
-Recipe.create!(
+recipe_1 = Recipe.create!(
   name: "Spaghetti Bolognese",
   ingredients: <<~INGREDIENTS,
     200g spaghetti
@@ -190,7 +251,7 @@ Recipe.create!(
   allergens: "gluten"
 )
 
-Recipe.create!(
+recipe_2 = Recipe.create!(
   name: "Chicken Caesar Salad",
   ingredients: <<~INGREDIENTS,
     1 romaine lettuce, chopped
@@ -211,7 +272,7 @@ Recipe.create!(
   allergens: "dairy, gluten"
 )
 
-Recipe.create!(
+recipe_3 = Recipe.create!(
   name: "Vegetable Stir Fry",
   ingredients: <<~INGREDIENTS,
     150g Broccoli
@@ -231,7 +292,7 @@ Recipe.create!(
   allergens: "soy"
 )
 
-Recipe.create!(
+recipe_4 = Recipe.create!(
   name: "Pancakes",
   ingredients: <<~INGREDIENTS,
     200g Flour
@@ -251,7 +312,7 @@ Recipe.create!(
   allergens: "gluten, dairy, eggs"
 )
 
-Recipe.create!(
+recipe_5 = Recipe.create!(
   name: "Grilled Salmon",
   ingredients: <<~INGREDIENTS,
     1 Salmon fillet (200g)
@@ -351,4 +412,50 @@ Reward.create!(
   user: user_1
 )
 
-puts "Finished! Created #{Recipe.count} recipes and #{Reward.count} rewards!"
+puts "Creating Meal plans..."
+
+meal_plan_today = MealPlan.find_or_create_by!(
+  day: Date.today,
+  family: family_1
+)
+
+meal_plan_tomorrow = MealPlan.find_or_create_by!(
+  day: Date.today + 1,
+  family: family_1
+)
+
+
+puts "Creating RecipeMealplans..."
+
+  RecipeMealPlan.create!(
+  meal_plan: meal_plan_today,
+  recipe: recipe_1,
+  meal_type: "Breakfast"
+)
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_today,
+    recipe: recipe_5,
+    meal_type: "Lunch"
+  )
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_today,
+    recipe: recipe_4,
+    meal_type: "Dinner"
+  )
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_tomorrow,
+    recipe: recipe_3,
+    meal_type: "Lunch"
+  )
+
+  RecipeMealPlan.create!(
+    meal_plan: meal_plan_tomorrow,
+    recipe: recipe_2,
+    meal_type: "Dinner"
+  )
+
+
+puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards, #{MealPlan.count} meal plans, #{RecipeMealPlan.count} recipemealplans!"

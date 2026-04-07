@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_03_174402) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,13 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_174402) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_chats_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.datetime "start_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "families", force: :cascade do |t|
@@ -123,6 +130,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_174402) do
     t.datetime "updated_at", null: false
     t.text "days", default: [], array: true
     t.integer "montly_frequency"
+    t.bigint "family_id"
+    t.index ["family_id"], name: "index_task_templates_on_family_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -168,6 +177,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_174402) do
   add_foreign_key "recipe_meal_plans", "recipes"
   add_foreign_key "rewards", "reward_templates"
   add_foreign_key "rewards", "users"
+  add_foreign_key "task_templates", "families"
   add_foreign_key "tasks", "task_templates"
   add_foreign_key "tasks", "users"
   add_foreign_key "users", "families"
