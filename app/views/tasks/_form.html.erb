@@ -9,8 +9,8 @@
     <div class="pe-2 ps-4 text-secondary fw-bold">Rewards point</div>
       <%= f.input_field :task_points, label: false, collection: 1..10, selected: 1 , input_html: { class: 'text-secondary' } %>
     <div class="pe-2 ps-4 text-secondary fw-bold">Family member</div>
-    <% if task.user %>
-      <%=  f.collection_select :user_id, @users, :id, :name, { prompt: "Select someone", selected: @user }, { class: 'text-secondary' }  %>
+    <% if task.user_id %>
+      <%=  f.collection_select :user_id, @users, :id, :name, { prompt: "Select someone", selected: task.user_id }, { class: 'text-secondary' }  %>
     <% else %>
       <%= f.collection_select :user_id, @users, :id, :name, { prompt: "Select someone" }, { class: 'text-secondary' }  %>
     <% end %>
@@ -23,18 +23,19 @@
 
   </div>
   <div class="d-flex">
-    <div class="pe-4">
-      <%= f.input :start_date, as: :date, label: "Start date",
+    <div class="pe-2 col-6">
+      <%= f.input :start_date, as: :date, html5: true, label: "Start date",
       input_html: { value: Date.today} %>
 
       <%= f.input :days,
-        collection: %w[monday tuesday wednesday thursday friday saturday sunday],
-         as: :check_boxes,
+        collection: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+        as: :check_boxes,
         input_html: { multiple: true},
         label: "If repeating, on which days does the task occur?"%>
     </div>
-    <div>
-      <%= f.input :end_date, as: :date , label: "End date", input_html: { value: Date.today } %>
+    <div class="ps-2 col-6">
+      <%= f.input :end_date, as: :date, html5: true, label: "End date",
+      input_html: { value: Date.today } %>
       <%= f.input :montly_frequency, collection: 0..12, selected: 0 %>
     </div>
   </div>

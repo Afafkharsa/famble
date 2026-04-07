@@ -12,14 +12,12 @@ class TasksController < ApplicationController
   end
 
   def new
-
     @task= Task.new({user_id: params[:user]})
   end
 
   def create
-    @task = Task.new(params[:task])
-    @task.user = current_user
-    if @restaurant.save
+    @task = Task.new(task_params)
+    if @task.save
       redirect_to task_path(@task)
     else
       render new, status: :unprocessable_entity
@@ -32,7 +30,7 @@ class TasksController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
-    @task.update(restaurant_params)
+    @task.update(task_params)
     redirect_to task_path(@task)
   end
 
@@ -54,14 +52,15 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(
-      :user,
+      :user_id,
       :name,
       :description,
       :status,
       :start_date,
       :end_date,
       :task_points,
-      :frequency
+      :days,
+      :montly_frequency
     )
   end
 end
