@@ -7,4 +7,16 @@ class User < ApplicationRecord
   belongs_to :family, optional: true
   has_one_attached :photo
   has_many :rewards, dependent: :destroy
+
+  def earned_points
+    tasks.where(status: true).sum(:task_points)
+  end
+
+  def spent_points
+    rewards.where(redeemed: true).sum(:reward_points)
+  end
+
+  def available_points
+    earned_points - spent_points
+  end
 end

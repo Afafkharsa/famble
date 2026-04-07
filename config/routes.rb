@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   resources :tasks
   resources :task_templates, only: [:index, :show]
 
-  resources :rewards, only: [:index,  :show, :edit, :update, :destroy] do
+  resources :reward_templates, only: [:index, :new, :create, :destroy]
+
+  resources :rewards, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
       patch :redeem
     end
