@@ -75,3 +75,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+
+# AI gems
+gem "ruby_llm"
+gem "ruby-openai"

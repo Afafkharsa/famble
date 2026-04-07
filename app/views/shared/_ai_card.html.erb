@@ -1,0 +1,9 @@
+<%= link_to chats_path(chat: {status: "Pending", title: "Untitled"}),
+data: { turbo_method: :post },
+class: "card h-100 border-0 shadow-sm p-3 text-decoration-none text-dark rounded-4 bg-light-gray" do %>
+    <div class="fs-1"><i class="fa-solid fa-robot"></i></div>
+    <h6 class="fw-bold mt-3">Chat with AI</h6>
+    <p class="text-muted">
+      Ask for a recipe
+    </p>
+<% end %>
