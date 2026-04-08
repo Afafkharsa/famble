@@ -12,7 +12,14 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task= Task.new({user_id: params[:user]})
+    @task= Task.new({
+      user_id: params[:user],
+      name: params[:name],
+      description: params[:description],
+      task_points: params[:task_points],
+      days: params[:days],
+      task_template: params[:task_template]
+    })
   end
 
   def create
@@ -57,7 +64,8 @@ class TasksController < ApplicationController
       :end_date,
       :task_points,
       :days,
-      :montly_frequency
+      :montly_frequency,
+      :task_template
     )
   end
 end

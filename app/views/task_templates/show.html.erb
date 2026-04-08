@@ -51,6 +51,14 @@
 
       <% if @family = @task_template.family %>
         <div  class="d-flex mt-3 gap-2">
+          <%= link_to "Create task from template", new_task_path(
+              name: @task_template.name,
+              description: @task_template.description,
+              task_points: @task_template.task_points,
+              days: @task_template.days,
+              task_template: @task_template
+            ),
+            class: "btn btn-outline-secondary btn-sm rounded-pill" %>
           <%= link_to "Edit template", edit_task_template_path(@task_template),
             class: "btn btn-outline-warning btn-sm rounded-pill" %>
           <%= link_to "Delete template", edit_task_template_path(@task_template),
