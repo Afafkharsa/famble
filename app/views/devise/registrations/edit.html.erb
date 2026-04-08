@@ -5,6 +5,13 @@
     <%= f.error_notification %>
 
     <div class="form-inputs">
+      <% if resource.photo.attached? %>
+        <div class="mb-3">
+          <%= image_tag resource.photo, class: "rounded-circle", style: "width: 96px; height: 96px; object-fit: cover;" %>
+        </div>
+      <% end %>
+      <%= f.input :photo, as: :file %>
+      <%= f.input :name %>
       <%= f.input :email, required: true, autofocus: true %>
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>

@@ -1,0 +1,72 @@
+<div class="container py-5 col-8">
+
+  <div class="card shadow-sm">
+    <div class="card-body bg-white">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2><%= @task_template.name %></h2>
+        <div class="text-secondary">
+          ←
+          <%= link_to "Back to templates", task_templates_path, class: "link-secondary link-underline-secondary" %>
+        </div>
+      </div>
+
+      <div class = "d-flex gap-2 mt-1 mb-4">
+        <p>
+          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
+              <% if @family = @task_template.family %>
+                <i class="fa-solid fa-people-roof"></i>
+                <%= @task_template.family.name %>
+              <% else %>
+                <i class="fa-solid fa-chalkboard"></i>
+                Generic template
+              <% end %>
+          </span>
+        </p>
+        <p>
+          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
+            <i class="fa-solid fa-award"></i>
+            <%= @task_template.task_points > 0 ? "#{@task_template.task_points} points" : "#{@task_template.task_points} point"  %>
+          </span>
+        </p>
+      </div>
+
+      <h5 class="fw-bold mt-4">Date and frequency</h5>
+
+      <div class="mb-3 d-flex flex-column justify-content-start align-items-start">
+        <div class="text-secondary">
+          <% if @task_template.days.any? || @task_template.montly_frequency > 0 %>
+            No repeat
+          <% else %>
+            <% @task_template.days.each do |day| %>
+              <%= day %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <h5 class="fw-bold mt-4">Description</h5>
+      <div class="mt-2 mb-5 text-secondary ">
+        <%= @task_template.description? ? @task_template.description : "No description" %>
+      </div>
+
+      <% if @family = @task_template.family %>
+        <div  class="d-flex mt-3 gap-2">
+          <%= link_to "Create task from template", new_task_path(
+              name: @task_template.name,
+              description: @task_template.description,
+              task_points: @task_template.task_points,
+              days: @task_template.days,
+              task_template: @task_template
+            ),
+            class: "btn btn-outline-secondary btn-sm rounded-pill" %>
+          <%= link_to "Edit template", edit_task_template_path(@task_template),
+            class: "btn btn-outline-warning btn-sm rounded-pill" %>
+          <%= link_to "Delete template", edit_task_template_path(@task_template),
+            data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+            class: "btn btn-outline-danger btn-sm rounded-pill" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div

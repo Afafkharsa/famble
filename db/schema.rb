@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_07_190829) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
@@ -67,6 +68,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
     t.bigint "family_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "meal"
     t.index ["family_id"], name: "index_meal_plans_on_family_id"
   end
 
@@ -100,6 +102,14 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "reward_templates", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "reward_points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "rewards", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -109,6 +119,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
     t.datetime "updated_at", null: false
     t.boolean "redeemed"
     t.datetime "redeemed_at"
+    t.bigint "reward_template_id"
+    t.index ["reward_template_id"], name: "index_rewards_on_reward_template_id"
     t.index ["user_id"], name: "index_rewards_on_user_id"
   end
 
@@ -165,6 +177,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_03_185807) do
   add_foreign_key "messages", "chats"
   add_foreign_key "recipe_meal_plans", "meal_plans"
   add_foreign_key "recipe_meal_plans", "recipes"
+  add_foreign_key "rewards", "reward_templates"
   add_foreign_key "rewards", "users"
   add_foreign_key "task_templates", "families"
   add_foreign_key "tasks", "task_templates"

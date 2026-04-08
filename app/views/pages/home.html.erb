@@ -1,4 +1,6 @@
-<%= content_for(:navbar_class, "navbar-home") %>
+<% unless current_user %>
+  <%= content_for(:navbar_class, "navbar-home") %>
+<% end %>
 
 <% if current_user %>
   <div class="container py-5">
@@ -39,7 +41,7 @@
       </div>
       <div class="col-md-4">
         <!-- TODO add link chatbot -->
-        <button class="btn btn-outline-secondary w-100 py-5">Chatbot</button>
+        <%= link_to "Chatbot", chats_path, class: "btn btn-outline-secondary w-100 py-5" %>
       </div>
     </div>
 
@@ -81,7 +83,7 @@
     </div>
     <div class="col-md-4">
       <!-- TODO add link chatbot -->
-      <button class="btn btn-outline-secondary w-100 py-5">Chatbot</button>
+      <%= link_to "Chatbot", chats_path, class: "btn btn-outline-secondary w-100 py-5" %>
     </div>
   </div>
   <% end %>

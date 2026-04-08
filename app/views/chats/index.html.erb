@@ -1,0 +1,22 @@
+<div class="container py-4">
+  <h1 class="text-shadow">My Chats</h1>
+
+  <div class="d-flex justify-content-between">
+    <div class="card mt-4 border-0 list-group col-md-7 bg-transparent">
+      <% if @chats.any? %>
+        <% @chats.each do |chat| %>
+          <div >
+            <%= link_to chat.title, chat_path(chat),
+            class: "list-group-item list-group-item-action list-group-item-light" %>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No chats yet.</p>
+      <% end %>
+    </div>
+
+    <div class="col-md-4 mt-4 text-center">
+      <%= render "shared/ai_card" %>
+    </div>
+  </div>
+</div>

@@ -13,12 +13,18 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :recipes, only: [:index, :new, :create, :show]
+  resources :recipes, only: [:index, :new, :create, :show, :destroy]
+
+  resources :chats, only: [:index, :create, :show] do
+    resources :messages, only: [:create]
+  end
 
   resources :tasks
-  resources :task_templates, only: [:index, :show]
+  resources :task_templates, only: [:index, :show, :destroy, :edit, :update]
 
-  resources :rewards, only: [:index,  :show, :edit, :update, :destroy] do
+  resources :reward_templates, only: [:index, :new, :create, :destroy]
+
+  resources :rewards, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
       patch :redeem
     end
@@ -30,7 +36,7 @@ Rails.application.routes.draw do
     resources :member, only: [:index, :show, :new, :create]
     end
 
-  resources :task_templates, only: [:new, :create, :edit, :update, :destroy]
+    resources :task_templates, only: [:new, :create]
 
   resources :recipe_meal_plans, only: [:destroy, :edit, :update]
 

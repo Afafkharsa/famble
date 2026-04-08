@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Reward Library</h1>
+    <%= link_to "Add to Library", new_reward_template_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if @reward_templates.any? %>
+    <div class="row">
+      <% @reward_templates.each do |template| %>
+        <div class="col-6 col-md-4 col-lg-3 mb-3">
+          <div class="card h-100 text-center">
+            <% if template.photo.attached? %>
+              <%= image_tag template.photo, class: "card-img-top", style: "height: 150px; object-fit: cover;" %>
+            <% end %>
+            <div class="card-body">
+              <h5 class="card-title"><%= template.name %></h5>
+              <p class="card-text text-muted small"><%= template.description %></p>
+              <p><strong><%= template.reward_points %> pts</strong></p>
+              <%= link_to "Delete", reward_template_path(template),
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                  class: "btn btn-outline-danger btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">No rewards in the library yet.</p>
+  <% end %>
+</div>

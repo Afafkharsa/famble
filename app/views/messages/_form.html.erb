@@ -1,0 +1,4 @@
+<%= simple_form_for [chat, message] do |f| %>
+  <%= f.input :content, label: "Ask for a recipe", required: true, placeholder: "Suggest me a high protein recipe..." %>
+  <%= f.button :submit, "Send", class: "btn btn-primary" %>
+<% end %>

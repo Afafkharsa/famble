@@ -9,15 +9,22 @@ class RewardsController < ApplicationController
   def new
     @reward = Reward.new
     @family_members = current_user.family.users
+    @reward_templates = RewardTemplate.all
   end
 
   def create
     @reward = Reward.new(reward_params)
     @reward.user = User.find(params[:reward][:user_id])
+
+    if @reward.reward_template.present? && !@reward.photo.attached? && @reward.reward_template.photo.attached?
+      @reward.photo.attach(@reward.reward_template.photo.blob)
+    end
+
     if @reward.save
       redirect_to rewards_path, notice: "Reward created successfully!"
     else
       @family_members = current_user.family.users
+      @reward_templates = RewardTemplate.all
       render :new, status: :unprocessable_entity
     end
   end
@@ -30,8 +37,14 @@ class RewardsController < ApplicationController
 
   def redeem
     @reward = Reward.find(params[:id])
-    @reward.update(redeemed: true, redeemed_at: Time.current)
-    redirect_to rewards_path, notice: "#{@reward.name} redeemed!"
+    user = @reward.user
+
+    if user.available_points >= @reward.reward_points
+      @reward.update(redeemed: true, redeemed_at: Time.current)
+      redirect_to rewards_path, notice: "#{@reward.name} redeemed!"
+    else
+      redirect_to rewards_path, alert: "Not enough points! #{user.name || user.email} has #{user.available_points} pts but needs #{@reward.reward_points} pts."
+    end
   end
 
   def edit
@@ -52,6 +65,6 @@ class RewardsController < ApplicationController
   private
 
   def reward_params
-    params.require(:reward).permit(:name, :description, :reward_points, :user_id)
+    params.require(:reward).permit(:name, :description, :reward_points, :user_id, :photo, :reward_template_id)
   end
 end

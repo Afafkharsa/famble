@@ -1,0 +1,93 @@
+<!-- Message partial implementing action cable -->
+
+<% if message.role == "user" %>
+  <div class="mt-4 mb-2 row justify-content-end me-2">
+    <div class="p-3 bg-white rounded-5 col-8">
+      <%= message.content %>
+    </div>
+  </div>
+
+<% elsif message.role == "assistant" %>
+  <div class="d-flex justify-content-start mb-5" id="<%= dom_id(message) %>">
+    <div class="px-3 pb-0 pt-3">
+
+      <% if message.content.present? %>
+
+        <% begin %>
+          <% recipe = JSON.parse(message.content) %>
+          <div class="card border-0 shadow-sm p-3" style="max-width: 500px;">
+            <h5><i class="fa-solid fa-utensils"></i> <%= recipe["name"] %></h5>
+            <p>
+              <% Array(recipe["keywords"]).each do |keyword| %>
+                <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
+                  <%= keyword.strip %>
+                </span>
+              <% end %>
+            </p>
+            <p class="text-muted mb-1"><i class="fas fa-fire me-1"></i> <%= recipe["calories"] %> kcal &nbsp;|&nbsp; <i class="fas fa-exclamation-triangle me-1"></i> <%= Array(recipe["allergens"]).join(", ").presence || "No allergens" %></p>
+            <details class="mb-2">
+              <summary class="text-primary" style="cursor:pointer;"><strong>Ingredients</strong></summary>
+              <ul class="mt-2">
+                <% Array(recipe["ingredients"]).each do |item| %>
+                  <li><%= item["ingredient"] %> — <%= item["quantity"] %></li>
+                <% end %>
+              </ul>
+            </details>
+            <details class="mb-3">
+              <summary class="text-primary" style="cursor:pointer;"><strong>Method</strong></summary>
+              <ol class="mt-2">
+                <% Array(recipe["method"]).each do |step| %>
+                  <li><%= step %></li>
+                <% end %>
+              </ol>
+            </details>
+
+          <%= form_with url: recipes_path, method: :post do |f| %>
+            <div class="row g-2">
+              <div class="col-6">
+                <%= date_field_tag "recipe[meal_plan_date]", Date.today, class: "form-control form-control-sm rounded-pill" %>
+              </div>
+              <div class="col-6">
+                <%= select_tag "recipe[meal_plan_type]",
+                  options_for_select(["Breakfast", "Lunch", "Dinner"]),
+                  class: "form-select form-select-sm rounded-pill" %>
+              </div>
+            </div>
+            <div class="mt-2">
+              <%= text_field_tag "recipe[photo]", nil,
+                class: "form-control form-control-sm rounded-pill",
+                placeholder: "Paste an image URL (optional)..." %>
+            </div>
+            <%= hidden_field_tag "recipe[name]", recipe["name"] %>
+            <%= hidden_field_tag "recipe[ingredients]", Array(recipe["ingredients"]).map { |i| "#{i['ingredient']} - #{i['quantity']}" }.join("\n") %>
+            <%= hidden_field_tag "recipe[method]", Array(recipe["method"]).join("\n") %>
+            <%= hidden_field_tag "recipe[keywords]", Array(recipe["keywords"]).join(", ") %>
+            <%= hidden_field_tag "recipe[calories]", recipe["calories"] %>
+            <%= hidden_field_tag "recipe[allergens]", Array(recipe["allergens"]).join(", ") %>
+            <div class="row g-2 mt-1">
+              <div class="col-6">
+                <%= button_tag type: "submit",
+                      name: "save_to_meal_plan",
+                      class: "btn btn-success btn-sm w-100 rounded-pill" do %>
+                  <i class="fa-regular fa-floppy-disk"></i>
+                  Save to Meal Plan
+                <% end %>
+              </div>
+              <div class="col-6">
+                <%= submit_tag "🔖 Save Recipe", name: "save_recipe", class: "btn btn-outline-success btn-sm w-100 rounded-pill" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <% rescue JSON::ParserError %>
+          <%= raw(render_markdown(message.content)) %>
+        <% end %>
+
+      <% else %>
+        <!-- Blank message creation -->
+        ...
+      <% end %>
+    </div>
+  </div>
+<% end %>
