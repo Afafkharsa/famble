@@ -7,14 +7,14 @@
         <i class="fa-solid fa-house text-light-emphasis d-block fs-1 mb-1"></i>
       </div>
 
-      <button class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center"
+      <button class="btn btn-outline-dark rounded-4 d-flex align-items-center justify-content-center"
                 onclick="addNewMember()"
-                style="width: 50px; height: 50px; border-width: 2px; font-weight: bold;">+</button>
+                style="width: 150px; height: 50px; border-width: 2px; font-weight: bold;">Add member</button>
     </div>
 
     <!--Member photo and add modal pop up -->
     <div class="row gx-2 gy-2">
-      <% @members.each do |member| %>
+      <% current_user.family.users.each do |member| %>
         <div class="col-auto text-center ms-5">
           <div class="member-wrapper" onclick="loadMember('<%= member.id %>')" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#memberModal" onclick="loadMember(<%= member.id %>)">
 
@@ -47,7 +47,7 @@
     </div>
 
     <div class="mt-5 ms-5">
-      <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success rounded-4" %>
+      <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success rounded-4 py-2 px-3", style:"w-auto; height: 50px;" %>
     </div>
   </div>
 
