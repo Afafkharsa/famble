@@ -1,2 +1,22 @@
 <h1>Calendars#show</h1>
 <p>Find me in app/views/calendars/show.html.erb</p>
+
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <h2><%= @date.strftime("%dth %B") %></h2>
+
+      <div class="item-list">
+        <% @items.each do |item| %>
+          <div class="list-item">
+            <%= item.try(:title) || item.try(:name) %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="modal-footer">
+        <button>Add a task</button>
+        <button>Choose recipe</button> </div>
+    </div>
+  </div>
+<% end %>

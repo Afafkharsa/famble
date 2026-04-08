@@ -1,0 +1,32 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal-overlay"> <%# CSS สำหรับทำพื้นหลังจางๆ %>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style=" text-success"><%= @date.strftime("%dth %B") %></h3>
+        <%= link_to "×", "#", data: { action: "click->modal#close" } %>
+      </div>
+
+      <div class="row modal-body">
+      <%# Show Tasks lists%>
+        <div class="section-tasks">
+          <% @tasks.each do |task| %>
+            <div class="item-row"><%= task.title %></div>
+          <% end %>
+        </div>
+
+      <%# Show Meal lists %>
+        <div  class="section-meal">
+          <% @meals.each do |meal| %>
+            <div class="item-row"><%= meal.recipe_name %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-dark">Add a task</button>
+
+        <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn-dark", data: { turbo: false } %>
+      </div>
+    </div>
+  </div>
+<% end %>
