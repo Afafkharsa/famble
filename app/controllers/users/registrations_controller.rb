@@ -5,13 +5,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new
-    super
-    @families = Family.all
-  end
+  # def new
+  #   super
+  # end
 
-  # POST /resource
+  # # POST /resource
   # def create
+  #   if params[:existing_family]
+  #     @family = Family.all.where(name: @family_name )
+  #     user.family = @family
+  #   else
+  #     @family = Family.new({name: @family_name})
+  #     @family.save
+  #     user.family = @family
+  #   end
+  #   @family_name = params[:family]
+
   #   super
   # end
 

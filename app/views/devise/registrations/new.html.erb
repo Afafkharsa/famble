@@ -18,25 +18,27 @@
         <%= f.input :password_confirmation,
                     required: true,
                     input_html: { autocomplete: "new-password" } %>
-        </div>
-        <div class="col-6 p-2">
-          <div class="form-inputs">
-          <%= f.input :family,
-                      required: true,
-                      placeholder: "Family name" %>
-          <%= f.input :existing_family,
-                      as: :boolean,
-                      label: "My family exists",
-                      boolean_style: :inline,
-                      input_html: {checked: false} %>
-          </div>
-          <div class="d-flex gap-2">
-            <div class="form-actions">
-              <%= f.button :submit, "Sign up" %>
-            </div>
-            <%= render "devise/shared/links" %>
       </div>
-    </div>
+      <div class="col-6 p-2">
+        <div class="form-inputs">
+        <%= f.association :family,
+                          required: true,
+                          placeholder: "Family name" %>
+        <%= f.input :existing_family,
+                    as: :boolean,
+                    label: "My family doesn't exist",
+                    boolean_style: :inline,
+                    input_html: {checked: false} %>
+        </div>
+      </div>
+
+      </div>
+        <div class="d-flex gap-3 ps-2">
+          <div class="form-actions">
+            <%= f.button :submit, "Sign up" %>
+          </div>
+          <%= render "devise/shared/links" %>
+      </div>
 
 
   <% end %>
