@@ -66,22 +66,22 @@
             <%= hidden_field_tag "recipe[allergens]", Array(recipe["allergens"]).join(", ") %>
             <div class="row g-2 mt-1">
               <div class="col-6">
-                <%= button_tag type: "submit",
-                      name: "save_to_meal_plan",
-                      class: "btn btn-success btn-sm w-100 rounded-pill" do %>
-                  <i class="fa-regular fa-floppy-disk"></i>
-                  Save to Meal Plan
-                <% end %>
+                <%= submit_tag "Add to Meal Plan", name: "save_to_meal_plan", class: "btn btn-success btn-sm w-100 rounded-pill" %>
               </div>
               <div class="col-6">
-                <%= submit_tag "🔖 Save Recipe", name: "save_recipe", class: "btn btn-outline-success btn-sm w-100 rounded-pill" %>
+                <%= button_tag type: "submit",
+                      name: "save_recipe",
+                      class: "btn btn-outline-success btn-sm w-100 rounded-pill" do %>
+                  <i class="fa-regular fa-floppy-disk"></i>
+                  Save Recipe
+                <% end %>
               </div>
             </div>
           <% end %>
         </div>
 
         <% rescue JSON::ParserError %>
-          <%= raw(render_markdown(message.content)) %>
+          <%= simple_format(message.content) %>
         <% end %>
 
       <% else %>
