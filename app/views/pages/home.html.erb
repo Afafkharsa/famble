@@ -8,11 +8,11 @@
     <!-- Top main button -->
     <div class="row mb-4">
       <div class="col-12">
-        <button class="btn btn-secondary w-100 py-4 fs-4">
+        <%= link_to meal_plans_path, class: "btn btn-secondary w-100 py-4 fs-4" do %>
           <p class="mb-2">
-              <strong><%= Date.today.strftime("%A, %B %d") %></strong>
+            <strong><%= Date.today.strftime("%A, %B %d") %></strong>
           </p>
-        </button>
+        <% end %>
       </div>
     </div>
 
