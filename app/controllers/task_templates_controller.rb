@@ -1,10 +1,9 @@
 class TaskTemplatesController < ApplicationController
   before_action :set_task_template, only: [:show, :edit, :update, :destroy]
-  before_action :set_family, only: [:show, :update, :destroy]
+  before_action :set_family, only: [:index, :show, :update, :destroy]
 
   def index
     @role = current_user.role
-    @familly = current_user.family
     @generic_templates = TaskTemplate.all.where("family_id IS NULL")
     @family_templates = current_user.family.task_templates
   end
