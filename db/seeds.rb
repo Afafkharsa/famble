@@ -73,7 +73,7 @@ user_4 = User.create!(
 
 puts "Creating Lion King family..."
 family_2 = Family.create!(
-  name: "Star Wars"
+  name: "Lion King"
 )
 
 puts "Creating Lion King family members..."
