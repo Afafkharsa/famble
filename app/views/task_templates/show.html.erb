@@ -55,7 +55,8 @@
               name: @task_template.name,
               description: @task_template.description,
               task_points: @task_template.task_points,
-              days: @task_template.days
+              days: @task_template.days,
+              task_template: @task_template
             ),
             class: "btn btn-outline-secondary btn-sm rounded-pill" %>
           <%= link_to "Edit template", edit_task_template_path(@task_template),
