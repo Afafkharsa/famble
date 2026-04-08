@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  get 'calendars/index'
-  get 'calendars/show'
+
+  #get 'calendars', to: 'calendars#index', as: 'calendars'
+  #get 'calendars/day-detail', to: 'calendars#day_detail', as: 'day_detail_calendars'
+  #get 'calendars/:id', to: 'calendars#show', as: 'calendar'
 
   devise_for :users
   root to: "pages#home"
@@ -39,5 +41,11 @@ Rails.application.routes.draw do
     resources :task_templates, only: [:new, :create]
 
   resources :recipe_meal_plans, only: [:destroy, :edit, :update]
+
+  resources :calendars, only: [:index] do
+    collection do
+      get 'day_detail'
+    end
+  end
 
 end
