@@ -9,6 +9,8 @@
 #   end
 
 puts "Cleaning database..."
+Message.destroy_all
+Chat.destroy_all
 RecipeMealPlan.destroy_all
 MealPlan.destroy_all
 Task.destroy_all
