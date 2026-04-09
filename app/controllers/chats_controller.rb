@@ -23,7 +23,7 @@ class ChatsController < ApplicationController
   def show
     @chat = current_user.chats.find(params[:id])
     @meal_plan = MealPlan.where(meal: @chat.title).last
-    @meal_plans = current_user.meal_plans
+    @meal_plans = current_user.family.meal_plans
     @message = Message.new
   end
 
