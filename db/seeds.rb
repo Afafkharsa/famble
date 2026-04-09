@@ -9,6 +9,8 @@
 #   end
 
 puts "Cleaning database..."
+RecipeMealPlan.destroy_all
+MealPlan.destroy_all
 Task.destroy_all
 TaskTemplate.destroy_all
 Reward.destroy_all
@@ -16,8 +18,6 @@ RewardTemplate.destroy_all
 User.destroy_all
 Family.destroy_all
 Recipe.destroy_all
-MealPlan.destroy_all
-RecipeMealPlan.destroy_all
 
 
 ActiveRecord::Base.connection.reset_pk_sequence!('families')
