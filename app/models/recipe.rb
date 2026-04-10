@@ -2,6 +2,8 @@ class Recipe < ApplicationRecord
   has_many :recipe_meal_plans
   has_many :meal_plans, through: :recipe_meal_plans
 
+  has_one_attached :photo
+
   validates :name, presence: true
   validates :ingredients, presence: true
   validates :description, presence: true

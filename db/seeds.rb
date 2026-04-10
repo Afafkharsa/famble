@@ -334,6 +334,17 @@ recipe_5 = Recipe.create!(
   allergens: "fish"
 )
 
+
+puts "Generating AI photo..."
+
+[recipe_1, recipe_2, recipe_3].each do |recipe|
+  ImageGeneratorService.generate_and_attach(recipe)
+  sleep 2
+end
+
+puts "Generated photo successful!"
+
+
 puts "Creating reward templates..."
 
 RewardTemplate.create!(
