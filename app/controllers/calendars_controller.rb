@@ -7,10 +7,15 @@ class CalendarsController < ApplicationController
   end
 
   def day_detail
-    @date = params[:date] ? Date.parse(params:[:date]) : Date.today
+    #@date = params[:date].present? ? Date.parse(params:[:date]) : Date.today
+    if params[:date].present?
+      @date = params[:date].to_date
+    else
+      @date = Date.today
+    end
     @events = Event.where(start_time: @date.all_day)
     @tasks = Task.where(end_date: @date.all_day)
-    @meal_plans = MealPlan.where(day: @date.all_day)
+    @meal_plans = MealPlan.where(day: @date).includes(recipe_meal_plans: :recipe)
     render layout: false
   end
 

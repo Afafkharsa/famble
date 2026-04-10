@@ -1,31 +1,38 @@
 <%= turbo_frame_tag "modal" do %>
-  <div class="modal-overlay"> <%# CSS สำหรับทำพื้นหลังจางๆ %>
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 style=" text-success"><%= @date.strftime("%dth %B") %></h3>
-        <%= link_to "×", "#", data: { action: "click->modal#close" } %>
+  <%# ใช้ Style ตรงนี้เพื่อทำ Overlay แทนการพึ่งพา Bootstrap JS %>
+  <div class="modal-custom-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="modal-card" style="background: white; padding: 20px; border-radius: 8px; width: 400px; max-width: 90%;">
+
+      <div class="modal-header d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0"><%= @date.strftime("%d %B %Y") %></h3>
+      <%# Close and pop up and reset modal %>
+        <%= link_to "", calendars_path, class: "btn-close", style: "text-decoration: none; font-size: 24px; color: #000;", data: { turbo_frame: "_top" } %>
       </div>
 
-      <div class="row modal-body">
-      <%# Show Tasks lists%>
-        <div class="section-tasks">
-          <% @tasks.each do |task| %>
-            <div class="item-row"><%= task.title %></div>
-          <% end %>
-        </div>
+      <div class="modal-body">
+        <%# Show Tasks lists %>
+        <h6 class="text-primary">● <%= @tasks.count %> Tasks</h6>
+        <% @tasks.each do |task| %>
+          <div class="item-row border-bottom py-1">
+            <%= task.name %>
+          </div>
+        <% end %>
 
-      <%# Show Meal lists %>
-        <div  class="section-meal">
-          <% @meals.each do |meal| %>
-            <div class="item-row"><%= meal.recipe_name %></div>
+        <%# Show Meals lists %>
+        <h6 class="text-success mt-3">● <%= @meal_plans.count %> Meals</h6>
+        <% @meal_plans.each do |plan| %>
+        <% plan.recipe_meal_plans.each do |meal| %>
+          <div class="item-row border-bottom py-1">
+            <%= meal.recipe.name %>
+          </div>
           <% end %>
-        </div>
+        <% end %>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-dark">Add a task</button>
-
-        <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn-dark", data: { turbo: false } %>
+      <div class="modal-footer mt-4 d-flex gap-2">
+        <button class="btn btn-dark w-100">Add an Event</button>
+        <%= link_to "Add a task", new_task_path(date: @date), class: "btn btn-dark w-100", data: { turbo: false } %>
+        <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn btn-dark w-100", data: { turbo: false } %>
       </div>
     </div>
   </div>
