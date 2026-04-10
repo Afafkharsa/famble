@@ -3,13 +3,14 @@ class TasksController < ApplicationController
   before_action :set_users, only: [:new, :edit]
 
   def index
+    @tasks = policy_scope(Task)
     @user = current_user
-    @user_tasks = current_user.tasks
-    @family_tasks = current_user.family.tasks.excluding(@user_tasks)
+    @user_tasks = @tasks.where(user: @user)
+    @family_tasks = @tasks.where.not(user: @user)
   end
 
   def show
-    authorize @restaurant
+
   end
 
   def new
@@ -21,10 +22,13 @@ class TasksController < ApplicationController
       days: params[:days],
       task_template: params[:task_template]
     })
+    authorize @task
   end
 
   def create
     @task = Task.new(task_params)
+    authorize @task
+
     if @task.save
       redirect_to task_path(@task)
     else
@@ -49,6 +53,7 @@ class TasksController < ApplicationController
 
   def set_task
     @task = Task.find(params[:id])
+    authorize @task
   end
 
   def set_users

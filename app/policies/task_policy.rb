@@ -7,8 +7,44 @@ class TaskPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      if user.role == "parent"
+        user.family.tasks
+      else
+        scope.where(user: user)
+      end
+    end
+  end
+
+  def show?
+    if user.role == "parent"
+      true
+    else
+      record.user == user
+    end
+    #
+    # record: the restaurant passed to the `authorize` method in controller
+    # user: the `current_user` signed in with Devise
+    # @user.role("company.destroy", record.id) if @user.present?
+  end
+
+  def edit?
+
+  end
+
+  def update?
+
+  end
+
+  def new?
+
+  end
+
+  def create?
+
+  end
+
+  def destroy?
+    record.user == user
   end
 end
