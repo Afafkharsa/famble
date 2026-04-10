@@ -11,17 +11,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # # POST /resource
   # def create
-  #   if params[:existing_family]
-  #     @family = Family.all.where(name: @family_name )
-  #     user.family = @family
-  #   else
-  #     @family = Family.new({name: @family_name})
-  #     @family.save
-  #     user.family = @family
+  #   super do |resource|
+  #     if params[:existing_family]
+  #       @family = Family.all.where(name: @family_name )
+  #       user.family = @family
+  #     else
+  #       @family = Family.new({name: @family_name})
+  #       @family.save
+  #       user.family = @family
+  #     end
+  #     @family_name = params[:family]
   #   end
-  #   @family_name = params[:family]
-
-  #   super
   # end
 
   # GET /resource/edit
