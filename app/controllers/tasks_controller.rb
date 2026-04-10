@@ -9,6 +9,7 @@ class TasksController < ApplicationController
   end
 
   def show
+    authorize @restaurant
   end
 
   def new
