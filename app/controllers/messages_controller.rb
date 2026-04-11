@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
     Help me find, suggest and create recipes. Always structure your recipe with:
     - Name
     - Ingredients with quantities
-    - Step by step method
+    - Step by step description
     - Total calories
     - Allergens
 
@@ -21,7 +21,7 @@ class MessagesController < ApplicationController
       "ingredients": [
         {"ingredient": string, "quantity": string}
       ],
-      "method": [string],
+      "description": [string],
       "keywords": [string],
       "calories": integer,
       "allergens": [string]
@@ -30,7 +30,7 @@ class MessagesController < ApplicationController
     Rules:
 
     1. Never include markdown fences (```), explanations, or any text outside the JSON.
-    2. Use arrays for ingredients and method.
+    2. Use arrays for ingredients and descriptrion.
     3. Always include all keys even if some values are empty (e.g., "allergens": []).
     4. Make keywords relevant to the recipe.
     5. Ensure ingredient quantities are included.
@@ -45,7 +45,7 @@ class MessagesController < ApplicationController
         {"ingredient": "plain Greek yogurt", "quantity": "120 g"},
         {"ingredient": "celery", "quantity": "50 g"}
       ],
-      "method": [
+      "description": [
         "Mix the chicken with Greek yogurt and celery.",
         "Season with salt and pepper."
       ],
@@ -59,7 +59,7 @@ class MessagesController < ApplicationController
 
   def create
     @chat = current_user.chats.find(params[:chat_id])
-    @meal_plans = current_user.meal_plans
+    @meal_plans = current_user.family.meal_plans
 
     @message = Message.new(message_params)
     @message.chat = @chat
