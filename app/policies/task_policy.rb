@@ -29,22 +29,30 @@ class TaskPolicy < ApplicationPolicy
   end
 
   def edit?
-
+    return update?
   end
 
   def update?
-
+    if user.role == "parent"
+      true
+    else
+      record.user == user
+    end
   end
 
   def new?
-
+    return create?
   end
 
   def create?
-
+    if user.role == "parent"
+      true
+    else
+      false
+    end
   end
 
   def destroy?
-    record.user == user
+    user.role == "parent"
   end
 end
