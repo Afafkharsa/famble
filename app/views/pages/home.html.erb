@@ -8,11 +8,11 @@
     <!-- Top main button -->
     <div class="row mb-4">
       <div class="col-12">
-        <button class="btn btn-secondary w-100 py-4 fs-4">
+        <%= link_to meal_plans_path, class: "btn btn-secondary w-100 py-4 fs-4" do %>
           <p class="mb-2">
-              <strong><%= Date.today.strftime("%A, %B %d") %></strong>
+            <strong><%= Date.today.strftime("%A, %B %d") %></strong>
           </p>
-        </button>
+        <% end %>
       </div>
     </div>
 
@@ -37,7 +37,7 @@
       </div>
       <div class="col-md-4">
         <!-- TODO add link calendar -->
-        <button class="btn btn-outline-secondary w-100 py-5">Calendar</button>
+        <%= link_to "Calendar", calendars_path, class: "btn btn-outline-secondary w-100 py-5" %>
       </div>
       <div class="col-md-4">
         <!-- TODO add link chatbot -->
@@ -79,7 +79,7 @@
       <%= link_to "Family", families_path, class: "btn btn-outline-secondary w-100 py-5" %>
     </div>
     <div class="col-md-4">
-      <%= link_to "Calendar", calendars_index_path, class: "btn btn-outline-secondary w-100 py-5" %>
+      <%= link_to "Calendar", calendars_path, class: "btn btn-outline-secondary w-100 py-5" %>
     </div>
     <div class="col-md-4">
       <!-- TODO add link chatbot -->

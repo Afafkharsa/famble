@@ -73,7 +73,9 @@ class MessagesController < ApplicationController
       @assistant_message.update(content: @response.content)
       broadcast_replace(@assistant_message)
 
-      @chat.generate_title_from_first_message
+      if @chat.messages.where(role: "user").count == 1
+        @chat.generate_title_from_first_message
+      end
 
       respond_to do |format|
         format.turbo_stream

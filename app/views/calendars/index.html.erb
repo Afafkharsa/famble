@@ -1,40 +1,58 @@
-<div class="container mt-5">
-  <h1 class="text-center mb-4 fs-bold">Calendar</h1>
+<div class="container mt-3">
+  <h1 class="text-center mb-3 fs-bold">Calendar</h1>
 
-  <%= month_calendar(events: @events) do |date, events| %>
-    <div class="calendar-day" onclick="openDayDetail('<%= date %>')">
-      <div class="date-number"><%= date.day %></div>
+  <%= month_calendar(events: []) do |date, items| %>
+  <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class:"text-decoration-none text-dark" do %>
+    <div class="day-link" style="height: 120px;" onclick="showDayDetail('<%= date %>')" >
+      <div class="date-number fs-5"><%= date.day %></div>
+  <% end %>
+    <%#Show how many Event %>
+      <%# events.each do |event| %>
+        <div class="event-badge text-truncate"><%#= event.title %></div>
+      <%# end %>
 
-      <% events.each do |event| %>
-        <div class="event-badge text-truncate"><%= event.title %></div>
-      <% end %>
-
-      <% # แสดง Task ย่อๆ %>
-      <% day_tasks = @tasks.select { |t| t.date == date } %>
+    <%#Show how many Task %>
+      <% day_tasks = @tasks.select { |task| task.end_date.to_date == date } %>
       <% if day_tasks.any? %>
-        <small class="text-success">● <%= day_tasks.count %> Tasks</small>
+      <div class="d-block">
+        <%= link_to tasks_path, class:"text-decoration-none" do %>
+        <small class="text-primary fs-6"><i class="fa-solid fa-list-check fs-5 ms-1 me-2"></i><%= day_tasks.count %>  Tasks</small>
+        <% end %>
+      </div>
       <% end %>
 
-      <% # แสดง meal_plan ย่อๆ %>
-      <% meal_plan = @meal_plans.select { |t| t.date == date } %>
-      <% if meal_plan.any? %>
-        <small class="text-success">● <%= meal_plan.count %> Meal_plans</small>
+
+    <%#Show how many meal_plan %>
+      <% day_meals = @meal_plans.select { |meal| meal.day == date } %>
+      <% if day_meals.any? %>
+      <div class="task-line">
+        <%= link_to meal_plans_path, class:"text-decoration-none" do %>
+        <small class="text-success fs-6">
+          <span class="fs-4">🍽️</span>
+          <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
+          <%= total_recipes %> <%= "Meal".pluralize(total_recipes) %>
+          <%#= day_meals.count %></small>
+        <% end %>
+      </div>
       <% end %>
     </div>
   <% end %>
-</div>
+
+<%= turbo_frame_tag "modal" %>
+
 
 <script>
-function openDayDetail(date) {
-  const contentArea = document.getElementById('modal-content-area');
+  function openDayDetail(date) {
+    const contentArea = document.getElementById('modal-content-area');
 
-  // ใช้ Fetch ไปที่ route ที่เราจะสร้างเพื่อดึงข้อมูลวันนั้นๆ
-  fetch(/calendars/day_detail?date=${date})
-    .then(response => response.text())
-    .then(html => {
-      contentArea.innerHTML = html;
-      const myModal = new bootstrap.Modal(document.getElementById('memberModal'));
-      myModal.show(); // สั่งให้พื้นหลังมืดลงและ Modal แสดงผล
-    });
-}
+    //Fetch to route to get data on this date
+    fetch(`/calendars/day_detail?date=${date}`)
+      .then(response => response.text())
+      .then(html => {
+        contentArea.innerHTML = html;
+
+        const myModal = new bootstrap.Modal(document.getElementById('memberModal'));
+        myModal.show();
+      });
+  }
 </script>

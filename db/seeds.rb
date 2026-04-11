@@ -9,6 +9,10 @@
 #   end
 
 puts "Cleaning database..."
+Message.destroy_all
+Chat.destroy_all
+RecipeMealPlan.destroy_all
+MealPlan.destroy_all
 Task.destroy_all
 TaskTemplate.destroy_all
 Reward.destroy_all
@@ -16,8 +20,6 @@ RewardTemplate.destroy_all
 User.destroy_all
 Family.destroy_all
 Recipe.destroy_all
-MealPlan.destroy_all
-RecipeMealPlan.destroy_all
 
 
 ActiveRecord::Base.connection.reset_pk_sequence!('families')
@@ -26,7 +28,7 @@ ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
 ActiveRecord::Base.connection.reset_pk_sequence!('reward_templates')
-ActiveRecord::Base.connection.reset_pk_sequence!('mealplans')
+ActiveRecord::Base.connection.reset_pk_sequence!('meal_plans')
 
 puts "Creating Star Wars family..."
 family_1 = Family.create!(
@@ -457,5 +459,127 @@ puts "Creating RecipeMealplans..."
     meal_type: "Dinner"
   )
 
+  puts "Creating chats..."
 
-puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards, #{MealPlan.count} meal plans, #{RecipeMealPlan.count} recipemealplans!"
+chat_1 = Chat.create!(
+  user: user_1,
+  title: "High protein recipe",
+)
+
+chat_2 = Chat.create!(
+  user: user_1,
+  title: "Funny Breakfast",
+)
+
+puts "Creating chat's messages..."
+
+Message.create!(
+  chat: chat_1,
+  role: "user",
+  content: "Help me find a high-protein recipe"
+)
+
+Message.create!(
+  chat: chat_1,
+  role: "assistant",
+  content: '
+    {
+      "name": "High-Protein Greek Yogurt Chicken Salad",
+      "ingredients": [
+        {"ingredient": "cooked chicken breast, shredded", "quantity": "150 g"},
+        {"ingredient": "plain nonfat Greek yogurt", "quantity": "120 g"},
+        {"ingredient": "celery, finely chopped", "quantity": "50 g"},
+        {"ingredient": "red onion, finely chopped", "quantity": "20 g"},
+        {"ingredient": "lemon juice", "quantity": "1 tablespoon"},
+        {"ingredient": "Dijon mustard", "quantity": "1 teaspoon"},
+        {"ingredient": "salt", "quantity": "1/4 teaspoon"},
+        {"ingredient": "black pepper", "quantity": "1/4 teaspoon"},
+        {"ingredient": "fresh parsley, chopped", "quantity": "1 tablespoon"}
+      ],
+      "method": [
+        "Place the shredded cooked chicken breast in a large bowl.",
+        "Add the Greek yogurt, lemon juice, and Dijon mustard.",
+        "Mix in the chopped celery, red onion, and parsley.",
+        "Season with salt and black pepper.",
+        "Stir everything together until well combined and creamy.",
+        "Serve immediately or refrigerate for 30 minutes to enhance the flavor."
+      ],
+      "keywords": ["high protein", "healthy", "low carb", "quick meal"],
+      "calories": 310,
+      "allergens": ["dairy", "mustard"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_2,
+  role: "user",
+  content: "help me find a funny breakfast "
+)
+
+Message.create!(
+  chat: chat_2,
+  role: "assistant",
+  content: '
+    {
+      "name": "Pancake Smiley Faces",
+      "ingredients": [
+        {"ingredient": "pancake mix, shredded", "quantity": "200 g"},
+        {"ingredient": "water or milk", "quantity": "150 ml"},
+        {"ingredient": "chocolate chips", "quantity": "50 g"},
+        {"ingredient": "banana slices", "quantity": "1 banana"},
+        {"ingredient": "strawberries ", "quantity": "3 pieces"}
+      ],
+      "method": [
+        "Prepare the pancake batter according to the instructions on the mix using water or milk.",
+        "Heat a non-stick pan on medium heat and pour small amounts of batter to create pancakes.",
+        "Cook each pancake for 2-3 minutes per side until golden brown.",
+        "Use chocolate chips to create the eyes and mouth on each pancake.",
+        "Add banana slices and strawberries as additional decorations for the funny face.",
+        "Serve and enjoy your funny pancake breakfast."
+      ],
+      "keywords": ["fun breakfast", "pancakes", "decorative"],
+      "calories": 400,
+      "allergens": ["gluten", "dairy"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_2,
+  role: "user",
+  content: "funny breakfast but not pancakes"
+)
+
+Message.create!(
+  chat: chat_2,
+  role: "assistant",
+  content: '
+    {
+      "name": "Egg & Toast Funny Animal Faces",
+      "ingredients": [
+        {"ingredient": "sliced bread", "quantity": "2 slices"},
+        {"ingredient": "hard-boiled eggs", "quantity": "2 eggs"},
+        {"ingredient": "cherry tomatoes", "quantity": "4"},
+        {"ingredient": "cucumber", "quantity": "1 small, sliced"},
+        {"ingredient": "black olives", "quantity": "4"},
+        {"ingredient": "cream cheese", "quantity": "2 tbsp"},
+        {"ingredient": "carrot", "quantity": "1 small, sliced into thin sticks"}
+      ],
+      "method": [
+        "Toast the slices of bread until golden brown.",
+        "Spread cream cheese evenly over each slice of toast.",
+        "Cut the hard-boiled eggs into slices and place them on the toast as the base for the face.",
+        "Use cucumber slices for eyes, cherry tomatoes for cheeks, and black olives for pupils.",
+        "Arrange carrot sticks to make whiskers or ears to complete the animal faces.",
+        "Serve immediately and enjoy the playful presentation!"
+      ],
+      "keywords": ["fun breakfast", "animal faces", "kids meal"],
+      "calories": 320,
+      "allergens": ["gluten", "dairy", "eggs"]
+    }
+  '
+)
+
+
+puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards, #{MealPlan.count} meal plans, #{RecipeMealPlan.count} recipemealplans, #{Chat.count} chat(s) and #{Message.count} messages!"
