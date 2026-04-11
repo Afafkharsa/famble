@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  #get 'calendars', to: 'calendars#index', as: 'calendars'
-  #get 'calendars/day-detail', to: 'calendars#day_detail', as: 'day_detail_calendars'
-  #get 'calendars/:id', to: 'calendars#show', as: 'calendar'
-
   # devise_for :users
   devise_for :users, :controllers => { registrations: 'users/registrations' }
 

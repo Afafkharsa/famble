@@ -1,32 +1,45 @@
-<div class="container mt-5">
-  <h1 class="text-center mb-4 fs-bold">Calendar</h1>
+<div class="container mt-3">
+  <h1 class="text-center mb-3 fs-bold">Calendar</h1>
 
-  <%= month_calendar(events: @events) do |date, events| %>
+  <%= month_calendar(events: []) do |date, items| %>
   <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class:"text-decoration-none text-dark" do %>
-    <div class="calendar-day" style="height: 100px;" onclick="openDayDetail('<%= date %>')">
-      <div class="date-number"><%= date.day %></div>
+    <div class="day-link" style="height: 120px;" onclick="showDayDetail('<%= date %>')" >
+      <div class="date-number fs-5"><%= date.day %></div>
   <% end %>
-
-      <% events.each do |event| %>
-        <div class="event-badge text-truncate"><%= event.title %></div>
-      <% end %>
+    <%#Show how many Event %>
+      <%# events.each do |event| %>
+        <div class="event-badge text-truncate"><%#= event.title %></div>
+      <%# end %>
 
     <%#Show how many Task %>
       <% day_tasks = @tasks.select { |task| task.end_date.to_date == date } %>
       <% if day_tasks.any? %>
-        <small class="text-primary fs-6">● <%= day_tasks.count %> Tasks</small>
+      <div class="d-block">
+        <%= link_to tasks_path, class:"text-decoration-none" do %>
+        <small class="text-primary fs-6"><i class="fa-solid fa-list-check fs-5 ms-1 me-2"></i><%= day_tasks.count %>  Tasks</small>
+        <% end %>
+      </div>
       <% end %>
+
 
     <%#Show how many meal_plan %>
       <% day_meals = @meal_plans.select { |meal| meal.day == date } %>
       <% if day_meals.any? %>
-        <small class="text-success fs-6">● <%= day_meals.count %> Meals</small>
+      <div class="task-line">
+        <%= link_to meal_plans_path, class:"text-decoration-none" do %>
+        <small class="text-success fs-6">
+          <span class="fs-4">🍽️</span>
+          <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
+          <%= total_recipes %> <%= "Meal".pluralize(total_recipes) %>
+          <%#= day_meals.count %></small>
+        <% end %>
+      </div>
       <% end %>
     </div>
   <% end %>
-</div>
 
 <%= turbo_frame_tag "modal" %>
+
 
 <script>
   function openDayDetail(date) {
@@ -37,6 +50,7 @@
       .then(response => response.text())
       .then(html => {
         contentArea.innerHTML = html;
+
         const myModal = new bootstrap.Modal(document.getElementById('memberModal'));
         myModal.show();
       });
