@@ -1,4 +1,4 @@
-<div class="container py-5 col-md-7">
+<div class="container py-5 col-md-6">
 
   <div class="card shadow-sm">
     <div class="card-body bg-white">
@@ -10,14 +10,18 @@
         </div>
       </div>
 
-      <div class = "d-flex gap-2 mt-1 mb-4">
+      <div class = "d-flex justify-content-between mt-1 mb-4">
         <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
             <i class="fa-regular fa-user"></i>
             <%= @task.user.name %>
         </div>
         <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1">
           <% if @task.status %>
-            <i class="fa-regular fa-circle-check"></i> Done
+            <button class="btn btn-primary btn-lg"
+                    data-controller="task-status"
+                    data-action="click->task-status#check">
+              <i class="fa-regular fa-circle-check"></i> Done
+            </button>
           <% else %>
             <i class="fa-regular fa-circle"></i> To do
           <% end %>
