@@ -83,7 +83,8 @@ class TasksController < ApplicationController
       :task_points,
       :days,
       :montly_frequency,
-      :task_template
+      :task_template,
+      :validation
     )
   end
 end
