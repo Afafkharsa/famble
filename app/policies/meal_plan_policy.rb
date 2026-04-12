@@ -21,11 +21,7 @@ class MealPlanPolicy < ApplicationPolicy
   end
 
   def update?
-    if user.role == "parent"
-      true
-    else
-      record.user == user
-    end
+    user.role == "parent"
   end
 
   def new?
@@ -33,11 +29,7 @@ class MealPlanPolicy < ApplicationPolicy
   end
 
   def create?
-    if user.role == "parent"
-      true
-    else
-      false
-    end
+    user.role == "parent"
   end
 
   def destroy?
