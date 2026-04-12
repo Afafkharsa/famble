@@ -20,15 +20,26 @@
                     input_html: { autocomplete: "new-password" } %>
       </div>
       <div class="col-6 p-2">
-        <div class="form-inputs">
-        <%= f.association :family,
-                          required: true,
-                          placeholder: "Family name" %>
-        <%= f.input :existing_family,
-                    as: :boolean,
-                    label: "My family doesn't exist",
-                    boolean_style: :inline,
-                    input_html: {checked: false} %>
+        <div class="form-inputs" data-controller="family">
+          <%= f.input :existing_family,
+              as: :boolean,
+              label: "My family already exists - Uncheck to create a new family",
+              boolean_style: :inline,
+              input_html: { checked: true, id: "existing_family_checkbox", data: { action: "change->family#toggle" } } %>
+
+          <div data-family-target="selectWrapper">
+            <%= f.association :family,
+                              required: true,
+                              placeholder: "Family name",
+                              input_html: { id: "family_select", data: { target: "family.select" } } %>
+          </div>
+          <div data-family-target="newWrapper" style="display:none;">
+            <%= f.input :new_family,
+                        as: :string,
+                        label: "My family name",
+                        input_html: { value: '', id: "new_family_input", data: { target: "family.input" } } %>
+          </div>
+
         </div>
       </div>
 
