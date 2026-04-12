@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_one_attached :photo
   has_many :rewards, dependent: :destroy
 
+  validates :email, uniqueness: true
+
   def earned_points
     tasks.where(status: true).sum(:task_points)
   end
