@@ -40,8 +40,18 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task.update(task_params)
-    redirect_to task_path(@task)
+    @task = Task.find(params[:id])
+    if @task.update(task_params)
+      respond_to do |format|
+        format.html { redirect_to task_path(@task), notice: "Task updated." }
+        format.json { render json: @task, status: :ok }
+      end
+    else
+      respond_to do |format|
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy

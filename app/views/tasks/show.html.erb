@@ -15,15 +15,21 @@
             <i class="fa-regular fa-user"></i>
             <%= @task.user.name %>
         </div>
-        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1">
+        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1"
+             data-controller="task-status"
+             data-task-status-id-value="<%= @task.id %>">
           <% if @task.status %>
-            <button class="btn btn-primary btn-lg"
-                    data-controller="task-status"
-                    data-action="click->task-status#check">
-              <i class="fa-regular fa-circle-check"></i> Done
-            </button>
+            <i class="fa-regular fa-circle-check"class="border-0"
+                data-task-status-target="button"
+                data-action="click->task-status#complete"
+                type="button"></i>
+                Done
           <% else %>
-            <i class="fa-regular fa-circle"></i> To do
+            <i class="fa-regular fa-circle"class="border-0"
+              data-task-status-target="button"
+              data-action="click->task-status#complete"
+              type="button"></i>
+                  To do
           <% end %>
         </div>
         <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1">
