@@ -3,4 +3,6 @@ class Family < ApplicationRecord
   has_many :tasks, through: :users
   has_many :meal_plans, dependent: :destroy
   has_many :task_templates, dependent: :destroy
+
+  validates :name, presence: true, length: { minimum: 2 }
 end
