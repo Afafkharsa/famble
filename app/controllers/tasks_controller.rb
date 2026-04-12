@@ -42,12 +42,17 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
 
+
     if @task.update(task_params)
-      raise
       respond_to do |format|
         format.html { redirect_to task_path(@task), notice: "Task updated." }
         format.json { render json: @task, status: :ok }
       end
+      # Adding task points to user points
+      # if @task.validation
+      #   @task.user.available_points =+ @task.points
+      #   @task.user.earned_points =+ @task.points
+      # end
     else
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
