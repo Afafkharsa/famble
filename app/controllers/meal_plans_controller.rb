@@ -1,21 +1,25 @@
 class MealPlansController < ApplicationController
   def index
-    @family =current_user.family
-    @today_plan = @family.meal_plans.find_by(day:Date.today)
-    @weekly_plans = @family.meal_plans.where(day: (Date.today + 1)..(Date.today + 7)).order(:day)
+    @family = current_user.family
+    @meal_plans = policy_scope(MealPlan)
+    @today_plan = @meal_plans.find_by(day:Date.today)
+    @weekly_plans = @meal_plans.where(day: (Date.today + 1)..(Date.today + 7)).order(:day)
   end
 
   def show
-
+    authorize @meal_plan
   end
 
   def new
     @meal_plan = MealPlan.new
+    authorize @meal_plan
     @meal_plan.recipe_meal_plans.build
   end
 
   def create
     @meal_plan = MealPlan.find_or_create_by(day:params[:meal_plan][:day], family_id:current_user.family_id)
+
+    authorize @meal_plan
 
     if @meal_plan.update(meal_plan_params)
       redirect_to meal_plans_path, notice: "Meal plan created successfully!"
@@ -26,10 +30,12 @@ class MealPlansController < ApplicationController
 
   def edit
     @meal_plan = MealPlan.find(params[:id])
+    authorize @meal_plan
   end
 
   def update
     @meal_plan = MealPlan.find(params[:id])
+    authorize @meal_plan
     if @meal_plan.update(meal_plan_params)
       redirect_to meal_plans_path
     else
@@ -39,6 +45,7 @@ class MealPlansController < ApplicationController
 
   def destroy
     @meal_plan = MealPlan.find(params[:id])
+    authorize @meal_plan
     @meal_plan.destroy
     redirect_to meal_plans_path, status: :see_other
   end
