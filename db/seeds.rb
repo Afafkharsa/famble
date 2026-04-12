@@ -79,7 +79,7 @@ family_2 = Family.create!(
 )
 
 puts "Creating Lion King family members..."
-User.create!(
+user_5 = User.create!(
   email: "sarabi@test.com",
   password: "mufasa",
   role: "parent",
@@ -224,6 +224,16 @@ Task.create!(
   task_points: 4,
   montly_frequency: 0,
   user: user_4
+)
+
+Task.create!(
+  name: "Go hunting",
+  status: true,
+  start_date: Date.today,
+  end_date: Date.today+4,
+  task_points: 4,
+  montly_frequency: 0,
+  user: user_5
 )
 
 puts "Creating recipes..."
@@ -437,40 +447,51 @@ meal_plan_tomorrow = MealPlan.find_or_create_by!(
   family: family_1
 )
 
+meal_plan_lion_king = MealPlan.find_or_create_by!(
+  day: Date.today + 1,
+  family: family_2
+)
 
 puts "Creating RecipeMealplans..."
 
-  RecipeMealPlan.create!(
+RecipeMealPlan.create!(
   meal_plan: meal_plan_today,
   recipe: recipe_1,
   meal_type: "Breakfast"
 )
 
-  RecipeMealPlan.create!(
-    meal_plan: meal_plan_today,
-    recipe: recipe_5,
-    meal_type: "Lunch"
-  )
+RecipeMealPlan.create!(
+  meal_plan: meal_plan_today,
+  recipe: recipe_5,
+  meal_type: "Lunch"
+)
 
-  RecipeMealPlan.create!(
-    meal_plan: meal_plan_today,
-    recipe: recipe_4,
-    meal_type: "Dinner"
-  )
+RecipeMealPlan.create!(
+  meal_plan: meal_plan_today,
+  recipe: recipe_4,
+  meal_type: "Dinner"
+)
 
-  RecipeMealPlan.create!(
-    meal_plan: meal_plan_tomorrow,
-    recipe: recipe_3,
-    meal_type: "Lunch"
-  )
+RecipeMealPlan.create!(
+  meal_plan: meal_plan_tomorrow,
+  recipe: recipe_3,
+  meal_type: "Lunch"
+)
 
-  RecipeMealPlan.create!(
-    meal_plan: meal_plan_tomorrow,
-    recipe: recipe_2,
-    meal_type: "Dinner"
-  )
+RecipeMealPlan.create!(
+  meal_plan: meal_plan_tomorrow,
+  recipe: recipe_2,
+  meal_type: "Dinner"
+)
 
-  puts "Creating chats..."
+RecipeMealPlan.create!(
+  meal_plan: meal_plan_lion_king,
+  recipe: recipe_1,
+  meal_type: "Dinner"
+)
+
+
+puts "Creating chats..."
 
 chat_1 = Chat.create!(
   user: user_1,

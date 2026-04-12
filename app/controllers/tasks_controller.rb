@@ -3,12 +3,14 @@ class TasksController < ApplicationController
   before_action :set_users, only: [:new, :edit]
 
   def index
+    @tasks = policy_scope(Task)
     @user = current_user
-    @user_tasks = current_user.tasks
-    @family_tasks = current_user.family.tasks.excluding(@user_tasks)
+    @user_tasks = @tasks.where(user: @user)
+    @family_tasks = @tasks.where.not(user: @user)
   end
 
   def show
+
   end
 
   def new
@@ -20,10 +22,13 @@ class TasksController < ApplicationController
       days: params[:days],
       task_template: params[:task_template]
     })
+    authorize @task
   end
 
   def create
     @task = Task.new(task_params)
+    authorize @task
+
     if @task.save
       redirect_to task_path(@task)
     else
@@ -35,8 +40,25 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task.update(task_params)
-    redirect_to task_path(@task)
+    @task = Task.find(params[:id])
+
+
+    if @task.update(task_params)
+      respond_to do |format|
+        format.html { redirect_to task_path(@task), notice: "Task updated." }
+        format.json { render json: @task, status: :ok }
+      end
+      # Adding task points to user points
+      # if @task.validation
+      #   @task.user.available_points =+ @task.points
+      #   @task.user.earned_points =+ @task.points
+      # end
+    else
+      respond_to do |format|
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
@@ -48,6 +70,7 @@ class TasksController < ApplicationController
 
   def set_task
     @task = Task.find(params[:id])
+    authorize @task
   end
 
   def set_users
@@ -65,7 +88,8 @@ class TasksController < ApplicationController
       :task_points,
       :days,
       :montly_frequency,
-      :task_template
+      :task_template,
+      :validation
     )
   end
 end

@@ -9,20 +9,48 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # # POST /resource
-  # def create
-  #   if params[:existing_family]
-  #     @family = Family.all.where(name: @family_name )
-  #     user.family = @family
-  #   else
-  #     @family = Family.new({name: @family_name})
-  #     @family.save
-  #     user.family = @family
-  #   end
-  #   @family_name = params[:family]
+  # POST /resource
+  def create
+    build_resource(sign_up_params)
 
-  #   super
-  # end
+
+    if resource.family_id.blank?
+      family_name = params.dig(:user, :new_family).to_s.strip
+      if family_name.blank?
+        # Add an error and re-render
+        resource.errors.add(:base, "Family name can't be blank")
+        clean_up_passwords(resource)
+        set_minimum_password_length
+        respond_with resource
+        return
+      end
+
+      # Create family
+      Family.transaction do
+        family = Family.new(name: family_name)
+        unless family.save
+          resource.errors.add(:base, family.errors.full_messages.to_sentence)
+          raise ActiveRecord::Rollback
+        end
+      resource.family = family
+      resource.role = "parent"
+      end
+    else
+      # If using f.association :family, sign_up_params likely includes :family_id
+      # Ensure resource.family_id is set from params (build_resource already did this if permitted)
+      # Optionally validate presence of family if required
+    end
+
+    if resource.save
+      # normal Devise success flow...
+      sign_up(resource_name, resource)
+      respond_with resource, location: after_sign_up_path_for(resource)
+    else
+      clean_up_passwords(resource)
+      set_minimum_password_length
+      respond_with resource
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -69,4 +97,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def sign_up_params
+    params.require(:user).permit(
+      :email,
+      :password,
+      :password_confirmation,
+      :family_id
+    )
+  end
 end

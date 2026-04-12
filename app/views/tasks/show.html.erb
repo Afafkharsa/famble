@@ -1,63 +1,97 @@
-<div class="container py-5 w-50">
+<div class="container py-5 col-md-6">
 
   <div class="card shadow-sm">
     <div class="card-body bg-white">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2><%= @task.name %></h2>
-        <div class="text-secondary">
-          ←
-          <%= link_to "Back to tasks", tasks_path, class: "link-secondary link-underline-secondary" %>
+      <div class="text-secondary">
+          <%= link_to "← Back to tasks", tasks_path, class: "link-secondary link-underline-secondary" %>
         </div>
+      <div class="d-flex gapt-2 align-items-center mb-3 mt-2">
+        <h2><%= @task.name %></h2>
+        <%= link_to edit_task_path(@task) do %>
+          <% if policy(Task).edit?  %>
+            <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+              <i class="fa-regular fa-pen-to-square text-body-secondary fs-4 ps-2"></i>
+            </div>
+          <% end %>
+        <% end %>
+        <%= link_to task_path(@task),
+          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+          <% if policy(Task).destroy?  %>
+            <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+              <i class="fa-solid fa-eraser text-body-secondary fs-4 ps-2"></i>
+            </div>
+          <% end %>
+        <% end %>
       </div>
 
-      <div class = "d-flex gap-2 mt-1 mb-4">
-        <p>
-          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
-              <i class="fa-regular fa-user"></i>
-              <%= @task.user.name %>
-          </span>
-        </p>
-        <p>
-          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1">
-            <% if @task.status %>
-              <i class="fa-regular fa-circle-check"></i> Done
-            <% else %>
-              <i class="fa-regular fa-circle"></i> To do
-            <% end %>
-          </span>
-        </p>
-        <p>
-          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
-            <i class="fa-solid fa-award"></i>
-            <%= @task.task_points > 0 ? "#{@task.task_points} points" : "#{@task.task_points} point"  %>
-          </span>
-        </p>
+      <div class = "d-flex justify-content-between mt-1 mb-4">
+        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
+            <i class="fa-regular fa-user"></i>
+            <%= @task.user.name %>
+        </div>
+        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1"
+             data-controller="task-status"
+             data-task-status-id-value="<%= @task.id %>">
+          <% if @task.status && !@task.validation %>
+            <i class="fa-solid fa-hourglass-half border-0"
+               data-task-status-target="approval"
+               data-turbo-confirm="Validate?"
+               data-action="click->task-status#validate"
+               type="button">
+            </i> Waiting approval
+          <% elsif @task.status && @task.validation  %>
+            <i class="fa-regular fa-circle-check border-0 disable"></i> Done
+          <% else %>
+            <i class="fa-regular fa-circle border-0"
+              data-task-status-target="button"
+              data-turbo-confirm="Mark complete?"
+              data-action="click->task-status#complete"
+              type="button">
+            </i> To do
+          <% end %>
+        </div>
+        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1">
+          <i class="fa-solid fa-award"></i>
+          <%= @task.task_points > 0 ? "#{@task.task_points} points" : "#{@task.task_points} point"  %>
+        </div>
+
       </div>
 
       <h5 class="fw-bold mt-4">Date and frequency</h5>
 
       <div class="mb-3 d-flex flex-column justify-content-start align-items-start">
         <div class="text-secondary fw-bold">
-          <i class="fa-solid fa-calendar-days"></i>
+          <%= link_to calendars_path,
+          style:"text-decoration: none; cursor: pointer; color: inherit;" do %>
+            <i class="fa-solid fa-calendar-days text-secondary fw-bold" ></i>
+          <% end %>
           <%= @task.start_date %>
           <% if @task.start_date != @task.end_date %>
             <i class="fa-solid fa-arrow-right"></i>
             <%= @task.end_date %>
           <% end %>
         </div>
-        <div class="text-secondary">
+        <div class="text-secondary mt-1">
           <% if @task.days.any? || @task.montly_frequency > 0 %>
-            No repeat
+            Repeat :
+            <ul class="m-0">
+              <li>
+                <% @task.days.each do |day| %>
+                  <%= day.capitalize %>
+                <% end %>
+              </li>
+              <li>
+                <%= @task.montly_frequency %> months / year
+              </li>
+            </ul>
           <% else %>
-            <% @task.days.each do |day| %>
-              <%= day %>
-            <% end %>
+            No repeat
           <% end %>
         </div>
       </div>
 
       <h5 class="fw-bold mt-4">Description</h5>
-      <div class="mt-2 mb-5 text-secondary ">
+      <div class="mt-2 mb-2 text-secondary ">
         <%= @task.description? ? @task.description : "No description" %>
       </div>
 

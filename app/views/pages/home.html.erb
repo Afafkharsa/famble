@@ -2,7 +2,8 @@
   <%= content_for(:navbar_class, "navbar-home") %>
 <% end %>
 
-<% if current_user %>
+<<<<<<< HEAD
+<% if current_user && current_user.role %>
   <div class="container d-flex flex-column min-vh-100 py-4" style="min-height: calc(100vh - 56px);">
 
     <!-- Top main button -->
@@ -45,6 +46,14 @@
       </div>
     </div>
 
+  </div>
+<% elsif current_user && !current_user.role %>
+  <div class="container py-5">
+    <div class="row g-4 mb-4">
+      <div class="col-md-8">
+        Your subscription to <%= current_user.family.name %> is waiting for validation.
+      </div>
+    </div>
   </div>
 <% else %>
   <!-- HERO / BANNER -->

@@ -55,7 +55,7 @@
                     <% end %>
                   <% end %>
                 <% else %>
-                  <%= link_to "+", new_meal_plan_path(day:@today_plan.day, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                  <%= link_to "+", new_meal_plan_path(day:Date.today, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
                 <% end %>
               </td>
               <% end %>
@@ -115,7 +115,7 @@
                         <% end %>
                       <% end %>
                     <% else %>
-                      <%= link_to "+", new_meal_plan_path(day:@today_plan.day, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                      <%= link_to "+", new_meal_plan_path(day: (Date.today +1), meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
                     <% end %>
                   </td>
                 <% end %>
