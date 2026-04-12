@@ -37,10 +37,12 @@
                   <% end %>
                 </div>
                 <div class="badge text-secondary py-2">
-                  <% if task.status? %>
+                  <% if task.status && !task.validation %>
+                    <i class="fa-solid fa-hourglass-half"></i> Pending
+                  <% elsif task.status && task.validation  %>
                     <i class="fa-regular fa-circle-check"></i> Done
                   <% else %>
-                    <i class="fa-regular fa-circle"></i> To do
+                    <i class="fa-regular fa-circle" ></i> To do
                   <% end %>
                 </div>
                 <div class="badge text-secondary py-2">
@@ -114,11 +116,13 @@
                       <%= task.end_date %>
                     <% end %>
                   </div>
-                  <div class=" badge text-secondary py-2">
-                    <% if task.status? %>
+                  <div class="badge text-secondary py-2">
+                    <% if task.status && !task.validation %>
+                      <i class="fa-solid fa-hourglass-half"></i> Pending
+                    <% elsif task.status && task.validation  %>
                       <i class="fa-regular fa-circle-check"></i> Done
                     <% else %>
-                      <i class="fa-regular fa-circle"></i> To do
+                      <i class="fa-regular fa-circle" ></i> To do
                     <% end %>
                   </div>
                   <div class="badge text-secondary py-2">
