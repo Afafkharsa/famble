@@ -30,8 +30,14 @@
     <%= f.text_field :allergens, class: "form-control" %>
   </div>
 
+  <div class="mb-3">
+    <%= f.label :photo, class: "form-label" %>
+    <%= f.file_field :photo %>
+  </div>
+
   <div class="d-flex gap-2">
     <%= f.submit class: "btn btn-secondary" %>
     <%= link_to "Cancel", recipes_path, class: "btn btn-outline-secondary" %>
   </div>
+
 <% end %>
