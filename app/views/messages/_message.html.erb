@@ -16,7 +16,7 @@
         <% begin %>
           <% recipe = JSON.parse(message.content) %>
           <div class="card border-0 shadow-sm p-3" style="max-width: 500px;">
-            <h5><i class="fa-solid fa-utensils"></i> <%= recipe["name"] %></h5>
+            <h5> <%= recipe["name"] %></h5>
             <p>
               <% Array(recipe["keywords"]).each do |keyword| %>
                 <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">

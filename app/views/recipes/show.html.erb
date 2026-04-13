@@ -13,8 +13,8 @@
       <div class="d-flex align-items-center mb-3 mt-3">
         <h1 class="card-title mb-0 me-4"><%= @recipe.name %></h1>
 
-        <%= link_to edit_recipe_path(@recipe), class: "btn btn-outline-secondary btn-sm rounded-pill px-3 ms-2" do %>
-          <i class="fas fa-pen me-1"></i> Edit
+        <%= link_to edit_recipe_path(@recipe), class: "btn text-secondary ms-2" do %>
+          <i class="fas fa-pen me-1"></i>
         <% end %>
 
         <div class="ms-auto">
@@ -24,7 +24,7 @@
 
       <p class="mb-3">
         <% @recipe.keywords.to_s.split(",").each do |keyword| %>
-          <span class="badge rounded-pill bg-secondary-subtle text-secondary px-3 py-2 me-1">
+          <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
             <%= keyword %>
           </span>
         <% end %>
@@ -37,7 +37,7 @@
       </p>
       <hr>
 
-      <h3 class="h5 text-secondary fw-bold">Ingredients</h3>
+      <h3 class="h5 text-primary fw-bold">Ingredients</h3>
         <ul>
           <% raw = @recipe.ingredients.to_s.strip %>
           <% ingredients = raw.include?("\n") ? raw.split("\n") : raw.split(/, \s(?=[^,]+ + - )/) %>
@@ -46,7 +46,7 @@
           <% end %>
         </ul>
 
-      <h3 class="h5 fw-bold text-secondary mt-4">Description</h3>
+      <h3 class="h5 fw-bold text-primary mt-4">Description</h3>
         <ol class="mt-2">
            <% @recipe.description.to_s.split("\n").each do |step| %>
              <li><%= step.strip %></li>
