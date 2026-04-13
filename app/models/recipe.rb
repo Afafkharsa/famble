@@ -2,7 +2,7 @@ class Recipe < ApplicationRecord
   has_many :recipe_meal_plans
   has_many :meal_plans, through: :recipe_meal_plans
 
-  has_one_attached :photo
+  has_one_attached :photo, dependent: :purge_later
 
   validates :name, presence: true
   validates :ingredients, presence: true
