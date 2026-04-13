@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "modal" do %>
-  <%# ใช้ Style ตรงนี้เพื่อทำ Overlay แทนการพึ่งพา Bootstrap JS %>
+  <%# Use this Style to do Overlay %>
   <div class="modal-custom-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
     <div class="modal-card" style="background: white; padding: 20px; border-radius: 8px; width: 400px; max-width: 90%;">
 
@@ -11,7 +11,7 @@
 
       <div class="modal-body">
         <%# Show Tasks lists %>
-        <h6 class="text-primary">● <%= @tasks.count %> Tasks</h6>
+        <h6 class="text-primary">● <%= pluralize(@tasks.count, "Tasks") %></h6>
         <% @tasks.each do |task| %>
           <div class="item-row border-bottom py-1">
             <%= task.name %>
@@ -19,7 +19,7 @@
         <% end %>
 
         <%# Show Meals lists %>
-        <h6 class="text-success mt-3">● <%= @meal_plans.count %> Meals</h6>
+        <h6 class="text-success mt-3">● <%= pluralize(@meal_plans.count, "Meals") %></h6>
         <% @meal_plans.each do |plan| %>
         <% plan.recipe_meal_plans.each do |meal| %>
           <div class="item-row border-bottom py-1">

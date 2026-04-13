@@ -28,7 +28,7 @@
       <div class="task-line">
         <%= link_to meal_plans_path, class:"text-decoration-none" do %>
         <small class="text-success fs-6">
-          <span class="fs-4">🍽️</span>
+          <span class="fs-5">🍽️</span>
           <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
           <%= total_recipes %> <%= "Meal".pluralize(total_recipes) %>
           <%#= day_meals.count %></small>
