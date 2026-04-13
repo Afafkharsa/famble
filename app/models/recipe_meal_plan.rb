@@ -6,6 +6,8 @@ class RecipeMealPlan < ApplicationRecord
   after_destroy :destroy_empty_meal_plan
 
 
+  validates :meal_type, presence: true
+
   private
 
   def destroy_empty_meal_plan
