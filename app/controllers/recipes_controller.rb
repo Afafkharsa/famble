@@ -20,12 +20,43 @@ class RecipesController < ApplicationController
   end
 
   def create
-    # TODO change it to save recipes with chatbot?
-    @recipe = Recipe.new(recipe_params)
-    if @recipe.save
-      redirect_to recipes_path, notice: "Recipe created successfully!"
+      if params[:save_to_meal_plan]
+        @meal_plan = current_user.meal_plans.find_or_create_by(
+          date: params[:recipe][:meal_plan_date],
+          meal_type: params[:recipe][:meal_plan_type]
+        ) do |mp|
+          mp.meal = params[:recipe][:name]
+        end
+        @recipe = @meal_plan.recipes.new(recipe_params)
+      else
+        @recipe = Recipe.new(recipe_params)
+      end
+
+      if @recipe.save
+        ImageGeneratorService.generate_and_attach(@recipe)
+        sleep 5
+
+        if @meal_plan
+          redirect_to meal_plan_path(@meal_plan), notice: "Recipe saved to meal plan!"
+        else
+          redirect_to recipes_path, notice: "Recipe saved!"
+        end
+      else
+        redirect_back fallback_location: chats_path, alert: @recipe.errors.full_messages.join(", ")
+
+      end
+  end
+
+  def edit
+    @recipe = Recipe.find(params[:id])
+  end
+
+  def update
+    @recipe = Recipe.find(params[:id])
+    if @recipe.update(recipe_params)
+      redirect_to @recipe, notice: "Recipe updated successfully."
     else
-      render :new, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -42,6 +73,6 @@ class RecipesController < ApplicationController
   private
 
   def recipe_params
-    params.require(:recipe).permit(:name, :ingredients, :description, :keywords, :calories, :allergens)
+    params.require(:recipe).permit(:name, :ingredients, :description, :keywords, :calories, :allergens, :photo)
   end
 end

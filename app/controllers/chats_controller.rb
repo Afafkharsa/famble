@@ -27,6 +27,14 @@ class ChatsController < ApplicationController
     @message = Message.new
   end
 
+  def destroy
+    @chat = Chat.find(params[:id])
+    @chat.destroy
+    redirect_to chats_path, notice: "Chat was deleted!", status: :see_other
+  end
+
+  private
+
   def chat_params
     # params.require(:chat).permit(:title)
     permitted = params.require(:chat).permit(:title)

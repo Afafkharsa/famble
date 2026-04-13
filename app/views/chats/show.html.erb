@@ -3,11 +3,20 @@
 
 <div class="container py-4">
 
-  <h1 class="text-shadow" id="chat_title">
-    <% unless @chat.title == "Untitled" %>
-      <%= @chat.title %>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h2 class="text-shadow" id="chat_title">
+      <% unless @chat.title == "Untitled" %>
+        <%= @chat.title %>
+      <% end %>
+    </h2>
+
+    <%= link_to chats_path, class: "btn btn-light d-inline-flex align-items-center" do %>
+      <i class="bi bi-arrow-left me-2"></i>
+      Back to chats
     <% end %>
-  </h1>
+
+  </div>
 
   <div id="messages">
     <%= render "messages/messages", messages: @chat.messages %>

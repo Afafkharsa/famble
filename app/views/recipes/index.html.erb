@@ -7,7 +7,7 @@
   <div class="mb-4">
     <%= form_with url: recipes_path, method: :get, local: true, class: "d-flex" do %>
       <%= text_field_tag :query, params[:query], placeholder: "Search recipes...", class: "form-control me-2" %>
-      <%= submit_tag "Search", class: "btn btn-outline-secondary" %>
+      <%= submit_tag "Search", class: "btn btn-outline-info" %>
     <% end %>
   </div>
 
@@ -16,14 +16,28 @@
       <% @recipes.each do |recipe| %>
         <div class="col-md-4">
           <div class="card border-0 shadow-sm h-100">
+            <% if recipe.photo.present? %>
+              <%= image_tag recipe.photo, class: "card-img-top", style: "height: 150px; object-fit: cover; border-radius: 12px 12px 0 0;" %>
+            <% end %>
             <div class="card-body">
-              <h5 class="card-title text-secondary"><%= recipe.name %></h5>
+              <h5 class="card-title text-secondary">
+                <%= link_to recipe.name, recipe_path(recipe), class: "text-decoration-none text-secondary" %>
+              </h5>
               <p class="text-muted mb-1"><i class="fas fa-fire me-1"></i> <%= recipe.calories %> kcal</p>
-              <p class="text-muted small"><%= Array(recipe.keywords.split(",")).first(3).join(", ") %></p>
-              <div  class="d-flex justify-content-between">
-                <%= link_to "View Recipe", recipe_path(recipe), class: "btn btn-outline-secondary btn-sm rounded-pill" %>
+              <p class="mb-2">
+                <% recipe.keywords.to_s.split(",").first(3).each do |keyword| %>
+                  <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
+                    <%= keyword.strip %>
+                  </span>
+                <% end %>
+              </p>
+              <div class="mt-auto d-flex justify-content-end gap-2">
                 <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-secondary btn-sm rounded-pill" %>
-                <%= link_to "Delete recipe", recipe_path(recipe), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm rounded-pill" %>
+                <%= link_to recipe_path(recipe),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                    class: "text-muted ms-3" do %>
+                  <i class="bi bi-trash"></i>
+                <% end %>
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@
 <% end %>
 
 <% if current_user && current_user.role %>
-  <div class="container py-5">
+  <div class="container d-flex flex-column min-vh-100 py-4" style="min-height: calc(100vh - 56px);">
 
     <!-- Top main button -->
     <div class="row mb-4">
@@ -17,31 +17,31 @@
     </div>
 
     <!-- Row 2: 3 buttons -->
-    <div class="row g-4 mb-4">
-      <div class="col-md-4">
-        <%= link_to "Recipes", recipes_path, class: "btn btn-outline-secondary w-100 py-5" %>
+    <div class="row g-4 mb-3" style="flex: 1;">
+      <div class="col-md-4 d-flex">
+        <%= link_to "Recipes", recipes_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
       </div>
-      <div class="col-md-4">
-        <%= link_to "Tasks", tasks_path, class: "btn btn-outline-secondary w-100 py-5" %>
+      <div class="col-md-4 d-flex">
+        <%= link_to "Tasks", tasks_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
       </div>
-      <div class="col-md-4">
-        <%= link_to "Rewards", rewards_path, class: "btn btn-outline-secondary w-100 py-5" %>
+      <div class="col-md-4 d-flex">
+        <%= link_to "Rewards", rewards_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
       </div>
     </div>
 
     <!-- Row 3: 3 buttons -->
-    <div class="row g-4">
-      <div class="col-md-4">
+    <div class="row g-4 mb-3" style="flex: 1;">
+      <div class="col-md-4 d-flex">
         <!-- TODO add link family -->
-        <%= link_to "Family", families_path, class: "btn btn-outline-secondary w-100 py-5" %>
+        <%= link_to "Family", families_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 d-flex">
         <!-- TODO add link calendar -->
-        <%= link_to "Calendar", calendars_path, class: "btn btn-outline-secondary w-100 py-5" %>
+        <%= link_to "Calendar", calendars_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 d-flex">
         <!-- TODO add link chatbot -->
-        <%= link_to "Chatbot", chats_path, class: "btn btn-outline-secondary w-100 py-5" %>
+        <%= link_to "Chatbot", chats_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
       </div>
     </div>
 
@@ -61,38 +61,8 @@
       <h1>Bring harmony to your family life</h1>
       <p>Meals, tasks, and rewards — all organized in one place</p>
 
-      <%= link_to "Get Started", new_user_registration_path, class: "btn btn-secondary btn-lg me-2" %>
+      <%= link_to "Get Started", new_user_registration_path, class: "btn btn-primary btn-lg me-2" %>
       <%= link_to "Log in", new_user_session_path, class: "btn btn-outline-light btn-lg" %>
     </div>
   </div>
-
-  <!-- Row 2: 3 buttons -->
-  <div class="row g-4 mb-4">
-    <div class="col-md-4">
-      <%= link_to "Recipes", recipes_path, class: "btn btn-outline-secondary w-100 py-5" %>
-    </div>
-    <div class="col-md-4">
-      <%= link_to "Tasks", tasks_path, class: "btn btn-outline-secondary w-100 py-5" %>
-    </div>
-    <div class="col-md-4">
-      <%= link_to "Rewards", rewards_path, class: "btn btn-outline-secondary w-100 py-5" %>
-    </div>
-  </div>
-
-  <!-- Row 3: 3 buttons -->
-  <div class="row g-4">
-    <div class="col-md-4">
-      <!-- TODO add link family -->
-      <%#= link_to "Family", family_path(current_user.family), class: "btn btn-outline-secondary w-100 py-5" %>
-      <%= link_to "Family", families_path, class: "btn btn-outline-secondary w-100 py-5" %>
-    </div>
-    <div class="col-md-4">
-      <%= link_to "Calendar", calendars_path, class: "btn btn-outline-secondary w-100 py-5" %>
-    </div>
-    <div class="col-md-4">
-      <!-- TODO add link chatbot -->
-      <%= link_to "Chatbot", chats_path, class: "btn btn-outline-secondary w-100 py-5" %>
-    </div>
-  </div>
-  <% end %>
-</div>
+<% end %>

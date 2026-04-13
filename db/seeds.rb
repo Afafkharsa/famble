@@ -344,6 +344,17 @@ recipe_5 = Recipe.create!(
   allergens: "fish"
 )
 
+
+puts "Generating AI photo..."
+
+[recipe_1, recipe_2, recipe_3].each do |recipe|
+  ImageGeneratorService.generate_and_attach(recipe)
+  sleep 2
+end
+
+puts "Generated photo successful!"
+
+
 puts "Creating reward templates..."
 
 RewardTemplate.create!(
@@ -517,7 +528,7 @@ Message.create!(
         {"ingredient": "black pepper", "quantity": "1/4 teaspoon"},
         {"ingredient": "fresh parsley, chopped", "quantity": "1 tablespoon"}
       ],
-      "method": [
+      "description": [
         "Place the shredded cooked chicken breast in a large bowl.",
         "Add the Greek yogurt, lemon juice, and Dijon mustard.",
         "Mix in the chopped celery, red onion, and parsley.",
@@ -551,7 +562,7 @@ Message.create!(
         {"ingredient": "banana slices", "quantity": "1 banana"},
         {"ingredient": "strawberries ", "quantity": "3 pieces"}
       ],
-      "method": [
+      "description": [
         "Prepare the pancake batter according to the instructions on the mix using water or milk.",
         "Heat a non-stick pan on medium heat and pour small amounts of batter to create pancakes.",
         "Cook each pancake for 2-3 minutes per side until golden brown.",
@@ -587,7 +598,7 @@ Message.create!(
         {"ingredient": "cream cheese", "quantity": "2 tbsp"},
         {"ingredient": "carrot", "quantity": "1 small, sliced into thin sticks"}
       ],
-      "method": [
+      "description": [
         "Toast the slices of bread until golden brown.",
         "Spread cream cheese evenly over each slice of toast.",
         "Cut the hard-boiled eggs into slices and place them on the toast as the base for the face.",

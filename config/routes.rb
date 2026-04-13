@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :recipes
 
-  resources :chats, only: [:index, :create, :show] do
+  resources :chats, only: [:index, :create, :show, :destroy] do
     resources :messages, only: [:create]
   end
 
