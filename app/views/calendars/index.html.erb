@@ -7,9 +7,14 @@
       <div class="date-number fs-5"><%= date.day %></div>
   <% end %>
     <%#Show how many Event %>
-      <%# events.each do |event| %>
-        <div class="event-badge text-truncate"><%#= event.title %></div>
-      <%# end %>
+      <% day_events = @events.select { |event| event.start_time.to_date == date } %>
+      <% if day_events.any? %>
+      <div class="d-block">
+        <%= link_to events_path, class:"text-decoration-none" do %>
+        <small class="text-warning fs-6"><i class="fa-regular fa-calendar-check fs-5 ms-1 me-2"></i><%= day_events.count %>  Events</small>
+        <% end %>
+      </div>
+      <% end %>
 
     <%#Show how many Task %>
       <% day_tasks = @tasks.select { |task| task.end_date.to_date == date } %>
