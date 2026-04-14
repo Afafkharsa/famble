@@ -11,27 +11,27 @@
 
       <div class="modal-body">
       <%# Show Events lists %>
-
-        <h6 class="text-warning">● <%= @events.count %> Events</h6>
+        <h6 class="text-warning">● <%= @events.count > 0 ? @events.count : "No" %> Events</h6>
         <% @events.each do |event| %>
-          <div class="item-row border-bottom py-1">
+          <div class="item-row border-bottom py-1 ms-4">
             <%= event.title %>
           </div>
         <% end %>
 
       <%# Show Tasks lists %>
-        <h6 class="text-primary">● <%= @tasks.count %> Tasks</h6>
+        <h6 class="text-primary">● <%= @tasks.count > 0 ? @tasks.count : "No" %> Tasks</h6>
         <% @tasks.each do |task| %>
-          <div class="item-row border-bottom py-1">
+          <div class="item-row border-bottom py-1 ms-4">
             <%= task.name %>
           </div>
         <% end %>
 
       <%# Show Meals lists %>
-        <h6 class="text-success mt-3">● <%= @meal_plans.sum { |plan| plan.recipe_meal_plans.count } %> Meals</h6>
+        <% meals_count = @meal_plans.sum { |plan| plan.recipe_meal_plans.count } %>
+        <h6 class="text-success mt-3"> ● <%= meals_count.zero? ? "No meals" : "#{meals_count} Meals" %></h6>
         <% @meal_plans.each do |plan| %>
         <% plan.recipe_meal_plans.each do |meal| %>
-          <div class="item-row border-bottom py-1">
+          <div class="item-row border-bottom py-1 ms-4">
             <%= meal.recipe.name %>
           </div>
           <% end %>
