@@ -55,6 +55,8 @@ class MessagesController < ApplicationController
     }
 
     Be concise, structured, and precise.
+
+    Your response will be parsed by a JSON parser. Invalid JSON will be rejected.
   PROMPT
 
   def create
