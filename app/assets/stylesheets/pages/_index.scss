@@ -1,2 +1,9 @@
 // Import page-specific CSS files here.
 @import "home";
+
+.tasks-card {
+  background-image: url(tasks.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 70%;
+}
