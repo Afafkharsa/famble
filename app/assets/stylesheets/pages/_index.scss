@@ -5,5 +5,10 @@
   background-image: url(tasks.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 50% 70%;
+  color: rgba(0, 0, 0, 0);
+}
+
+.tasks-card:hover {
+  background-image: none;
+  color: white;
 }
