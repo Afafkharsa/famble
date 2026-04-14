@@ -1,8 +1,8 @@
 class CalendarsController < ApplicationController
   def index
-    @events = Event.all
-    @tasks = Task.all
-    @meal_plans = MealPlan.all
+    @events = policy_scope(Event)
+    @tasks = policy_scope(Task)
+    @meal_plans = policy_scope(MealPlan)
     @combined_items = @events + @tasks + @meal_plans
   end
 
@@ -21,9 +21,10 @@ class CalendarsController < ApplicationController
 
   def show
     @date = Date.parse(params:[:date])
-    @items = Event.where(start_time: @date.all_day) +
-            Task.where(end_date: @date.all_day) +
-            MealPlan.where(day: @date.all_day)
+
+    @items = policy_scope(Event).where(start_time: @date.all_day) +
+             policy_scope(Task).where(end_date: @date.all_day) +
+             policy_scope(MealPlan).where(day: @date.all_day)
     render layout: false
   end
 

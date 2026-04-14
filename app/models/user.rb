@@ -8,6 +8,7 @@ class User < ApplicationRecord
   belongs_to :family, optional: true
   has_one_attached :photo
   has_many :rewards, dependent: :destroy
+  has_many :events
 
   validates :email, uniqueness: true
 
