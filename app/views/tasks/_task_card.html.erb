@@ -1,0 +1,36 @@
+<!-- Description or username, depending on who is designed
+for the task -->
+<% if task.user == user %>
+  <div class="mt-2 text-secondary-emphasis">
+    <%= task.description? ? task.description : "No description" %>
+  </div>
+<% else %>
+  <div class="mt-2 text-secondary-emphasis">
+    Assigned to: <%= task.user.name %>
+  </div>
+<% end %>
+
+<!-- Badge -->
+<div class="mb-0 mt-1 d-flex justify-content-between badge bg-primary-subtle rounded-2 text-primary  py-2">
+  <div>
+    <i class="fa-solid fa-calendar-days"></i>
+    <%= task.start_date %>
+    <% if task.start_date != task.end_date %>
+      <i class="fa-solid fa-arrow-right"></i>
+      <%= task.end_date %>
+    <% end %>
+  </div>
+  <div>
+  <% if task.status && !task.validation %>
+    <i class="fa-solid fa-hourglass-half"></i> Pending
+  <% elsif task.status && task.validation  %>
+    <i class="fa-regular fa-circle-check"></i> Done
+  <% else %>
+    <i class="fa-regular fa-circle" ></i> To do
+  <% end %>
+  </div>
+  <div>
+    <i class="fa-solid fa-award"></i>
+    <%= task.task_points > 1 ? "#{task.task_points} pts" : "#{task.task_points} pt"  %>
+  </div>
+</div>

@@ -32,8 +32,7 @@ export default class extends Controller {
       return response.json()
     })
     .then(data => {
-      this.buttonTarget.textContent = "Waiting approval"
-      this.buttonTarget.classList ="fa-solid fa-hourglass-half border-0";
+      this.buttonTarget.textContent = "<i class='fa-solid fa-hourglass-half border-0'></i> Waiting approval"
     })
     .catch(async err => {
       console.error("Task status update failed")
@@ -70,7 +69,7 @@ export default class extends Controller {
     })
     .then(data => {
       this.approvalTarget.textContent = "Done"
-      this.approvalTarget.classList ="fa-regular fa-circle-check border-0 disabled";
+      this.approvalTarget.classList ="<i class='fa-regular fa-circle-check border-0 disable'></i> Done";
     })
     .catch(async err => {
       this.approvalTarget.disabled = false

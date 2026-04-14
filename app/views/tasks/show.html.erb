@@ -7,37 +7,42 @@
         </div>
       <div class="mb-3 mt-4">
         <h2 class="text-success d-flex gap-2">
-          <%= render "task_title", task: @task %>
+          <%= render "task_title", task: @task%>
         </h2>
       </div>
 
-      <div class = "d-flex justify-content-between mt-1 mb-4">
-        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
+      <div class = "d-flex justify-content-start gap-3 mt-1 mb-4"
+           data-controller="task-status"
+           data-task-status-id-value="<%= @task.id %>">
+        <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
             <i class="fa-regular fa-user"></i>
             <%= @task.user.name %>
         </div>
-        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1"
-             data-controller="task-status"
-             data-task-status-id-value="<%= @task.id %>">
-          <% if @task.status && !@task.validation %>
-            <i class="fa-solid fa-hourglass-half border-0"
+        <!-- class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1" -->
+
+        <% if @task.status && !@task.validation %>
+          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
                data-task-status-target="approval"
                data-turbo-confirm="Validate?"
                data-action="click->task-status#validate"
                type="button">
+            <i class="fa-solid fa-hourglass-half border-0">
             </i> Waiting approval
-          <% elsif @task.status && @task.validation  %>
-            <i class="fa-regular fa-circle-check border-0 disable"></i> Done
-          <% else %>
-            <i class="fa-regular fa-circle border-0"
-              data-task-status-target="button"
-              data-turbo-confirm="Mark complete?"
-              data-action="click->task-status#complete"
-              type="button">
-            </i> To do
-          <% end %>
-        </div>
-        <div class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2 me-1">
+          </div>
+        <% elsif @task.status && @task.validation  %>
+            <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
+              <i class="fa-regular fa-circle-check border-0 disable"></i> Done
+            </div>
+        <% else %>
+          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
+               data-task-status-target="button"
+               data-turbo-confirm="Mark complete?"
+               data-action="click->task-status#complete"
+               type="button">
+            <i class="fa-regular fa-circle border-0"></i> To do
+          </div>
+        <% end %>
+        <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
           <i class="fa-solid fa-award"></i>
           <%= @task.task_points > 0 ? "#{@task.task_points} points" : "#{@task.task_points} point"  %>
         </div>

@@ -27,33 +27,8 @@
                 <%= render "task_title", task: task %>
               </h5>
 
-              <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle justify-content-between">
-                <div class="badge text-secondary py-2">
-                  <i class="fa-solid fa-calendar-days"></i>
-                  <%= task.start_date %>
-                  <% if task.start_date != task.end_date %>
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <%= task.end_date %>
-                  <% end %>
-                </div>
-                <div class="badge text-secondary py-2">
-                  <% if task.status && !task.validation %>
-                    <i class="fa-solid fa-hourglass-half"></i> Pending
-                  <% elsif task.status && task.validation  %>
-                    <i class="fa-regular fa-circle-check"></i> Done
-                  <% else %>
-                    <i class="fa-regular fa-circle" ></i> To do
-                  <% end %>
-                </div>
-                <div class="badge text-secondary py-2">
-                    <i class="fa-solid fa-award"></i>
-                    <%= task.task_points > 1 ? "#{task.task_points} pts" : "#{task.task_points} pt"  %>
-                </div>
-              </div>
+              <%= render "task_card", task: task, user: @user  %>
 
-              <div class="mt-2 text-secondary ps-2">
-                <%= task.description? ? task.description : "No description" %>
-              </div>
             </div>
           </div>
         </div>
@@ -97,32 +72,8 @@
                   <%= render "task_title", task: task %>
                 </h5>
 
-                <div class = "d-flex mb-0 mt-3 rounded-2 bg-secondary-subtle justify-content-between">
-                  <div class="badge text-secondary py-2">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <%= task.start_date %>
-                    <% if task.start_date != task.end_date %>
-                      <i class="fa-solid fa-arrow-right"></i>
-                      <%= task.end_date %>
-                    <% end %>
-                  </div>
-                  <div class="badge text-secondary py-2">
-                    <% if task.status && !task.validation %>
-                      <i class="fa-solid fa-hourglass-half"></i> Pending
-                    <% elsif task.status && task.validation  %>
-                      <i class="fa-regular fa-circle-check"></i> Done
-                    <% else %>
-                      <i class="fa-regular fa-circle" ></i> To do
-                    <% end %>
-                  </div>
-                  <div class="badge text-secondary py-2">
-                      <i class="fa-solid fa-award"></i>
-                      <%= task.task_points > 1 ? "#{task.task_points} pts" : "#{task.task_points} pt"  %>
-                  </div>
-                </div>
-                <div class="mt-2 text-secondary ps-2">
-                  Assigned to: <%= task.user.name %>
-                </div>
+                <%= render "task_card", task: task, user: @user  %>
+
               </div>
             </div>
           </div>
