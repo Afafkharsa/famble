@@ -7,7 +7,7 @@
   <div class="mb-4">
     <%= form_with url: recipes_path, method: :get, local: true, class: "d-flex" do %>
       <%= text_field_tag :query, params[:query], placeholder: "Search recipes...", class: "form-control me-2" %>
-      <%= submit_tag "Search", class: "btn btn-outline-info" %>
+      <%= submit_tag "Search", class: "btn btn-outline-primary" %>
     <% end %>
   </div>
 

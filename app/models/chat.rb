@@ -3,6 +3,12 @@ class Chat < ApplicationRecord
 
   TITLE_PROMPT = <<~PROMPT
     Generate a short, descriptive, 3-to-6-word title that summarizes the user question for a chat conversation.
+
+      Rules:
+      - Return ONLY plain text
+      - Do NOT use quotes
+      - Do NOT use JSON
+      - Do NOT include punctuation except normal words
   PROMPT
 
   belongs_to :user
