@@ -1,10 +1,11 @@
 class EventsController < ApplicationController
   def index
-    @events = Event.all.order(start_time: :asc)
+    @events = policy_scope(Event).order(start_time: :asc)
   end
 
   def new
     @event = Event.new
+    authorize @event
   end
 
   def create
@@ -19,12 +20,12 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
-    # authorize @event
+    authorize @event
   end
 
   def update
     @event = Event.find(params[:id])
-    # authorize @event
+    authorize @event
     if @event.update(event_params)
       redirect_to events_path
     else
@@ -34,7 +35,7 @@ class EventsController < ApplicationController
 
   def destroy
     @event = Event.find(params[:id])
-    # authorize @event
+    authorize @event
     @event.destroy
     redirect_to events_path, status: :see_other
   end
