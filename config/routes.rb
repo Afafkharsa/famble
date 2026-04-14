@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'events/index'
+  get 'events/new'
 
   # devise_for :users
   devise_for :users, :controllers => { registrations: 'users/registrations' }
@@ -15,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :recipes
 
-  resources :chats, only: [:index, :create, :show] do
+  resources :chats, only: [:index, :create, :show, :destroy] do
     resources :messages, only: [:create]
   end
 
@@ -43,5 +45,7 @@ Rails.application.routes.draw do
       get 'day_detail'
     end
   end
+
+  resources :events, only: [:index, :new, :create, :edit, :update, :destroy]
 
 end
