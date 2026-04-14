@@ -5,23 +5,10 @@
       <div class="text-secondary">
           <%= link_to "← Back to tasks", tasks_path, class: "link-secondary link-underline-secondary" %>
         </div>
-      <div class="d-flex gapt-2 align-items-center mb-3 mt-2">
-        <h2><%= @task.name %></h2>
-        <%= link_to edit_task_path(@task) do %>
-          <% if policy(Task).edit?  %>
-            <div style= "text-decoration: none; cursor: pointer; color: inherit;">
-              <i class="fa-regular fa-pen-to-square text-body-secondary fs-4 ps-2"></i>
-            </div>
-          <% end %>
-        <% end %>
-        <%= link_to task_path(@task),
-          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
-          <% if policy(Task).destroy?  %>
-            <div style= "text-decoration: none; cursor: pointer; color: inherit;">
-              <i class="fa-solid fa-eraser text-body-secondary fs-4 ps-2"></i>
-            </div>
-          <% end %>
-        <% end %>
+      <div class="mb-3 mt-4">
+        <h2 class="text-success d-flex gap-2">
+          <%= render "task_title", task: @task %>
+        </h2>
       </div>
 
       <div class = "d-flex justify-content-between mt-1 mb-4">
