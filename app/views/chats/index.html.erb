@@ -5,7 +5,7 @@
     <div class="card mt-4 border-0 list-group col-md-7 bg-transparent">
       <% if @chats.any? %>
         <% @chats.each do |chat| %>
-          <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div class="list-group-item d-flex justify-content-between align-items-center bg-white">
             <%= link_to chat.title, chat_path(chat),
             class: "text-decoration-none text-dark flex-grow-1" %>
 
