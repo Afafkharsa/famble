@@ -19,7 +19,7 @@
     <div class="row g-4">
       <% @recipes.each do |recipe| %>
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100 bg-white rounded-3">
+          <div class="card border-0 shadow-sm h-100 bg-white rounded-4">
             <% if recipe.photo.present? %>
               <%= image_tag recipe.photo, class: "card-img-top", style: "height: 150px; object-fit: cover; border-radius: 12px 12px 0 0;" %>
             <% end %>

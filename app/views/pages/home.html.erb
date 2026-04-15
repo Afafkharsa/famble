@@ -8,7 +8,7 @@
     <!-- Top main button -->
     <div class="row mb-4">
       <div class="col-12">
-        <%= link_to meal_plans_path, class: "btn btn-secondary w-100 py-4 fs-4" do %>
+        <%= link_to meal_plans_path, class: "btn-date w-100" do %>
           <p class="mb-2">
             <strong><%= Date.today.strftime("%A, %B %d") %></strong>
           </p>
@@ -18,32 +18,57 @@
 
     <!-- Row 2: 3 buttons -->
     <div class="row g-4 mb-3" style="flex: 1;">
+
       <div class="col-md-4 d-flex">
-        <%= link_to "Recipes", recipes_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
+        <%= link_to recipes_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('recipes_button.jpg')});" do %>
+          <div class="button-title">
+            Recipes
+          </div>
+        <% end %>
       </div>
-      <div class="col-md-4 d-flex" >
-        <%= link_to "Tasks", tasks_path,
-        class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5 tasks-card"
-        %>
-      </div>
+
       <div class="col-md-4 d-flex">
-        <%= link_to "Rewards", rewards_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
+        <%= link_to tasks_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('tasks_button.jpg')});" do %>
+          <div class="button-title">
+            Tasks
+          </div>
+        <% end %>
+      </div>
+
+      <div class="col-md-4 d-flex">
+        <%= link_to rewards_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('rewards_button.jpg')});" do %>
+          <div class="button-title">
+            Rewards
+          </div>
+        <% end %>
       </div>
     </div>
 
     <!-- Row 3: 3 buttons -->
     <div class="row g-4 mb-3" style="flex: 1;">
+
       <div class="col-md-4 d-flex">
-        <!-- TODO add link family -->
-        <%= link_to "Family", families_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
+        <%= link_to families_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('family_button.jpg')});" do %>
+          <div class="button-title">
+            Family
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-4 d-flex">
-        <!-- TODO add link calendar -->
-        <%= link_to "Calendar", calendars_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
+        <%= link_to calendars_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('calendar_button.jpg')});" do %>
+          <div class="button-title">
+            Calendar
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-4 d-flex">
-        <!-- TODO add link chatbot -->
-        <%= link_to "Chatbot", chats_path, class: "btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center fs-5" %>
+        <%= link_to chats_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('chatbot_button.jpg')});" do %>
+          <div class="button-title">
+            Chatbot
+          </div>
+        <% end %>
       </div>
     </div>
 
