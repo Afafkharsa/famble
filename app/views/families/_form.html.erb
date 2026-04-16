@@ -1,6 +1,6 @@
 <div class="modal-body p-4 text-center">
 
-  <%= simple_form_for(@member, url:families_path, method: :post) do |f| %>
+  <%= simple_form_for(@member, url:families_path) do |f| %>
     <div class="mx-auto mb-3" style="width: 120px; height: 120px; border-radius: 50%; background: #eee; overflow: hidden; border: 2px dashed #ccc; position: relative;">
       <div class="mt-4"></div>
       <%= f.input :photo %>

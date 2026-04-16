@@ -3,8 +3,8 @@
   <%# ---Today's Meal Plan part--- %>
   <div class="meal-plan-section mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="display-5 fw-bold mb-0">Today's Meal Plan</h1>
-      <%= link_to "Add Meal", new_meal_plan_path, class: "btn btn-primary rounded-pill px-4" %>
+      <h1 class="fw-bold mb-0">Today's Meal Plan</h1>
+      <%= link_to "Add Meal", new_meal_plan_path, class: "btn btn-outline-primary border-radius-5 px-4" %>
     </div>
 
     <div class="table-responsive shadow-lg rounded-3 bg-white p-3">
@@ -41,11 +41,11 @@
                       <div class="small fw-bold mt-1 d-flex justify-content-center gap-2">
                         <%= rmp.recipe.name %>
                       <%# Edit meal plan  %>
-                        <%= link_to edit_recipe_meal_plan_path(rmp), class:"text-primary" do %>
+                        <%= link_to edit_recipe_meal_plan_path(rmp), class:"text-dark" do %>
                         <i class="bi bi-pencil-square"></i>
                         <% end %>
                       <%# Delet meal plan  %>
-                        <%=link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-danger" do %>
+                        <%=link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-dark" do %>
                         <i class="bi bi-trash"></i>
                         <% end %>
                       </div>
@@ -55,7 +55,7 @@
                     <% end %>
                   <% end %>
                 <% else %>
-                  <%= link_to "+", new_meal_plan_path(day:Date.today, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                  <%= link_to "+", new_meal_plan_path(day:Date.today, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle fs-5" %>
                 <% end %>
               </td>
               <% end %>
@@ -68,7 +68,7 @@
 
   <%# -- Weekly's Meal Plan part--- %>
   <div class="meal-plan-section">
-    <h1 class="display-5 fw-bold mb-4">Weekly's Meal Plan</h1>
+    <h1 class="fw-bold mb-4">Weekly's Meal Plan</h1>
     <div class="d-flex justify-content-between table-responsive shadow-lg rounded-3 bg-white p-3">
       <table class="table table-borderless align-middle text-center mb-0">
         <thead class="text-secondary small">
@@ -102,11 +102,11 @@
                           <div class="small fw-bold mt-1 d-flex justify-content-center gap-2">
                           <%= rmp.recipe.name %>
                         <%# Edit meal plan  %>
-                          <%= link_to edit_recipe_meal_plan_path(rmp), class:"text-primary" do %>
+                          <%= link_to edit_recipe_meal_plan_path(rmp), class:"text-dark" do %>
                           <i class="bi bi-pencil-square"></i>
                           <% end %>
                         <%# Delet meal plan  %>
-                          <%=link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-danger" do %>
+                          <%=link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-dark" do %>
                           <i class="bi bi-trash"></i>
                           <% end %>
                         </div>
@@ -115,7 +115,7 @@
                         <% end %>
                       <% end %>
                     <% else %>
-                      <%= link_to "+", new_meal_plan_path(day: (Date.today +1), meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle" %>
+                      <%= link_to "+", new_meal_plan_path(day: (Date.today +1), meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle fs-5" %>
                     <% end %>
                   </td>
                 <% end %>

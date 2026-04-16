@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   resources :meal_plans, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
   resources:families do
-    resources :member, only: [:index, :show, :new, :create]
+    resources :member, only: [:index, :show, :new, :create, :edit, :update]
     end
 
   resources :recipe_meal_plans, only: [:destroy, :edit, :update]
