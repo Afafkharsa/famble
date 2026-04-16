@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>My events</h1>
+    <h2>My events</h2>
     <%= link_to "Add New Event", new_event_path, class: "btn btn-secondary" %>
   </div>
 
@@ -9,10 +9,12 @@
     <div class="row g-4">
       <% @events.each do |event| %>
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100">
+           <div class="card border-0 shadow-sm h-100 bg-white">
             <div class="card-body">
               <div  class="d-flex justify-content-left gap-2">
-                <h5 class="card-title text-secondary"><%= event.title %></h5>
+                <h5 class="card-title text-secondary">
+                  <%= event.title %>
+                </h5>
                 <%# Edit event  %>
                   <%= link_to edit_event_path(event), class:"text-primary" do %>
                   <i class="bi bi-pencil-square"></i>
@@ -24,15 +26,12 @@
               </div>
               <p class="text-muted mb-1"><i class="fa-regular fa-calendar-days" me-1></i> <%= event.start_time.strftime("%B %d %Y") %></p>
               <p class="text-muted mb-1"><i class="fa-regular fa-clock" me-1></i> <%= event.start_time.strftime("%I: %M %p") %></p>
-
-
             </div>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-muted">No recipes saved yet. Ask the AI for a recipe!</p>
-    <%# <%= link_to "Ask AI for a recipe", chats_path, data: { turbo_method: :post }, class: "btn btn-secondary rounded-pill" %> %>
+    <p class="text-muted">No events saved yet!</p>
   <% end %>
 </div>
