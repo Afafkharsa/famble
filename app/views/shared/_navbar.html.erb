@@ -1,12 +1,25 @@
 <nav class="navbar navbar-expand-sm navbar-light navbar-lewagon <%= yield(:navbar_class) %>">
   <div class="container-fluid">
-    <%= link_to root_path, class: "navbar-brand h3 p-0 m-0" do %>
-      Famble
+    <% if current_user && current_user.role %>
+      <%= link_to root_path, class: "navbar-brand h3 p-0 m-0" do %>
+        Famble
+      <% end %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation" >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    <% else %>
+      <%= link_to root_path, class: "navbar-brand h3 p-0 m-0 text-white" do %>
+        Famble
+      <% end %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation"
+              data-bs-theme="dark">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     <% end %>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
