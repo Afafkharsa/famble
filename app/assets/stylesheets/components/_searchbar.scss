@@ -1,0 +1,16 @@
+.recipe-search-input {
+  background-color: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+
+.recipe-search-input::placeholder {
+  opacity: 0.5;
+}
+
+.recipe-search-input:focus {
+  background-color: #ffffff;
+  border-color: #ccc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  outline: none;
+}

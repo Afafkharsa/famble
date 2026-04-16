@@ -347,7 +347,7 @@ recipe_5 = Recipe.create!(
 
 puts "Generating AI photo..."
 
-[recipe_1, recipe_2, recipe_3].each do |recipe|
+[recipe_1, recipe_2, recipe_3, recipe_4, recipe_5].each do |recipe|
   ImageGeneratorService.generate_and_attach(recipe)
   sleep 2
 end
@@ -503,6 +503,21 @@ chat_2 = Chat.create!(
   title: "Funny Breakfast",
 )
 
+chat_3 = Chat.create!(
+  user: user_1,
+  title: "Healthy snacks"
+)
+
+chat_4 = Chat.create!(
+  user: user_1,
+  title: "Quick lunch ideas"
+)
+
+chat_5 = Chat.create!(
+  user: user_1,
+  title: "Vegetarian recipes"
+)
+
 puts "Creating chat's messages..."
 
 Message.create!(
@@ -609,6 +624,105 @@ Message.create!(
       "keywords": ["fun breakfast", "animal faces", "kids meal"],
       "calories": 320,
       "allergens": ["gluten", "dairy", "eggs"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_3,
+  role: "user",
+  content: "suggest me a healthy snack"
+)
+
+Message.create!(
+  chat: chat_3,
+  role: "assistant",
+  content: '
+    {
+      "name": "Peanut Butter Apple Slices",
+      "ingredients": [
+        {"ingredient": "apple", "quantity": "1, sliced"},
+        {"ingredient": "peanut butter", "quantity": "2 tbsp"},
+        {"ingredient": "granola", "quantity": "1 tbsp"}
+      ],
+      "description": [
+        "Wash and slice the apple into thin wedges.",
+        "Spread peanut butter evenly on each slice.",
+        "Sprinkle granola on top for added crunch.",
+        "Serve immediately as a healthy snack."
+      ],
+      "keywords": ["snack", "healthy", "quick"],
+      "calories": 250,
+      "allergens": ["peanuts"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_4,
+  role: "user",
+  content: "give me a quick lunch recipe"
+)
+
+Message.create!(
+  chat: chat_4,
+  role: "assistant",
+  content: '
+    {
+      "name": "Turkey Avocado Wrap",
+      "ingredients": [
+        {"ingredient": "tortilla wrap", "quantity": "1"},
+        {"ingredient": "sliced turkey", "quantity": "100 g"},
+        {"ingredient": "avocado", "quantity": "1/2, sliced"},
+        {"ingredient": "lettuce", "quantity": "1 handful"},
+        {"ingredient": "tomato", "quantity": "1/2, sliced"},
+        {"ingredient": "mayonnaise", "quantity": "1 tbsp"}
+      ],
+      "description": [
+        "Lay the tortilla flat on a clean surface.",
+        "Spread mayonnaise evenly over the wrap.",
+        "Layer turkey, avocado, lettuce, and tomato.",
+        "Roll the wrap tightly and slice in half.",
+        "Serve immediately."
+      ],
+      "keywords": ["lunch", "quick", "wrap"],
+      "calories": 400,
+      "allergens": ["gluten", "eggs"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_5,
+  role: "user",
+  content: "i want a vegetarian dinner"
+)
+
+Message.create!(
+  chat: chat_5,
+  role: "assistant",
+  content: '
+    {
+      "name": "Chickpea Spinach Curry",
+      "ingredients": [
+        {"ingredient": "chickpeas (canned)", "quantity": "200 g"},
+        {"ingredient": "spinach", "quantity": "100 g"},
+        {"ingredient": "coconut milk", "quantity": "200 ml"},
+        {"ingredient": "onion", "quantity": "1, diced"},
+        {"ingredient": "garlic", "quantity": "2 cloves"},
+        {"ingredient": "curry powder", "quantity": "1 tbsp"},
+        {"ingredient": "olive oil", "quantity": "1 tbsp"}
+      ],
+      "description": [
+        "Heat olive oil in a pan and sauté onion and garlic.",
+        "Add curry powder and cook for 1 minute.",
+        "Add chickpeas and coconut milk, then simmer for 10 minutes.",
+        "Stir in spinach and cook until wilted.",
+        "Serve hot with rice or bread."
+      ],
+      "keywords": ["vegetarian", "dinner", "curry"],
+      "calories": 380,
+      "allergens": []
     }
   '
 )
