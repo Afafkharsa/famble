@@ -1,7 +1,11 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>My Recipes</h1>
-    <%= link_to "Add New Recipe", new_recipe_path, class: "btn btn-secondary" %>
+    <h1 class="mb-0 d-flex align-items-center gap-4">
+      My Recipes
+      <%= link_to new_recipe_path, class: "text-decoration-none text-secondary" do %>
+        <i class="bi bi-plus-circle fs-4"></i>
+      <% end %>
+    </h1>
   </div>
 
   <div class="mb-4">
@@ -15,15 +19,19 @@
     <div class="row g-4">
       <% @recipes.each do |recipe| %>
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100">
+          <div class="card border-0 shadow-sm h-100 bg-white rounded-4">
             <% if recipe.photo.present? %>
               <%= image_tag recipe.photo, class: "card-img-top", style: "height: 150px; object-fit: cover; border-radius: 12px 12px 0 0;" %>
             <% end %>
             <div class="card-body">
               <h5 class="card-title text-secondary">
-                <%= link_to recipe.name, recipe_path(recipe), class: "text-decoration-none text-secondary" %>
+                <%= link_to recipe.name, recipe_path(recipe), class: "text-decoration-none text-success" %>
               </h5>
-              <p class="text-muted mb-1"><i class="fas fa-fire me-1"></i> <%= recipe.calories %> kcal</p>
+              <p class="text-muted mb-1" style="font-size: 0.85rem;">
+                <i class="fas fa-fire me-1"></i><%= recipe.calories %> kcal &nbsp;| &nbsp;
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                <%= recipe.allergens.present? ? recipe.allergens : "No allergens" %>
+              </p>
               <p class="mb-2">
                 <% recipe.keywords.to_s.split(",").first(3).each do |keyword| %>
                   <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
@@ -32,12 +40,7 @@
                 <% end %>
               </p>
               <div class="mt-auto d-flex justify-content-end gap-2">
-                <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-secondary btn-sm rounded-pill" %>
-                <%= link_to recipe_path(recipe),
-                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                    class: "text-muted ms-3" do %>
-                  <i class="bi bi-trash"></i>
-                <% end %>
+                <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-warning btn-sm rounded-pill" %>
               </div>
             </div>
           </div>
@@ -45,7 +48,14 @@
       <% end %>
     </div>
   <% else %>
-    <p class="text-muted">No recipes saved yet. Ask the AI for a recipe!</p>
-    <%# <%= link_to "Ask AI for a recipe", chats_path, data: { turbo_method: :post }, class: "btn btn-secondary rounded-pill" %> %>
+    <div class="d-flex justify-content-between">
+      <div class="mt-4">
+        <p class="text-muted">No recipes saved yet. Ask the AI for a recipe!</p>
+      </div>
+
+      <div class="col-md-4 mt-4 text-center">
+        <%= render "shared/ai_card" %>
+      </div>
+    </div>
   <% end %>
 </div>
