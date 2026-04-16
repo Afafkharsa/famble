@@ -1,11 +1,6 @@
 <div class="card-body">
   <button type="button" class="btn-close float-end me-3" data-bs-dismiss="modal"></button>
     <h1 class="mt-4 mb-2 text-center fw-bold">Edit Member</h1>
-    <%= render "form", member: @member %>
 
-    <%#= simple_form_for(@member, url:families_path(@member), method: :patch) do |f| %>
-    <div class="d-flex justify-content-center">
-    <%= f.button :submit, "Edit", class: "btn btn-primary w-auto px-5 py-2 mb-4 rounded-pill fs-5" %>
-    </div>
-    <% end %>
+    <%= render "form", member: @member %>
 </div>
