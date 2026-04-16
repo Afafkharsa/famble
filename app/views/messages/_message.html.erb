@@ -15,8 +15,8 @@
 
         <% begin %>
           <% recipe = JSON.parse(message.content) %>
-          <div class="card border-0 shadow-sm p-3" style="max-width: 500px;">
-            <h5> <%= recipe["name"] %></h5>
+          <div class="card border-0 shadow-sm p-3 bg-white rounded-5" style="max-width: 500px;">
+            <h5 class="text-success"> <%= recipe["name"] %></h5>
             <p>
               <% Array(recipe["keywords"]).each do |keyword| %>
                 <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
@@ -24,7 +24,7 @@
                 </span>
               <% end %>
             </p>
-            <p class="text-muted mb-1"><i class="fas fa-fire me-1"></i> <%= recipe["calories"] %> kcal &nbsp;|&nbsp; <i class="fas fa-exclamation-triangle me-1"></i> <%= Array(recipe["allergens"]).join(", ").presence || "No allergens" %></p>
+            <p class="text-muted mb-1" style="font-size: 0.85rem;"><i class="fas fa-fire me-1"></i> <%= recipe["calories"] %> kcal &nbsp;|&nbsp; <i class="fas fa-exclamation-triangle me-1"></i> <%= Array(recipe["allergens"]).join(", ").presence || "No allergens" %></p>
             <details class="mb-2">
               <summary class="text-primary" style="cursor:pointer;"><strong>Ingredients</strong></summary>
               <ul class="mt-2">
@@ -66,12 +66,12 @@
             <%= hidden_field_tag "recipe[allergens]", Array(recipe["allergens"]).join(", ") %>
             <div class="row g-2 mt-1">
               <div class="col-6">
-                <%= submit_tag "Add to Meal Plan", name: "save_to_meal_plan", class: "btn btn-success btn-sm w-100 rounded-pill" %>
+                <%= submit_tag "Add to Meal Plan", name: "save_to_meal_plan", class: "btn btn-warning btn-sm w-100 rounded-pill" %>
               </div>
               <div class="col-6">
                 <%= button_tag type: "submit",
                       name: "save_recipe",
-                      class: "btn btn-outline-success btn-sm w-100 rounded-pill" do %>
+                      class: "btn btn-outline-warning btn-sm w-100 rounded-pill" do %>
                   <i class="fa-regular fa-floppy-disk"></i>
                   Save Recipe
                 <% end %>
