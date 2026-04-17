@@ -44,6 +44,10 @@ user_1 = User.create!(
   birthdate: "1981-04-09".to_date,
   family: family_1
 )
+user_1.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_anakin.jpg')),
+  filename: 'user_anakin.jpg'
+)
 
 user_2 = User.create!(
   email: "leia@test.com",
@@ -52,6 +56,10 @@ user_2 = User.create!(
   name: "Leia",
   birthdate: "2005-04-25".to_date,
   family: family_1
+)
+user_2.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_leia.jpg')),
+  filename: 'user_leia.jpg'
 )
 
 user_3 = User.create!(
@@ -62,7 +70,10 @@ user_3 = User.create!(
   birthdate: "2005-04-25".to_date,
   family: family_1
 )
-
+user_3.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_luke.jpg')),
+  filename: 'user_luke.jpg'
+)
 
 user_4 = User.create!(
   email: "amidala@test.com",
@@ -71,6 +82,10 @@ user_4 = User.create!(
   name: "Padme",
   birthdate: "1981-07-09".to_date,
   family: family_1
+)
+user_4.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_amidala.jpg')),
+  filename: 'user_amidala.jpg'
 )
 
 puts "Creating Lion King family..."
