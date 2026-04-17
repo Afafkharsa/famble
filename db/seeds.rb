@@ -195,6 +195,7 @@ Task.create!(
 Task.create!(
   name: "Starting Sith revolution",
   status: true,
+  validation: true,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
@@ -202,6 +203,33 @@ Task.create!(
   user: user_1
 )
 
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 4,
+  status: true,
+  validation: true,
+  days: ["monday"],
+  montly_frequency: 0,
+  start_date: Date.today-62,
+  end_date: Date.today-62,
+  user: user_3,
+  task_template: template_2
+)
+
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 4,
+  status: true,
+  validation: true,
+  days: ["monday"],
+  montly_frequency: 0,
+  start_date: Date.today-30,
+  end_date: Date.today-30,
+  user: user_3,
+  task_template: template_2
+)
 Task.create!(
   name: "Oil R2-D2",
   description: "Each month, put some oil inside R2-D2 collar",
@@ -431,8 +459,8 @@ Reward.create!(
   name: "Sleep in Saturday",
   description: "No chores until noon on Saturday",
   reward_points: 8,
-  redeemed: false,
-  user: user_1
+  redeemed: true,
+  user: user_3
 )
 
 puts "Creating Meal plans..."
