@@ -20,7 +20,7 @@
       <% @recipes.each do |recipe| %>
         <div class="col-md-4">
           <div
-            class="card border-0 shadow-sm h-100 bg-white rounded-4"
+            class="card base-card card-hover h-100"
             data-controller="clickable"
             data-clickable-url-value="<%= recipe_path(recipe) %>"
             data-action="click->clickable#go"
