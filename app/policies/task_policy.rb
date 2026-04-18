@@ -13,8 +13,6 @@ class TaskPolicy < ApplicationPolicy
       else
         user.tasks
       end
-
-
     end
   end
 
