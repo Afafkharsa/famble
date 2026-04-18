@@ -20,26 +20,45 @@
         </div>
         <!-- class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1" -->
 
+        <!-- STEP 2 Marked as done but not checked -->
         <% if @task.status && !@task.validation %>
           <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
-               data-task-status-target="approval"
+               data-task-status-target="done"
                data-turbo-confirm="Validate?"
                data-action="click->task-status#validate"
                type="button">
             <i class="fa-solid fa-hourglass-half border-0">
             </i> Waiting approval
           </div>
+          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
+               data-task-status-target="approved">
+            <i class="fa-regular fa-circle-check border-0 disable"></i> Done
+          </div>
+        <!-- STEP 3 Marked as done and checked -->
         <% elsif @task.status && @task.validation  %>
-            <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
-              <i class="fa-regular fa-circle-check border-0 disable"></i> Done
-            </div>
+          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
+            <i class="fa-regular fa-circle-check border-0 disable"></i> Done
+          </div>
+        <!-- STEP 1 Not done -->
         <% else %>
           <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
-               data-task-status-target="button"
+               data-task-status-target="todo"
                data-turbo-confirm="Mark complete?"
                data-action="click->task-status#complete"
                type="button">
             <i class="fa-regular fa-circle border-0"></i> To do
+          </div>
+          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
+               data-task-status-target="done"
+               data-turbo-confirm="Validate?"
+               data-action="click->task-status#validate"
+               type="button">
+            <i class="fa-solid fa-hourglass-half border-0">
+            </i> Waiting approval
+          </div>
+          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
+               data-task-status-target="approved">
+            <i class="fa-regular fa-circle-check border-0 disable"></i> Done
           </div>
         <% end %>
         <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">

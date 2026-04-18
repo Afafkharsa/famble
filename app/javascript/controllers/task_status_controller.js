@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="task-status"
 export default class extends Controller {
-  static targets = ["button","approval"]
+  static targets = ["todo","done","approved"]
   static values = { id: Number }
 
   connect() {
@@ -32,7 +32,8 @@ export default class extends Controller {
       return response.json()
     })
     .then(data => {
-      this.buttonTarget.textContent = "<i class='fa-solid fa-hourglass-half border-0'></i> Waiting approval"
+      this.todoTarget.classList.add("d-none");
+      this.doneTarget.classList.remove("d-none");
     })
     .catch(async err => {
       console.error("Task status update failed")
@@ -48,7 +49,7 @@ export default class extends Controller {
     const confirmMessage = this.element.dataset.turboConfirm
     if (confirmMessage && !confirm(confirmMessage)) return
 
-    this.approvalTarget.disabled = true
+    this.doneTarget.disabled = true
 
     const url = `/tasks/${this.idValue}`
     const tokenMeta = document.querySelector("meta[name='csrf-token']")
@@ -68,11 +69,11 @@ export default class extends Controller {
       return response.json()
     })
     .then(data => {
-      this.approvalTarget.textContent = "Done"
-      this.approvalTarget.classList ="<i class='fa-regular fa-circle-check border-0 disable'></i> Done";
+      this.doneTarget.classList.add("d-none");
+      this.approvedTarget.classList.remove("d-none");
     })
     .catch(async err => {
-      this.approvalTarget.disabled = false
+      this.doneTarget.disabled = false
       console.error("Validation failed")
       try {
         const body = await err.json()
