@@ -19,7 +19,13 @@
     <div class="row g-4">
       <% @recipes.each do |recipe| %>
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100 bg-white rounded-4">
+          <div
+            class="card border-0 shadow-sm h-100 bg-white rounded-4"
+            data-controller="clickable"
+            data-clickable-url-value="<%= recipe_path(recipe) %>"
+            data-action="click->clickable#go"
+            style="cursor: pointer;"
+          >
             <div style="height: 150px;">
               <% if recipe.photo.attached? %>
                 <%= image_tag recipe.photo,
@@ -33,9 +39,7 @@
               <% end %>
             </div>
             <div class="card-body">
-              <h5 class="card-title text-secondary">
-                <%= link_to recipe.name, recipe_path(recipe), class: "text-decoration-none text-success" %>
-              </h5>
+              <h5 class="card-title text-success"><%= recipe.name %></h5>
               <p class="text-muted mb-1" style="font-size: 0.85rem;">
                 <i class="fas fa-fire me-1"></i><%= recipe.calories %> kcal &nbsp;| &nbsp;
                 <i class="fas fa-exclamation-triangle me-1"></i>

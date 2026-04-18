@@ -6,7 +6,12 @@
       <% if @chats.any? %>
         <div class="bg-white border rounded-3 mt-2 overflow-hidden">
           <% @chats.each do |chat| %>
-            <div class="d-flex justify-content-between align-items-center p-3 chat-row">
+            <div
+              class="d-flex justify-content-between align-items-center p-3 chat-row"
+              data-controller="clickable"
+              data-clickable-url-value="<%= chat_path(chat) %>"
+              data-action="click->clickable#go"
+            >
 
               <div class="flex-grow-1">
                 <%= link_to chat.title, chat_path(chat), class: "text-decoration-none" %>
