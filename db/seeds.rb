@@ -44,6 +44,10 @@ user_1 = User.create!(
   birthdate: "1981-04-09".to_date,
   family: family_1
 )
+user_1.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_anakin.jpg')),
+  filename: 'user_anakin.jpg'
+)
 
 user_2 = User.create!(
   email: "leia@test.com",
@@ -52,6 +56,10 @@ user_2 = User.create!(
   name: "Leia",
   birthdate: "2005-04-25".to_date,
   family: family_1
+)
+user_2.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_leia.jpg')),
+  filename: 'user_leia.jpg'
 )
 
 user_3 = User.create!(
@@ -62,7 +70,10 @@ user_3 = User.create!(
   birthdate: "2005-04-25".to_date,
   family: family_1
 )
-
+user_3.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_luke.jpg')),
+  filename: 'user_luke.jpg'
+)
 
 user_4 = User.create!(
   email: "amidala@test.com",
@@ -71,6 +82,10 @@ user_4 = User.create!(
   name: "Padme",
   birthdate: "1981-07-09".to_date,
   family: family_1
+)
+user_4.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_amidala.jpg')),
+  filename: 'user_amidala.jpg'
 )
 
 puts "Creating Lion King family..."
@@ -195,6 +210,7 @@ Task.create!(
 Task.create!(
   name: "Starting Sith revolution",
   status: true,
+  validation: true,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
@@ -202,6 +218,33 @@ Task.create!(
   user: user_1
 )
 
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 4,
+  status: true,
+  validation: true,
+  days: ["monday"],
+  montly_frequency: 0,
+  start_date: Date.today-62,
+  end_date: Date.today-62,
+  user: user_3,
+  task_template: template_2
+)
+
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 4,
+  status: true,
+  validation: true,
+  days: ["monday"],
+  montly_frequency: 0,
+  start_date: Date.today-30,
+  end_date: Date.today-30,
+  user: user_3,
+  task_template: template_2
+)
 Task.create!(
   name: "Oil R2-D2",
   description: "Each month, put some oil inside R2-D2 collar",
@@ -431,8 +474,8 @@ Reward.create!(
   name: "Sleep in Saturday",
   description: "No chores until noon on Saturday",
   reward_points: 8,
-  redeemed: false,
-  user: user_1
+  redeemed: true,
+  user: user_3
 )
 
 puts "Creating Meal plans..."
