@@ -8,7 +8,13 @@ class TaskPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
-      user.family.tasks
+      if user.role == "parent"
+        user.family.tasks
+      else
+        user.tasks
+      end
+
+
     end
   end
 

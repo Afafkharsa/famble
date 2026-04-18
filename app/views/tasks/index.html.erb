@@ -48,7 +48,7 @@
     </div>
   <% end %>
 
-  <% if @user.role = "parent" %>
+  <% if @family_tasks.any? %>
     <h2 class="mt-3 d-flex">
       Family tasks
       <%= link_to new_task_path() do %>

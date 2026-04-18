@@ -9,7 +9,7 @@
 <% end %>
 <%= link_to task_path(task),
   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
-  <% if policy(Task).destroy?  %>
+  <% if policy(task).destroy?  %>
     <div style= "text-decoration: none; cursor: pointer; color: inherit;">
       <i class="fa-solid fa-eraser text-success"></i>
     </div>
