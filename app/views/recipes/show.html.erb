@@ -1,4 +1,4 @@
-<div class="container py-5">
+<div class="container py-4 col-md-8">
 
   <div class="card border-0 shadow-sm overflow-hidden bg-white rounded-4">
 
@@ -33,7 +33,7 @@
       <p class="mb-3">
         <% @recipe.keywords.to_s.split(",").each do |keyword| %>
           <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
-            <%= keyword %>
+            <%= keyword.strip %>
           </span>
         <% end %>
       </p>
