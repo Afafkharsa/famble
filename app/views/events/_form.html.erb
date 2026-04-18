@@ -1,20 +1,36 @@
-<div class="container mt-4">
-  <div class="row justify-content-left ms-2">
-    <div class="col-md-12">
-      <%= simple_form_for(@event) do |f| %>
+<%= simple_form_for(event) do |f| %>
+  <%= f.error_notification %>
 
-        <div class="form-inputs fw-bold">
-        <%# u %>
-          <%= f.input :title %>
-        <%# select_date %>
-          <%= f.input :start_time, as: :datetime,  html5: true, label:"Select Date and Time" %>
-        </div>
+  <%= f.input :title, label: "Event title", placeholder: "e.g. Soccer practice" %>
 
-         <div class="d-flex gap-3 mb-4 mt-2">
-          <%= f.submit class: "btn btn-secondary rounded-4 fs-5" %>
-          <%= link_to "Cancel", events_path, class: "btn btn-outline-secondary rounded-4 fs-5" %>
-        </div>
-        <% end %>
-    </div>
+  <%= f.input :start_time, as: :datetime, html5: true,
+      label: "Date and time" %>
+
+  <div class="mb-3">
+  <label class="form-label fw-semibold d-block mb-2">Who's going?</label>
+  <div class="d-flex flex-wrap gap-3 participant-grid">
+    <% local_assigns.fetch(:family_members, []).each do |member| %>
+      <% checked = event.participant_ids.include?(member.id) %>
+      <label class="participant-chip text-center">
+        <input type="checkbox"
+               name="event[participant_ids][]"
+               value="<%= member.id %>"
+               <%= "checked" if checked %>>
+        <span class="participant-chip__avatar rounded-circle d-flex align-items-center justify-content-center fw-medium"
+              style="background: <%= member.avatar_color %>;">
+          <%= member.initials %>
+        </span>
+        <div class="small mt-1"><%= member.display_name %></div>
+      </label>
+    <% end %>
   </div>
+  <input type="hidden" name="event[participant_ids][]" value="">
 </div>
+
+
+  <div class="d-flex gap-2 mt-4">
+    <%= f.submit (event.persisted? ? "Save changes" : "Create event"),
+        class: "btn btn-dark" %>
+    <%= link_to "Cancel", events_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

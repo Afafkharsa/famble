@@ -4,6 +4,15 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
 
+  helper_method :fab_chat
+
+  def fab_chat
+    return nil unless user_signed_in? && current_user.role.present?
+
+    @fab_chat ||= current_user.chats.order(created_at: :desc).first ||
+                  current_user.chats.create!(title: "Famble AI")
+  end
+
   protected
 
   def configure_permitted_parameters

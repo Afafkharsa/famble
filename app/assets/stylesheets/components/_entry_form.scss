@@ -1,0 +1,62 @@
+// Entry-form page wrapper (reward new/edit, reward_templates new/edit, tasks new/edit, ...)
+.entry-form-page {
+  h1, h2, h3, h4, h5, h6,
+  .form-label { color: $yellow; }
+
+  .form-label { font-weight: 600; }
+
+  // Day-of-week + other inline checkboxes: breathing room between box, label, and the next item
+  .form-check-inline {
+    margin-right: 1rem;
+
+    .form-check-input { margin-right: 0.4rem; }
+  }
+}
+
+// Clickable library-template card (hover lift)
+.library-pick {
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+// Collapsible section chevron (point history, other collapsibles)
+[data-bs-toggle="collapse"] .bi-chevron-up {
+  transition: transform 0.2s;
+}
+[data-bs-toggle="collapse"].collapsed .bi-chevron-up {
+  transform: rotate(180deg);
+}
+
+.participant-chip {
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+
+  // Visually hide the native checkbox but keep it functional
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .participant-chip__avatar {
+    width: 52px;
+    height: 52px;
+    font-size: 0.9rem;
+    opacity: 0.45;
+    filter: grayscale(0.3);
+    transition: opacity 0.15s, box-shadow 0.15s, filter 0.15s;
+  }
+
+  // Selected state — full color + dark ring
+  input[type="checkbox"]:checked + .participant-chip__avatar {
+    opacity: 1;
+    filter: none;
+    box-shadow: 0 0 0 3px $gray;
+  }
+}

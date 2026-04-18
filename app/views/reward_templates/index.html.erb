@@ -1,30 +1,54 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Reward Library</h1>
-    <%= link_to "Add to Library", new_reward_template_path, class: "btn btn-primary" %>
-  </div>
+<div class="entry-form-page bg-info-subtle min-vh-100 py-4">
+  <div class="container" style="max-width: 1100px;">
+    <%= link_to rewards_path, class: "btn btn-sm btn-light rounded-pill mb-3" do %>
+      <i class="bi bi-arrow-left me-1"></i> Back to rewards
+    <% end %>
 
-  <% if @reward_templates.any? %>
-    <div class="row">
-      <% @reward_templates.each do |template| %>
-        <div class="col-6 col-md-4 col-lg-3 mb-3">
-          <div class="card h-100 text-center">
-            <% if template.photo.attached? %>
-              <%= image_tag template.photo, class: "card-img-top", style: "height: 150px; object-fit: cover;" %>
-            <% end %>
-            <div class="card-body">
-              <h5 class="card-title"><%= template.name %></h5>
-              <p class="card-text text-muted small"><%= template.description %></p>
-              <p><strong><%= template.reward_points %> pts</strong></p>
-              <%= link_to "Delete", reward_template_path(template),
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                  class: "btn btn-outline-danger btn-sm" %>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 fw-bold mb-0">Reward library</h1>
+      <%= link_to "+ Add to library", new_reward_template_path, class: "btn btn-dark" %>
+    </div>
+
+    <% if @reward_templates.any? %>
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+        <% @reward_templates.each do |template| %>
+          <div class="col">
+            <div class="card h-100 text-center bg-white border-0 shadow-sm rounded-4 position-relative p-3">
+              <div class="position-absolute top-0 end-0 d-flex gap-1 p-2">
+                <%= link_to edit_reward_template_path(template),
+                    class: "btn btn-link p-0 text-secondary lh-1",
+                    title: "Edit" do %>
+                  <i class="bi bi-pencil-square small"></i>
+                <% end %>
+                <%= link_to reward_template_path(template),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                    class: "btn btn-link p-0 text-danger lh-1",
+                    title: "Delete" do %>
+                  <i class="bi bi-trash small"></i>
+                <% end %>
+              </div>
+              <% if template.photo.attached? %>
+                <%= image_tag template.photo, class: "card-img-top rounded-top-4", style: "height: 90px; object-fit: cover;" %>
+              <% end %>
+              <div class="card-body p-2">
+                <% if template.icon.present? %>
+                  <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                       style="width: 32px; height: 32px; background: var(--bs-info-bg-subtle);">
+                    <%= lucide_icon template.icon, class: "icon-circle__svg", size: 18 %>
+                  </div>
+                <% end %>
+                <h6 class="card-title fw-bold mb-1"><%= template.name %></h6>
+                <p class="card-text text-muted small mb-2"><%= template.description %></p>
+                <p class="mb-0 small"><strong><%= template.reward_points %> pts</strong></p>
+              </div>
             </div>
           </div>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="text-muted">No rewards in the library yet.</p>
-  <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="card bg-white border-0 shadow-sm rounded-4 p-4 text-center text-muted">
+        No rewards in the library yet.
+      </div>
+    <% end %>
+  </div>
 </div>

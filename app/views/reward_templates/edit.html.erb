@@ -1,0 +1,12 @@
+<div class="entry-form-page bg-info-subtle min-vh-100 py-4">
+  <div class="container" style="max-width: 720px;">
+    <%= link_to reward_templates_path, class: "btn btn-sm btn-light rounded-pill mb-3" do %>
+      <i class="bi bi-arrow-left me-1"></i> Back to library
+    <% end %>
+
+    <div class="card bg-white rounded-5 border-0 shadow-sm p-4">
+      <h1 class="h4 fw-bold mb-4">Edit library reward</h1>
+      <%= render "form", reward_template: @reward_template %>
+    </div>
+  </div>
+</div>

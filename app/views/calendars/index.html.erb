@@ -1,63 +1,176 @@
-<div class="container mt-3">
-  <h1 class="text-center mb-3 fs-bold">Calendar</h1>
+<div class="calendar-page">
+  <div class="container py-4 pb-5">
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-3">
+      <div>
+        <h1 class="h3 fw-bold mb-1">Calendar</h1>
+        <p class="text-muted small mb-0">Family events, tasks, and meals</p>
+      </div>
 
-  <%= month_calendar(events: []) do |date, items| %>
-  <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class:"text-decoration-none text-dark" do %>
-    <div class="day-link" style="height: 120px;" onclick="showDayDetail('<%= date %>')" >
-      <div class="date-number fs-5"><%= date.day %></div>
+      <div class="d-flex align-items-center gap-2">
+  <div class="btn-group" role="group" aria-label="Calendar view">
+    <%= link_to "Month", calendars_path(view: "month"),
+        class: "btn btn-sm #{@view == 'month' ? 'btn-dark' : 'btn-outline-dark'}" %>
+    <%= link_to "Week", calendars_path(view: "week"),
+        class: "btn btn-sm #{@view == 'week' ? 'btn-dark' : 'btn-outline-dark'}" %>
+    <%= link_to "Day", calendars_path(view: "day"),
+        class: "btn btn-sm #{@view == 'day' ? 'btn-dark' : 'btn-outline-dark'}" %>
+  </div>
+
+  <%= link_to new_event_path, class: "btn btn-sm btn-dark" do %>
+    <i class="bi bi-plus-lg me-1"></i>Add event
   <% end %>
-    <%#Show how many Event %>
-      <% day_events = @events.select { |event| event.start_time.to_date == date } %>
-      <% if day_events.any? %>
-      <div class="d-block">
-        <%= link_to events_path, class:"text-decoration-none" do %>
-        <small class="text-warning hover:!text-underline fs-6 d-inline-block" ><i class="fa-regular fa-calendar-check fs-5 ms-1 me-2"></i><%= day_events.count %>  Events</small>
-        <% end %>
-      </div>
-      <% end %>
+</div>
+    </div>
 
-    <%#Show how many Task %>
-      <% day_tasks = @tasks.select { |task| task.end_date.to_date == date } %>
-      <% if day_tasks.any? %>
-      <div class="d-block">
-        <%= link_to tasks_path, class:"text-decoration-none" do %>
-        <small class="text-primary fs-6"><i class="fa-solid fa-list-check fs-5 ms-1 me-2"></i><%= day_tasks.count %>  Tasks</small>
-        <% end %>
-      </div>
-      <% end %>
+    <div class="card bg-white rounded-5 border-0 shadow-sm p-4">
+      <% if @view == "day" %>
+        <% date       = params[:start_date].present? ? params[:start_date].to_date : Date.today %>
+        <% events     = @events.select    { |e| e.start_time.to_date == date } %>
+        <% tasks      = @tasks.select     { |t| t.end_date.to_date == date } %>
+        <% meal_plans = @meal_plans.select { |m| m.day == date } %>
 
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <%= link_to calendars_path(view: "day", start_date: date - 1.day),
+              class: "btn btn-sm btn-light rounded-pill" do %>
+            <i class="bi bi-chevron-left"></i>
+          <% end %>
+          <h2 class="m-0 text-center"><%= date.strftime("%A, %B %-d") %></h2>
+          <%= link_to calendars_path(view: "day", start_date: date + 1.day),
+              class: "btn btn-sm btn-light rounded-pill" do %>
+            <i class="bi bi-chevron-right"></i>
+          <% end %>
+        </div>
 
-    <%#Show how many meal_plan %>
-      <% day_meals = @meal_plans.select { |meal| meal.day == date } %>
-      <% if day_meals.any? %>
-      <div class="task-line">
-        <%= link_to meal_plans_path, class:"text-decoration-none" do %>
-        <small class="text-success fs-6">
-          <span class="fs-5">🍽️</span>
-          <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
-          <%= total_recipes %> <%= "Meal".pluralize(total_recipes) %>
-          <%#= day_meals.count %></small>
+        <div class="row g-3">
+          <%# Events %>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body p-3">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <div class="icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                       style="width: 32px; height: 32px; background: #F5D2D2;">
+                    <i class="bi bi-calendar-event"></i>
+                  </div>
+                  <h6 class="text-uppercase fw-bold small mb-0"><%= events.count %> Events</h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <% events.each do |event| %>
+                    <li class="list-group-item d-flex align-items-center gap-2 px-0 py-2 small">
+                      <% if event.respond_to?(:user) && event.user %>
+                        <%= render "calendars/member_badge", member: event.user %>
+                      <% end %>
+                      <%= event.title %>
+                    </li>
+                  <% end %>
+                  <% if events.empty? %>
+                    <li class="list-group-item px-0 py-2 text-muted fst-italic small">Nothing scheduled</li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <%# Tasks %>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body p-3">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <div class="icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                       style="width: 32px; height: 32px; background: #A3CCDA;">
+                    <i class="bi bi-check2-square"></i>
+                  </div>
+                  <h6 class="text-uppercase fw-bold small mb-0"><%= tasks.count %> Tasks</h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <% tasks.each do |task| %>
+                    <li class="list-group-item d-flex align-items-center gap-2 px-0 py-2 small">
+                      <%= render "calendars/member_badge", member: task.user %>
+                      <%= task.name %>
+                    </li>
+                  <% end %>
+                  <% if tasks.empty? %>
+                    <li class="list-group-item px-0 py-2 text-muted fst-italic small">Nothing due</li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <%# Meals %>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body p-3">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <div class="icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                       style="width: 32px; height: 32px; background: #BDE3C3;">
+                    <i class="bi bi-egg-fried"></i>
+                  </div>
+                  <h6 class="text-uppercase fw-bold small mb-0">
+                    <%= meal_plans.sum { |m| m.recipe_meal_plans.count } %> Meals
+                  </h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <% meal_plans.each do |plan| %>
+                    <% plan.recipe_meal_plans.each do |rmp| %>
+                      <li class="list-group-item px-0 py-2 small"><%= rmp.recipe.name %></li>
+                    <% end %>
+                  <% end %>
+                  <% if meal_plans.empty? %>
+                    <li class="list-group-item px-0 py-2 text-muted fst-italic small">No meals planned</li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <% helper = @view == "week" ? :week_calendar : :month_calendar %>
+
+        <%= send(helper, events: []) do |date, items| %>
+          <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class: "text-decoration-none text-dark" do %>
+            <div class="day-link" style="height: 120px;">
+              <div class="date-number fs-5"><%= date.day %></div>
+          <% end %>
+
+              <% day_events = @events.select { |event| event.start_time.to_date == date } %>
+              <% if day_events.any? %>
+                <div class="d-block">
+                  <%= link_to events_path, class: "text-decoration-none" do %>
+                    <small class="text-warning fs-6 d-inline-block">
+                      <i class="bi bi-calendar-check fs-5 ms-1 me-2"></i><%= day_events.count %> Events
+                    </small>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <% day_tasks = @tasks.select { |task| task.end_date.to_date == date } %>
+              <% if day_tasks.any? %>
+                <div class="d-block">
+                  <%= link_to tasks_path, class: "text-decoration-none" do %>
+                    <small class="text-primary fs-6">
+                      <i class="bi bi-check2-square fs-5 ms-1 me-2"></i><%= day_tasks.count %> Tasks
+                    </small>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <% day_meals = @meal_plans.select { |meal| meal.day == date } %>
+              <% if day_meals.any? %>
+                <div class="task-line">
+                  <%= link_to meal_plans_path, class: "text-decoration-none" do %>
+                    <small class="text-success fs-6">
+                      <span class="fs-5">🍽️</span>
+                      <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
+                      <%= total_recipes %> <%= "Meal".pluralize(total_recipes) %>
+                    </small>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
         <% end %>
-      </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
+</div>
 
 <%= turbo_frame_tag "modal" %>
-
-
-<script>
-  function openDayDetail(date) {
-    const contentArea = document.getElementById('modal-content-area');
-
-    //Fetch to route to get data on this date
-    fetch(`/calendars/day_detail?date=${date}`)
-      .then(response => response.text())
-      .then(html => {
-        contentArea.innerHTML = html;
-
-        const myModal = new bootstrap.Modal(document.getElementById('memberModal'));
-        myModal.show();
-      });
-  }
-</script>

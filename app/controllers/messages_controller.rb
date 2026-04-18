@@ -1,68 +1,8 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!
 
-  SYSTEM_PROMPT = <<~PROMPT
-    You are a recipe assistant, helping users find and create recipes.
-
-    I am a user looking to discover new recipes, get cooking instructions and track my calories.
-
-    Help me find, suggest and create recipes. Always structure your recipe with:
-    - Name
-    - Ingredients with quantities
-    - Step by step description
-    - Total calories
-    - Allergens
-
-    Always respond strictly in JSON without any extra text or markdown.
-    The JSON must include these keys:
-
-    {
-      "name": string,
-      "ingredients": [
-        {"ingredient": string, "quantity": string}
-      ],
-      "description": [string],
-      "keywords": [string],
-      "calories": integer,
-      "allergens": [string]
-    }
-
-    Rules:
-
-    1. Never include markdown fences (```), explanations, or any text outside the JSON.
-    2. Use arrays for ingredients and descriptrion.
-    3. Always include all keys even if some values are empty (e.g., "allergens": []).
-    4. Make keywords relevant to the recipe.
-    5. Ensure ingredient quantities are included.
-    6. Always return **valid JSON** ready to parse.
-
-    Example output:
-
-    {
-      "name": "High-Protein Greek Yogurt Chicken Salad",
-      "ingredients": [
-        {"ingredient": "cooked chicken breast", "quantity": "150 g"},
-        {"ingredient": "plain Greek yogurt", "quantity": "120 g"},
-        {"ingredient": "celery", "quantity": "50 g"}
-      ],
-      "description": [
-        "Mix the chicken with Greek yogurt and celery.",
-        "Season with salt and pepper."
-      ],
-      "keywords": ["high protein", "low carb", "quick meal"],
-      "calories": 310,
-      "allergens": ["dairy"]
-    }
-
-    Be concise, structured, and precise.
-
-    Your response will be parsed by a JSON parser. Invalid JSON will be rejected.
-  PROMPT
-
   def create
     @chat = current_user.chats.find(params[:chat_id])
-    @meal_plans = current_user.family.meal_plans
-
     @message = Message.new(message_params)
     @message.chat = @chat
     @message.role = "user"
@@ -75,9 +15,7 @@ class MessagesController < ApplicationController
       @assistant_message.update(content: @response.content)
       broadcast_replace(@assistant_message)
 
-      if @chat.messages.where(role: "user").count == 1
-        @chat.generate_title_from_first_message
-      end
+      @chat.generate_title_from_first_message if @chat.messages.where(role: "user").count == 1
 
       respond_to do |format|
         format.turbo_stream
@@ -110,12 +48,21 @@ class MessagesController < ApplicationController
     )
   end
 
-  def send_question(model: "gpt-4o", with: {})
+  def send_question(model: "gpt-4.1-nano", with: {})
+    family = current_user.family
     @ruby_llm_chat = RubyLLM.chat(model: model)
 
     build_conversation_history
 
-    @response = @ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content, with: with) do |chunk|
+    @ruby_llm_chat
+      .with_tool(FamilyMembersTool.new(family: family))
+      .with_tool(FamilyTasksTool.new(family: family))
+      .with_tool(FamilyRewardsTool.new(family: family))
+      .with_tool(FamilyMealPlansTool.new(family: family))
+      .with_tool(FamilyCalendarTool.new(family: family))
+      .with_instructions(FambleAi::SystemPrompt.new(user: current_user).call)
+
+    @response = @ruby_llm_chat.ask(@message.content, with: with) do |chunk|
       next if chunk.content.blank?
 
       @assistant_message.content += chunk.content

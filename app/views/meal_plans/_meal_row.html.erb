@@ -1,0 +1,72 @@
+<% meal_types = [
+  { name: "Breakfast", icon: "bi-sun-fill",        color: "text-warning" },
+  { name: "Lunch",     icon: "bi-egg-fried",       color: "text-info"    },
+  { name: "Dinner",    icon: "bi-moon-stars-fill", color: "text-primary" },
+  { name: "Snack",     icon: "bi-cup-hot-fill",    color: "text-danger"  }
+] %>
+
+<div class="row g-3 align-items-stretch">
+  <%# Date chip — visually distinct from meal columns %>
+  <div class="col-md-2 d-flex align-items-center">
+    <% if date %>
+      <div class="rounded-4 px-3 py-2 w-100 text-center" style="background: var(--bs-info-bg-subtle);">
+        <div class="text-uppercase small fw-bold text-muted" style="letter-spacing: 0.08em;">
+          <%= date.strftime("%a") %>
+        </div>
+        <div class="h5 fw-bold mb-0"><%= date.strftime("%-d") %></div>
+        <div class="small text-muted"><%= date.strftime("%b") %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Meal columns — each separated with a subtle left border %>
+  <% meal_types.each_with_index do |type, idx| %>
+    <div class="col-md-<%= 10 / meal_types.size %> text-center <%= 'border-start' if idx > 0 %> px-3">
+      <div class="mb-2">
+        <i class="bi <%= type[:icon] %> <%= type[:color] %> fs-4"></i>
+        <div class="text-uppercase small text-muted fw-bold" style="letter-spacing: 0.05em;">
+          <%= type[:name] %>
+        </div>
+      </div>
+
+      <% meals = plan&.recipe_meal_plans&.select { |rmp| rmp.meal_type == type[:name] } || [] %>
+
+      <% if meals.any? %>
+        <% meals.each do |rmp| %>
+          <div class="d-inline-flex align-items-center gap-1">
+            <%= link_to rmp.recipe.name, recipe_path(rmp.recipe),
+                class: "text-reset text-decoration-none small" %>
+            <div class="dropdown">
+              <button type="button" class="btn btn-sm btn-link p-0 text-secondary lh-1"
+                      data-bs-toggle="dropdown" aria-expanded="false"
+                      title="More actions">
+                <i class="bi bi-three-dots small"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end small">
+                <li>
+                  <%= link_to edit_recipe_meal_plan_path(rmp), class: "dropdown-item" do %>
+                    <i class="bi bi-pencil-square me-2"></i>Edit
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to recipe_meal_plan_path(rmp),
+                      data: { turbo_method: :delete, turbo_confirm: "Remove this meal from the plan?" },
+                      class: "dropdown-item text-danger" do %>
+                    <i class="bi bi-trash me-2"></i>Remove
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <%= link_to new_meal_plan_path(day: date, meal_types: type[:name]),
+            class: "btn btn-sm btn-light rounded-circle",
+            style: "width: 30px; height: 30px;",
+            title: "Add #{type[:name].downcase}" do %>
+          <i class="bi bi-plus"></i>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,74 +1,343 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Family Rewards</h1>
-    <div>
-      <%= link_to "Add Reward", new_reward_path, class: "btn btn-primary me-2" %>
-      <%= link_to "Reward Library", reward_templates_path, class: "btn btn-outline-secondary" %>
+<div class="rewards-page"
+     data-controller="points-modal member-filter"
+     data-points-modal-add-reasons-value="<%= PointAdjustment::ADD_REASONS.to_json %>"
+     data-points-modal-remove-reasons-value="<%= PointAdjustment::REMOVE_REASONS.to_json %>">
+
+  <div class="container py-4 pb-5">
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-3">
+      <div>
+        <h1 class="h3 fw-bold mb-1">Family rewards</h1>
+        <p class="text-muted small mb-0">Everyone's progress in one place</p>
+      </div>
+      <div class="d-flex gap-2">
+        <%= link_to "Library", reward_templates_path, class: "btn btn-outline-dark" %>
+        <%= link_to "+ Add reward", new_reward_path, class: "btn btn-dark" %>
+      </div>
+    </div>
+
+    <%# Member filter — click an avatar to hide/show that member's column %>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <% current_user.family.users.each do |member| %>
+        <button type="button"
+                class="btn btn-sm rounded-pill d-inline-flex align-items-center gap-2 filter-chip is-active"
+                style="background: <%= member.avatar_color %>; border: none;"
+                data-action="click->member-filter#toggle"
+                data-member-filter-target="chip"
+                data-member-id="<%= member.id %>"
+                title="Click to hide <%= member.display_name %>">
+          <span class="rounded-circle bg-white d-inline-flex align-items-center justify-content-center fw-bold overflow-hidden"
+                style="width: 22px; height: 22px; font-size: 0.7rem;">
+            <% if member.photo.attached? %>
+              <%= image_tag member.photo, style: "width: 100%; height: 100%; object-fit: cover;" %>
+            <% else %>
+              <%= member.initials %>
+            <% end %>
+          </span>
+          <span class="small fw-bold"><%= member.display_name %></span>
+        </button>
+      <% end %>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
+      <% current_user.family.users.each do |member| %>
+        <% earned_display = member.earned_points + [member.adjusted_points, 0].max %>
+        <% adjustments = member.point_adjustments.includes(:created_by).order(created_at: :desc).limit(5) %>
+        <% member_rewards = member.rewards.where(redeemed: false).order(:created_at) %>
+
+        <div class="col" data-member-filter-target="column" data-member-id="<%= member.id %>">
+          <div class="card member-card border-0 shadow-sm rounded-5 overflow-hidden">
+            <%# Member header with avatar, pills, parent point controls %>
+            <div class="member-head text-center p-3" style="background: <%= member.avatar_color %>">
+              <% if member.parent? %>
+                <div class="crown" title="Parent">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                       stroke="rgba(14,0,0,0.25)" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 20h20"/>
+                    <path d="M4 20l1-11 5 5 3-7 3 7 5-5 1 11"/>
+                    <circle cx="4" cy="7" r="1.2"/>
+                    <circle cx="12" cy="4" r="1.2"/>
+                    <circle cx="20" cy="7" r="1.2"/>
+                  </svg>
+                </div>
+              <% end %>
+
+              <% if current_user.parent? && member != current_user %>
+                <div class="dropdown position-absolute" style="top: 8px; right: 8px;">
+                  <button type="button" class="btn btn-sm btn-light rounded-circle p-0"
+                          style="width: 28px; height: 28px;"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end small">
+                    <li>
+                      <%= button_to reset_point_adjustments_path(user_id: member.id),
+                          method: :post,
+                          data: { turbo_confirm: "Reset #{member.name}'s points and earned total to zero? History is preserved." },
+                          class: "dropdown-item" do %>
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>Reset points
+                      <% end %>
+                    </li>
+                  </ul>
+                </div>
+              <% end %>
+
+              <div class="member-head__avatar mx-auto mb-2 overflow-hidden">
+                <% if member.photo.attached? %>
+                  <%= image_tag member.photo, style: "width: 100%; height: 100%; object-fit: cover;" %>
+                <% else %>
+                  <%= member.initials %>
+                <% end %>
+              </div>
+              <p class="fw-bold mb-0"><%= member.display_name %></p>
+
+              <div class="d-flex justify-content-center gap-1 flex-wrap mt-2">
+                <span class="badge rounded-pill bg-white text-dark fw-bold"><%= member.available_points %> to spend</span>
+                <span class="badge rounded-pill bg-light text-secondary fw-bold"><%= earned_display %> earned</span>
+              </div>
+
+              <% if current_user.parent? && member != current_user %>
+                <div class="d-flex align-items-center justify-content-center gap-2 mt-3 pt-3 border-top border-opacity-25">
+                  <% photo_url = member.photo.attached? ? url_for(member.photo) : "" %>
+                  <button type="button" class="btn btn-sm btn-light rounded-circle points-btn"
+                          data-action="click->points-modal#open"
+                          data-points-modal-user-id-param="<%= member.id %>"
+                          data-points-modal-name-param="<%= member.display_name %>"
+                          data-points-modal-initials-param="<%= member.initials %>"
+                          data-points-modal-photo-url-param="<%= photo_url %>"
+                          data-points-modal-color-param="<%= member.avatar_color %>"
+                          data-points-modal-type-param="add">+</button>
+                  <span class="small text-muted">points</span>
+                  <button type="button" class="btn btn-sm btn-outline-danger rounded-circle points-btn"
+                          data-action="click->points-modal#open"
+                          data-points-modal-user-id-param="<%= member.id %>"
+                          data-points-modal-name-param="<%= member.display_name %>"
+                          data-points-modal-initials-param="<%= member.initials %>"
+                          data-points-modal-photo-url-param="<%= photo_url %>"
+                          data-points-modal-color-param="<%= member.avatar_color %>"
+                          data-points-modal-type-param="remove">&minus;</button>
+                </div>
+              <% end %>
+            </div>
+
+            <%# Point history %>
+            <div class="border-top">
+              <% if adjustments.empty? %>
+                <p class="small text-muted text-center fst-italic m-0 p-2">All clear &mdash; nice work!</p>
+              <% else %>
+                <% history_id = "history-#{member.id}" %>
+                <button type="button"
+                        class="btn btn-link btn-sm text-decoration-none d-flex justify-content-between align-items-center w-100 px-3 pt-2 pb-1 text-uppercase text-muted fw-bold"
+                        style="font-size: 0.65rem; letter-spacing: 0.04em;"
+                        data-bs-toggle="collapse" data-bs-target="#<%= history_id %>"
+                        aria-expanded="true" aria-controls="<%= history_id %>">
+                  Point history
+                  <i class="bi bi-chevron-up"></i>
+                </button>
+                <ul class="list-group list-group-flush collapse show" id="<%= history_id %>">
+                  <% adjustments.each do |adj| %>
+                    <li class="list-group-item d-flex align-items-start gap-2 py-1 px-3 border-0 border-top">
+                      <span class="rounded-circle d-inline-block mt-2"
+                            style="width: 6px; height: 6px; background: <%= adj.amount.negative? ? '#E04347' : '#7FCB90' %>; opacity: 0.7;"></span>
+                      <div class="flex-grow-1 small">
+                        <div class="fw-semibold text-dark" style="font-size: 0.75rem;">
+                          <%= adj.reason.presence || (adj.amount.positive? ? "Awarded points" : "Deducted points") %>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.65rem;">
+                          by <%= adj.created_by.name.presence || "Parent" %> &middot; <%= adj.created_at.strftime("%b %-d") %>
+                        </div>
+                      </div>
+                      <span class="fw-bold small" style="color: <%= adj.amount.negative? ? '#E04347' : '#3a8a4f' %>;">
+                        <%= "#{'+' if adj.amount.positive?}#{adj.amount}" %>
+                      </span>
+                    </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+
+            <%# Reward list + add footer %>
+            <ul class="list-group list-group-flush">
+              <% member_rewards.each do |reward| %>
+                <% points_needed = reward.reward_points.to_i %>
+                <% ready = points_needed.positive? && member.available_points >= points_needed %>
+                <% pct = points_needed.positive? ? [(member.available_points.to_f / points_needed * 100).round, 100].min : 0 %>
+                <% diff = points_needed - member.available_points %>
+                <% bar_class = if ready then "bg-success"
+                               elsif pct > 60 then "bg-info"
+                               elsif pct > 30 then "bg-warning"
+                               else "bg-danger" end %>
+
+                <li class="list-group-item border-0 border-top p-3">
+                  <div class="d-block mb-2">
+                    <div class="d-flex align-items-center gap-2 mb-2 pe-4">
+                      <div class="icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                           style="width: 36px; height: 36px; background: <%= reward.icon_bg_color %>;">
+                        <%= lucide_icon(reward.icon.presence || "star", class: "icon-circle__svg") %>
+                      </div>
+                      <div class="flex-grow-1 min-w-0">
+                        <p class="fw-bold mb-0 small"><%= reward.name %></p>
+                        <% if reward.description.present? %>
+                          <p class="text-muted mb-0" style="font-size: 0.7rem;"><%= reward.description %></p>
+                        <% end %>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-1">
+                      <span class="fw-bold small"><%= member.available_points %> / <%= points_needed %></span>
+                      <span class="small <%= ready ? 'text-success fw-bold' : 'text-muted' %>">
+                        <%= ready ? "Ready!" : "#{diff} more" %>
+                      </span>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                      <div class="progress-bar <%= bar_class %>" role="progressbar" style="width: <%= pct %>%;"
+                           aria-valuenow="<%= pct %>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+
+                  <div class="dropdown item-actions">
+                    <button type="button" class="btn btn-sm btn-light rounded-circle p-0 lh-1"
+                            style="width: 26px; height: 26px;"
+                            data-bs-toggle="dropdown" aria-expanded="false"
+                            title="More actions">
+                      <i class="bi bi-three-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end small">
+                      <li>
+                        <%= link_to edit_reward_path(reward), class: "dropdown-item" do %>
+                          <i class="bi bi-pencil-square me-2"></i>Edit
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to reward_path(reward),
+                            data: { turbo_method: :delete, turbo_confirm: "Delete this reward?" },
+                            class: "dropdown-item text-danger" do %>
+                          <i class="bi bi-trash me-2"></i>Delete
+                        <% end %>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="d-flex">
+                    <% if ready %>
+                      <%= link_to "Redeem", redeem_reward_path(reward),
+                          data: { turbo_method: :patch },
+                          class: "btn btn-danger btn-sm flex-grow-1 fw-bold" %>
+                    <% else %>
+                      <button type="button" class="btn btn-light btn-sm flex-grow-1 text-muted fw-bold" disabled>
+                        <%= diff %> pts away
+                      </button>
+                    <% end %>
+                  </div>
+                </li>
+              <% end %>
+
+              <li class="list-group-item border-0 border-top p-0">
+                <%= link_to new_reward_path(user_id: member.id),
+                    class: "d-flex align-items-center justify-content-center gap-2 p-2 text-muted text-decoration-none small" do %>
+                  <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center"
+                        style="width: 26px; height: 26px;">+</span>
+                  Add reward
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <div class="row">
-    <% current_user.family.users.each do |member| %>
-      <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-column">
-        <div class="d-flex align-items-center mb-3 flex-wrap">
-          <% if member.photo.attached? %>
-            <%= image_tag member.photo, class: "rounded-circle me-2", style: "width: 48px; height: 48px; object-fit: cover;" %>
-          <% else %>
-            <i class="bi bi-person-circle fs-2 me-2 text-secondary"></i>
-          <% end %>
-          <h4 class="mb-0 me-2"><%= member.name || member.email %></h4>
-          <span class="badge bg-success fs-6">
-            <%= member.available_points %> pts available
-          </span>
-          <span class="badge bg-primary ms-2">
-            <%= member.earned_points %> earned
-          </span>
-          <span class="badge bg-danger ms-2">
-            <%= member.spent_points %> spent
-          </span>
-        </div>
+  <%# Mobile bottom tab bar %>
+  <nav class="tab-bar d-md-none bg-white border-top shadow-sm">
+    <%= link_to root_path, class: "tab-bar__item" do %>
+      <i class="bi bi-house"></i><span>Home</span>
+    <% end %>
+    <%= link_to tasks_path, class: "tab-bar__item" do %>
+      <i class="bi bi-check2-square"></i><span>Tasks</span>
+    <% end %>
+    <%= link_to meal_plans_path, class: "tab-bar__item" do %>
+      <i class="bi bi-egg-fried"></i><span>Meals</span>
+    <% end %>
+    <%= link_to rewards_path, class: "tab-bar__item is-active" do %>
+      <i class="bi bi-star"></i><span>Rewards</span>
+    <% end %>
+    <%= link_to calendars_path, class: "tab-bar__item" do %>
+      <i class="bi bi-calendar3"></i><span>Calendar</span>
+    <% end %>
+  </nav>
 
-        <% member_rewards = @rewards.select { |r| r.user_id == member.id } %>
-        <% if member_rewards.any? %>
-          <% member_rewards.each do |reward| %>
-            <div class="card mb-3 <%= 'border-success' if reward.redeemed? %>" style="height: 180px;">
-              <div class="row g-0 h-100">
-                <div class="col-4" style="background-color: #f8f9fa;">
-                  <% if reward.photo.attached? %>
-                    <%= image_tag reward.photo, class: "w-100 h-100", style: "object-fit: cover;" %>
-                  <% else %>
-                    <div class="d-flex align-items-center justify-content-center h-100 text-secondary">
-                      <i class="bi bi-gift fs-1"></i>
-                    </div>
-                  <% end %>
-                </div>
-                <div class="col-8">
-                  <div class="card-body d-flex flex-column h-100 py-2">
-                    <h5 class="card-title text-truncate mb-1"><%= reward.name %></h5>
-                    <p class="card-text small flex-grow-1 mb-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><%= reward.description %></p>
-                    <p class="mb-2"><span class="badge bg-primary"><%= reward.reward_points %> pts</span></p>
-                    <div class="d-flex flex-wrap gap-1 mt-auto">
-                      <% if reward.redeemed? %>
-                        <span class="badge bg-success align-self-center">Redeemed</span>
-                      <% else %>
-                        <%= link_to "Redeem", redeem_reward_path(reward),
-                            data: { turbo_method: :patch },
-                            class: "btn btn-outline-success btn-sm" %>
-                      <% end %>
-                      <%= link_to "Edit", edit_reward_path(reward), class: "btn btn-outline-primary btn-sm" %>
-                      <%= link_to "Delete", reward_path(reward),
-                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                          class: "btn btn-outline-danger btn-sm" %>
-                    </div>
-                  </div>
-                </div>
+  <%# Points adjustment modal (parents only) %>
+  <% if current_user.parent? %>
+    <div class="modal fade" id="pointsModal" tabindex="-1" aria-hidden="true"
+         data-points-modal-target="modal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <div class="d-flex align-items-center gap-2">
+              <div class="member-head__avatar" data-points-modal-target="avatar"></div>
+              <div>
+                <h5 class="modal-title fw-bold mb-0" data-points-modal-target="title"></h5>
+                <p class="small text-muted mb-0" data-points-modal-target="subtitle"></p>
               </div>
             </div>
+            <button type="button" class="btn-close" aria-label="Close"
+                    data-action="click->points-modal#close"></button>
+          </div>
+
+          <%= form_with url: point_adjustments_path, method: :post,
+                        local: true, html: { class: "modal-body" },
+                        data: { points_modal_target: "form" } do %>
+            <%= hidden_field_tag "point_adjustment[user_id]", nil,
+                data: { points_modal_target: "userIdField" } %>
+            <%= hidden_field_tag "point_adjustment[amount]", nil,
+                data: { points_modal_target: "amountField" } %>
+            <%= hidden_field_tag "point_adjustment[reason]", nil,
+                data: { points_modal_target: "reasonField" } %>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Points</label>
+              <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-light rounded-circle fw-bold"
+                        style="width: 34px; height: 34px;"
+                        data-action="click->points-modal#numDown">&minus;</button>
+                <input type="number" class="form-control text-center fw-bold"
+                       style="width: 90px; font-size: 1.1rem;"
+                       data-points-modal-target="amount"
+                       value="5" min="1" max="99">
+                <button type="button" class="btn btn-light rounded-circle fw-bold"
+                        style="width: 34px; height: 34px;"
+                        data-action="click->points-modal#numUp">+</button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small" data-points-modal-target="reasonLabel">Reason</label>
+              <select class="form-select"
+                      data-points-modal-target="reasonSelect"
+                      data-action="change->points-modal#selectChange">
+                <option value="">Pick a reason...</option>
+              </select>
+              <div class="text-center small text-muted fw-semibold my-2">or</div>
+              <input type="text" class="form-control"
+                     data-points-modal-target="reasonCustom"
+                     data-action="input->points-modal#customInput"
+                     placeholder="Type your own reason...">
+              <div class="text-danger small fw-semibold mt-1 d-none"
+                   data-points-modal-target="error">
+                Please select or type a reason
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="button" class="btn flex-grow-1 fw-bold"
+                      data-points-modal-target="submit"
+                      data-action="click->points-modal#submit"></button>
+              <button type="button" class="btn btn-outline-secondary"
+                      data-action="click->points-modal#close">Cancel</button>
+            </div>
           <% end %>
-        <% else %>
-          <p class="text-muted">No rewards yet for this member.</p>
-        <% end %>
+        </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>

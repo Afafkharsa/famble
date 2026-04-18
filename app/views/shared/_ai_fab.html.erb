@@ -1,0 +1,52 @@
+<% chat = fab_chat %>
+<% if chat %>
+  <div data-controller="ai-fab">
+    <%# Floating round button %>
+    <button type="button"
+            class="btn btn-dark rounded-circle shadow d-flex align-items-center justify-content-center ai-fab__button"
+            style="width: 56px; height: 56px;"
+            title="Ask Famble AI"
+            data-action="click->ai-fab#toggle">
+      <i class="bi bi-chat-dots-fill fs-4"></i>
+    </button>
+
+    <%# Chat panel, hidden until the button is clicked %>
+    <div class="ai-fab__panel d-none" data-ai-fab-target="panel">
+      <div class="card shadow-lg rounded-4 border-0 d-flex flex-column" style="max-height: 100%; height: 520px;">
+        <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between rounded-top-4">
+          <strong>Famble AI</strong>
+          <div class="d-flex gap-3 align-items-center">
+            <%= link_to chat_path(chat), class: "text-white", title: "Open in full page" do %>
+              <i class="bi bi-arrows-angle-expand"></i>
+            <% end %>
+            <button type="button" class="btn-close btn-close-white"
+                    data-action="click->ai-fab#close"
+                    aria-label="Close"></button>
+          </div>
+        </div>
+
+        <div class="card-body overflow-auto p-3 small" data-ai-fab-target="messages">
+          <% messages = chat.messages.where.not(content: [nil, ""]).order(:created_at).last(15) %>
+          <% if messages.empty? %>
+            <p class="text-muted fst-italic small mb-0">
+              Ask me about meals, tasks, rewards, or the family calendar.
+            </p>
+          <% else %>
+            <% messages.each do |msg| %>
+              <div class="mb-2 d-flex <%= msg.role == 'user' ? 'justify-content-end' : 'justify-content-start' %>">
+                <span class="d-inline-block px-3 py-2 rounded-3 <%= msg.role == 'user' ? 'bg-info-subtle' : 'bg-light' %>"
+                      style="max-width: 85%;">
+                  <%= simple_format(msg.content) %>
+                </span>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="card-footer bg-white rounded-bottom-4">
+          <%= render "messages/form", chat: chat, message: Message.new %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

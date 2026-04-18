@@ -1,0 +1,26 @@
+<% if task_templates.any? %>
+  <h6 class="fw-bold small text-uppercase mb-3">Task library</h6>
+  <div class="row g-2 mb-4">
+    <% task_templates.each do |template| %>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 text-center border-0 shadow-sm rounded-4 library-pick"
+             role="button" tabindex="0"
+             data-template-id="<%= template.id %>"
+             data-template-name="<%= template.name %>"
+             data-template-description="<%= template.description %>"
+             data-template-task-points="<%= template.task_points %>"
+             data-action="click->task-template#fill">
+          <div class="d-flex align-items-center justify-content-center pt-3">
+            <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                 style="width: 40px; height: 40px; background: var(--bs-info-bg-subtle);">
+              <i class="bi bi-check2-square text-secondary"></i>
+            </div>
+          </div>
+          <div class="card-body p-2">
+            <p class="card-text small mb-0"><%= template.name %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

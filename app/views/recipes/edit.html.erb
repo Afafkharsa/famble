@@ -1,7 +1,11 @@
-<div class="container py-4 col-md-6">
-  <div class="card shadow-sm bg-white rounded-3">
-    <div class="card-body">
-      <h1 class="card-title mb-4">Edit Recipe</h1>
+<div class="entry-form-page bg-info-subtle min-vh-100 py-4">
+  <div class="container" style="max-width: 720px;">
+    <%= link_to recipes_path, class: "btn btn-sm btn-light rounded-pill mb-3" do %>
+      <i class="bi bi-arrow-left me-1"></i> Back to recipes
+    <% end %>
+
+    <div class="card bg-white rounded-5 border-0 shadow-sm p-4">
+      <h1 class="h4 fw-bold mb-4">Edit recipe</h1>
       <%= render "form", recipe: @recipe %>
     </div>
   </div>

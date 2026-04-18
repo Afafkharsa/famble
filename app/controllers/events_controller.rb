@@ -4,13 +4,15 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = Event.new
+     @event = Event.new
     authorize @event
+    @family_members = current_user.family.users.order(:name)
   end
 
   def create
     @event = Event.new(event_params)
     @event.user = current_user
+    @event.participant_ids |= [current_user.id]
     if @event.save
       redirect_to events_path, notice: "Event created successfully!"
     else
@@ -20,7 +22,9 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
-    authorize @event
+  authorize @event
+  @family_members = current_user.family.users.order(:name)
+
   end
 
   def update

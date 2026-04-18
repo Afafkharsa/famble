@@ -5,21 +5,23 @@ export default class extends Controller {
 
   fill(event) {
     const button = event.currentTarget
-    const name = button.dataset.templateName
-    const photoUrl = button.dataset.templatePhotoUrl
-    const rewardPoints = button.dataset.templateRewardPoints
-    const templateId = button.dataset.templateId
+    const { templateName, templatePhotoUrl, templateRewardPoints, templateId, templateIcon } = button.dataset
 
-    this.nameTarget.value = name
+    this.nameTarget.value = templateName
     this.templateIdTarget.value = templateId
 
-    if (rewardPoints) {
-      this.rewardPointsTarget.value = rewardPoints
+    if (templateRewardPoints) {
+      this.rewardPointsTarget.value = templateRewardPoints
     }
 
-    if (photoUrl) {
-      this.photoPreviewTarget.src = photoUrl
+    if (this.hasPhotoPreviewTarget && templatePhotoUrl) {
+      this.photoPreviewTarget.src = templatePhotoUrl
       this.photoPreviewTarget.style.display = "block"
+    }
+
+    if (templateIcon) {
+      const radio = this.element.querySelector(`input[type="radio"][name="reward[icon]"][value="${templateIcon}"]`)
+      if (radio) radio.checked = true
     }
   }
 }
