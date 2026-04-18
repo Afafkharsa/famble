@@ -48,7 +48,8 @@
     <div class="row g-4 mb-3" style="flex: 1;">
 
       <div class="col-md-4 d-flex">
-        <%= link_to families_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('family_button.jpg')});" do %>
+        <%#= link_to families_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('family_button.jpg')});" do %>
+        <%= link_to family_members_path(current_user.family), class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('family_button.jpg')});" do %>
           <div class="button-title">
             Family
           </div>

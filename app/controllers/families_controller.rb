@@ -1,50 +1,55 @@
 class FamiliesController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_members
+  before_action :set_family
   # before_action :set_users
 
- def index
-   @family = current_user.family
-   if @family
-     @members = @family.users
-   else
-    redirect_to root_path, alert: "You are not a member of family"
-   end
- end
-
- def show
-  @family = current_user.family
-  @member = User.find(params[:id])
-  #@members = @family.users
-  render layout: false
- end
-
- def new
-   @family = current_user.family
-   @member = User.new
-   render layout: false
- end
-
- def create
-   @family = current_user.family
-   @member = User.find_by(email:params[:user][:email])
-   @family = current_user.family
-    if @member
-      if @member.update(user_params.merge(family: @family))
-        redirect_to families_path, notice: "Added #{@member.name} to family"
-      else
-        redirect_to families_path, alert: "Could not add member"
-      end
+  def index
+    # @family = current_user.family
+    if @family.present?
+      @members = @family.users.includes(:photo_attachment)
     else
-      # Can not find email "
-      flash[:alert] = "User not found"
-      #@member = User.new
-      render :new, status: :unprocessable_entity
+      redirect_to root_path, alert: "You are not a member of a family"
+    end
+  end
+
+  def show
+    # @family = current_user.family
+    @member = @family.users.find(params[:id])
+    render layout: false
+  end
+
+  def new
+    # @family = current_user.family
+    @member = User.new
+    render layout: false
+  end
+
+  def create
+    @member = User.find_by(email: params[:member][:email])
+    @family = current_user.family
+
+    if @member
+      # กรณีมี User ในระบบอยู่แล้ว แต่อยากดึงเข้าครอบครัว
+      @member.update(user_params.merge(family: @family))
+    else
+      # กรณีสร้าง User ใหม่ (ตามภาพที่ 1 ของคุณ)
+      @member = User.new(user_params) # ข้อมูล name, birthday จะถูกดึงจากตรงนี้
+      @member.family = @family
+      @member.password = "123456" # หรือรหัสผ่านเริ่มต้น
+      @member.save
     end
 
+    if @member.persisted?
+      redirect_to families_path, notice: "Added member successfully"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def edit
-    @member = User.find(params[:id])
+    @member = @family.users.find(params[:id])
     authorize @member
+    render layout: false
   end
 
   def update
@@ -56,7 +61,13 @@ class FamiliesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
- end
+
+  def destroy
+    @member = @family.users.find(params[:id])
+    @member.destroy
+    redirect_to families_path, status: :see_other
+  end
+
 
 
  private
@@ -69,8 +80,7 @@ class FamiliesController < ApplicationController
     @family = current_user.family
   end
 
- def user_params
-  params.require(:user).permit(:name, :email, :birthdate, :photo, :role)
+ def member_params
+    params.require(:user).permit(:email, :name, :birthdate, :role, :photo)
  end
-
 end

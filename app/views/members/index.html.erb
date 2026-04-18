@@ -1,0 +1,100 @@
+<div class="container py-5">
+
+  <div class="meal-plan-section mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex gap-3 ms-3">
+        <h1 class="fw-bold m-0">My Family</h1>
+        <i class="fa-solid fa-house text-light-emphasis d-block fs-1 mb-1"></i>
+      </div>
+
+      <button class="btn btn-outline-primary border-radius-5 d-flex align-items-center justify-content-center"
+                onclick="addNewMember('<%= new_family_member_path(@family) %>')"
+                style="width: 150px; height: 50px; border-width: 2px; font-weight: bold;">Add member</button>
+    </div>
+
+<!--Member photo and add modal pop up -->
+    <div class="row gx-1 gy-2 justify-content-evenly">
+      <%#= @members.each do |member| %>
+    <% @members.each do |member| %>
+      <div class="col-auto text-center mb-4">
+
+        <%= link_to edit_family_member_path(@family, member),
+          data: {
+            turbo_frame: "modal-body",
+            bs_toggle: "modal",
+            bs_target: "#memberModal"
+          },
+          class: "text-decoration-none" do %>
+
+
+        <%#= link_to family_member_path(@family, member),
+            data: { bs_toggle: "modal", bs_target: "#memberModal" },
+            class: "text-decoration-none" do %>
+
+          <!-- Profile Photo -->
+          <div class="rounded-circle overflow-hidden mx-auto mb-2
+               shadow-sm d-flex align-items-center justify-content-center fs-5 mt-3" style="width: 120px; height: 120px; background: #ddd;">
+            <% if member.photo.attached? %>
+              <%= image_tag member.photo, class: "w-100 h-100", style: "object-fit: cover;" %>
+            <% else %>
+              <div class="d-flex align-items-center justify-content-center h-100">
+                Photo
+              </div>
+            <% end %>
+          </div>
+
+          <!--Member name -->
+          <div class="member-name mt-2 fw-semibold  fw-semibold" style="font-size: 1.5rem; color: #333;">
+            <%= link_to member.name.presence || "No name",
+                edit_family_member_path(@family, member),
+                data: { bs_toggle: "modal", bs_target: "#memberModal" }, style: "text-decoration: none;" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <div class="d-flex gap-3 ms-3 mt-5">
+      <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success border-radius-5 align-items-center py-3", style:"w-auto;" %>
+    </div>
+</div>
+<div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:20px; border: none;">
+      <div class="modal-body">
+      <div id="modal-content-area"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Call the member by id
+  function loadMember(id) {
+  const contentArea = document.getElementById('modal-content-area');
+  contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
+
+  // call to route of member#show
+  fetch(`/families/${id}`)
+    .then(response => response.text())
+    .then(html => {
+      contentArea.innerHTML = html;
+    });
+}
+
+  function addNewMember(id) {
+    const contentArea = document.getElementById('modal-content-area');
+    contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
+
+    // Call Controller#new to show on Modal
+    fetch('/families/new')
+      .then(response => response.text())
+      .then(html => {
+        contentArea.innerHTML = html;
+        // Open Modal with black background)
+        const myModal = new
+        bootstrap.Modal(document.getElementById('memberModal'));
+        myModal.show();
+      })
+      .catch(err => console.error("Error loading form:", err));
+  }
+</script>
