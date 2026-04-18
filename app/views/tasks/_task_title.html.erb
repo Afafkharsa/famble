@@ -1,7 +1,7 @@
 <%= link_to task.name, task_path(task),
     class:"link-success link-underline-opacity-0"%>
 <%= link_to edit_task_path(task) do %>
-  <% if policy(Task).edit?  %>
+  <% if policy(task).edit?  %>
     <div style= "text-decoration: none; cursor: pointer; color: inherit;">
       <i class="fa-regular fa-pen-to-square text-success"></i>
     </div>
