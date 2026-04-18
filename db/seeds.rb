@@ -15,6 +15,7 @@ RecipeMealPlan.destroy_all
 MealPlan.destroy_all
 Task.destroy_all
 TaskTemplate.destroy_all
+PointAdjustment.destroy_all
 Reward.destroy_all
 RewardTemplate.destroy_all
 User.destroy_all
@@ -443,7 +444,8 @@ Reward.create!(
   description: "Pick a movie for the whole family to watch together",
   reward_points: 10,
   redeemed: false,
-  user: user_2
+  user: user_2,
+  icon: "film"
 )
 
 Reward.create!(
@@ -451,7 +453,8 @@ Reward.create!(
   description: "30 minutes of bonus screen time",
   reward_points: 5,
   redeemed: false,
-  user: user_2
+  user: user_2,
+  icon: "gamepad-2"
 )
 
 Reward.create!(
@@ -459,7 +462,8 @@ Reward.create!(
   description: "A trip to the ice cream shop",
   reward_points: 15,
   redeemed: false,
-  user: user_2
+  user: user_2,
+  icon: "ice-cream"
 )
 
 Reward.create!(
@@ -467,15 +471,49 @@ Reward.create!(
   description: "Choose a new book to read",
   reward_points: 20,
   redeemed: false,
-  user: user_1
+  user: user_3,
+  icon: "book-open"
 )
 
 Reward.create!(
   name: "Sleep in Saturday",
   description: "No chores until noon on Saturday",
   reward_points: 8,
-  redeemed: true,
-  user: user_3
+  redeemed: false,
+  user: user_3,
+  icon: "moon"
+)
+
+Reward.create!(
+  name: "Trip to the park",
+  description: "Special outing with a parent",
+  reward_points: 30,
+  redeemed: false,
+  user: user_3,
+  icon: "trophy"
+)
+
+puts "Creating point adjustments..."
+
+PointAdjustment.create!(
+  user: user_2, created_by: user_1,
+  amount: 5, reason: "Was kind to sibling",
+  created_at: 3.days.ago
+)
+PointAdjustment.create!(
+  user: user_2, created_by: user_4,
+  amount: -3, reason: "Didn't clean room",
+  created_at: 1.day.ago
+)
+PointAdjustment.create!(
+  user: user_3, created_by: user_1,
+  amount: 10, reason: "Helped without being asked",
+  created_at: 2.days.ago
+)
+PointAdjustment.create!(
+  user: user_3, created_by: user_4,
+  amount: -5, reason: "Not kind to sibling",
+  created_at: 6.hours.ago
 )
 
 puts "Creating Meal plans..."

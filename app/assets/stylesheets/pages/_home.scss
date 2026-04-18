@@ -65,3 +65,56 @@
   position: relative;
   z-index: 2;
 }
+
+.dashboard-shell {
+  background: #F4F4F4;
+  border-radius: 16px;
+}
+
+.menu-row__badge {
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.task-row__check {
+  width: 15px;
+  height: 15px;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.task-row__avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+.event-row__date {
+  min-width: 32px;
+}
+
+.event-row__avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.leaderboard__avatar {
+  width: 28px;
+  height: 28px;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.leaderboard__bar {
+  height: 6px;
+  background: $light-gray;
+
+  &-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+}

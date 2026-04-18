@@ -1,0 +1,37 @@
+// Form icon picker (new/edit reward + task template)
+.icon-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 0.5rem;
+
+  &__option { cursor: pointer; margin: 0; }
+  &__radio { position: absolute; opacity: 0; pointer-events: none; }
+
+  &__tile {
+    display: flex; align-items: center; justify-content: center;
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 0.5rem;
+    background: #fff;
+    transition: all 0.15s;
+  }
+
+  &__svg {
+    width: 22px; height: 22px;
+    stroke: rgba(0, 0, 0, 0.55); stroke-width: 1.6;
+    fill: none; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  &__radio:checked + &__tile {
+    border-color: $red;
+    background: $yellow;
+    box-shadow: 0 0 0 2px rgba($red, 0.15);
+  }
+}
+
+// Small circular icon badge (reward rows, task rows, library cards)
+.icon-circle__svg {
+  width: 18px; height: 18px;
+  stroke: rgba(0, 0, 0, 0.5); stroke-width: 1.6;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}

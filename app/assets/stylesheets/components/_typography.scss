@@ -1,0 +1,19 @@
+// Typography rules that keep fonts consistent across the app.
+//
+// Project defaults (see config/_bootstrap_variables.scss):
+//   $font-family-sans-serif: $body-font    // Inter       — used by <body>
+//   $headings-font-family:   $headers-font  // DM Serif    — used by h1..h6
+
+// Small-uppercase section labels are often wrapped in h6 tags for semantics,
+// but rendered in tiny sizes where a display serif looks out of place.
+// Force them to use the body font so labels match other UI chrome.
+h1.small, h2.small, h3.small, h4.small, h5.small, h6.small {
+  font-family: $body-font;
+}
+
+// The "Famble" brand in the navbar should match page titles (display serif),
+// not the body font, so the brand feels consistent with the hero typography
+// on every page.
+.navbar-brand {
+  font-family: $headers-font;
+}

@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:edit, :update, :destroy]
   before_action :set_users, only: [:new, :edit]
 
   def index
@@ -22,6 +22,7 @@ class TasksController < ApplicationController
       days: params[:days],
       task_template: params[:task_template]
     })
+    @task_templates = TaskTemplate.all
     authorize @task
   end
 
@@ -30,30 +31,24 @@ class TasksController < ApplicationController
     authorize @task
 
     if @task.save
-      redirect_to task_path(@task)
+      redirect_to tasks_path, notice: "Task created."
     else
-      render new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     authorize @task
+    @task_templates = TaskTemplate.all
   end
 
   def update
-    @task = Task.find(params[:id])
     authorize @task
 
     if @task.update(task_params)
       respond_to do |format|
-        format.html { redirect_to task_path(@task), notice: "Task updated." }
+        format.html { redirect_to tasks_path, notice: "Task updated." }
         format.json { render json: @task, status: :ok }
-      end
-      # Adding task points to user points
-      if @task.validation
-        @task.user.available_points += @task.task_points
-        @task.user.earned_points += @task.task_points
-        @task.user.save
       end
     else
       respond_to do |format|

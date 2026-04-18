@@ -18,6 +18,20 @@
   <%= f.hidden_field :reward_template_id, data: { reward_template_target: "templateId" } %>
 
   <div class="mb-3">
+    <%= f.label :icon, "Icon", class: "form-label" %>
+    <div class="icon-picker">
+      <% Reward::ICON_OPTIONS.each do |slug| %>
+        <label class="icon-picker__option">
+          <%= f.radio_button :icon, slug, class: "icon-picker__radio" %>
+          <span class="icon-picker__tile">
+            <%= lucide_icon slug, class: "icon-picker__svg" %>
+          </span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-3">
     <%= f.label :photo, "Photo (optional)", class: "form-label" %>
     <img src="" class="d-block mb-2 rounded" style="display: none; max-height: 150px; object-fit: cover;" data-reward-template-target="photoPreview">
     <%= f.file_field :photo, class: "form-control", accept: "image/*" %>

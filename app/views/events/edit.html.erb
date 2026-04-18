@@ -1,4 +1,12 @@
-<div class="card-body border border-dark-subtle mt-3 mx-auto w-50 ">
-  <h1 class="mt-4 mb-2 ms-4 text-left">Edit event</h1>
-  <%= render "form", event: @event %>
+<div class="entry-form-page bg-info-subtle min-vh-100 py-4">
+  <div class="container" style="max-width: 720px;">
+    <%= link_to events_path, class: "btn btn-sm btn-light rounded-pill mb-3" do %>
+      <i class="bi bi-arrow-left me-1"></i> Back to events
+    <% end %>
+
+    <div class="card bg-white rounded-5 border-0 shadow-sm p-4">
+      <h1 class="h4 fw-bold mb-4">Edit event</h1>
+<%= render "form", event: @event, family_members: @family_members %>
+    </div>
+  </div>
 </div>

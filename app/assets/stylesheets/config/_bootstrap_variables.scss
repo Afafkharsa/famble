@@ -19,10 +19,10 @@ $danger:     $red;
 $warning:    $orange;
 
 // Buttons & inputs' radius
-$border-radius-sm:            .0625rem;
-$border-radius:               .125rem;
-$border-radius-lg:            .25rem;
-$border-radius-xl:            .5rem;
-$border-radius-xxl:           1rem;
+$border-radius-sm:            .25rem;   //  4px — badges, small chips
+$border-radius:               .5rem;    //  8px — default (buttons, inputs)
+$border-radius-lg:            .625rem;  // 10px — accent rows
+$border-radius-xl:            .875rem;  // 14px — content cards
+$border-radius-xxl:           1rem;     // 16px — main container cards
 
 // Override other variables below!

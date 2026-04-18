@@ -1,0 +1,31 @@
+<% if reward_templates.any? %>
+  <h6 class="fw-bold small text-uppercase mb-3">Reward library</h6>
+  <div class="row g-2 mb-4">
+    <% reward_templates.each do |template| %>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 text-center border-0 shadow-sm rounded-4 library-pick"
+             role="button" tabindex="0"
+             data-template-id="<%= template.id %>"
+             data-template-name="<%= template.name %>"
+             data-template-photo-url="<%= template.photo.attached? ? url_for(template.photo) : '' %>"
+             data-template-reward-points="<%= template.reward_points %>"
+             data-template-icon="<%= template.icon %>"
+             data-action="click->reward-template#fill">
+          <% if template.photo.attached? %>
+            <%= image_tag template.photo, class: "card-img-top rounded-top-4", style: "height: 90px; object-fit: cover;" %>
+          <% elsif template.icon.present? %>
+            <div class="d-flex align-items-center justify-content-center pt-3">
+              <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                   style="width: 40px; height: 40px; background: var(--bs-info-bg-subtle);">
+                <%= lucide_icon template.icon, class: "icon-circle__svg" %>
+              </div>
+            </div>
+          <% end %>
+          <div class="card-body p-2">
+            <p class="card-text small mb-0"><%= template.name %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

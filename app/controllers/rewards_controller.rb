@@ -1,5 +1,7 @@
 class RewardsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_reward, only: [:edit, :update, :destroy, :redeem]
+  before_action :load_form_collections, only: [:new, :edit]
 
   def index
     @family = current_user.family
@@ -7,9 +9,7 @@ class RewardsController < ApplicationController
   end
 
   def new
-    @reward = Reward.new
-    @family_members = current_user.family.users
-    @reward_templates = RewardTemplate.all
+    @reward = Reward.new(user_id: params[:user_id])
   end
 
   def create
@@ -23,20 +23,29 @@ class RewardsController < ApplicationController
     if @reward.save
       redirect_to rewards_path, notice: "Reward created successfully!"
     else
-      @family_members = current_user.family.users
-      @reward_templates = RewardTemplate.all
+      load_form_collections
       render :new, status: :unprocessable_entity
     end
   end
 
+  def edit
+  end
+
+  def update
+    if @reward.update(reward_params)
+      redirect_to rewards_path, notice: "Reward updated!"
+    else
+      load_form_collections
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
-    @reward = Reward.find(params[:id])
     @reward.destroy
     redirect_to rewards_path, notice: "Reward deleted."
   end
 
   def redeem
-    @reward = Reward.find(params[:id])
     user = @reward.user
 
     if user.available_points >= @reward.reward_points
@@ -47,24 +56,18 @@ class RewardsController < ApplicationController
     end
   end
 
-  def edit
-    @reward = Reward.find(params[:id])
-    @family_members = current_user.family.users
-  end
-
-  def update
-    @reward = Reward.find(params[:id])
-    if @reward.update(reward_params)
-      redirect_to rewards_path, notice: "Reward updated!"
-    else
-      @family_members = current_user.family.users
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
   private
 
+  def set_reward
+    @reward = Reward.find(params[:id])
+  end
+
+  def load_form_collections
+    @family_members = current_user.family.users
+    @reward_templates = RewardTemplate.all
+  end
+
   def reward_params
-    params.require(:reward).permit(:name, :description, :reward_points, :user_id, :photo, :reward_template_id)
+    params.require(:reward).permit(:name, :description, :reward_points, :user_id, :photo, :reward_template_id, :icon)
   end
 end

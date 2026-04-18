@@ -1,31 +1,13 @@
-<div class="container mt-4" data-controller="reward-template">
-  <h1>Create a Reward</h1>
+<div class="entry-form-page bg-info-subtle min-vh-100 py-4">
+  <div class="container" style="max-width: 720px;">
+    <%= link_to rewards_path, class: "btn btn-sm btn-light rounded-pill mb-3" do %>
+      <i class="bi bi-arrow-left me-1"></i> Back to rewards
+    <% end %>
 
-  <% if @reward_templates.any? %>
-    <h5 class="mt-3">Reward Library</h5>
-    <div class="row mb-4">
-      <% @reward_templates.each do |template| %>
-        <div class="col-6 col-md-3 col-lg-2 mb-3">
-          <div class="card h-100 text-center">
-            <% if template.photo.attached? %>
-              <%= image_tag template.photo, class: "card-img-top", style: "height: 100px; object-fit: cover;" %>
-            <% end %>
-            <div class="card-body p-2">
-              <p class="card-text small mb-1"><%= template.name %></p>
-              <button type="button" class="btn btn-outline-primary btn-sm"
-                data-template-id="<%= template.id %>"
-                data-template-name="<%= template.name %>"
-                data-template-photo-url="<%= template.photo.attached? ? url_for(template.photo) : '' %>"
-                data-template-reward-points="<%= template.reward_points %>"
-                data-action="reward-template#fill">
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-      <% end %>
+    <div class="card bg-white rounded-5 border-0 shadow-sm p-4" data-controller="reward-template">
+      <h1 class="h4 fw-bold mb-4">Create a reward</h1>
+      <%= render "library_picker", reward_templates: @reward_templates %>
+      <%= render "form", reward: @reward, family_members: @family_members %>
     </div>
-  <% end %>
-
-  <%= render "form", reward: @reward, family_members: @family_members %>
+  </div>
 </div>

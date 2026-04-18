@@ -1,29 +1,29 @@
-<!-- Substribing to action cable -->
+<%# Subscribe to action cable %>
 <%= turbo_stream_from @chat %>
 
-<div class="container py-4">
+<div class="chat-page">
+  <div class="container py-4 pb-5" style="max-width: 860px;">
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
-
-    <h2 class="text-shadow" id="chat_title">
-      <% unless @chat.title == "Untitled" %>
-        <%= @chat.title %>
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-3">
+      <div>
+        <h1 class="h3 fw-bold mb-1" id="chat_title">
+          <%= @chat.title == "Untitled" ? "Famble AI" : @chat.title %>
+        </h1>
+        <p class="text-muted small mb-0">Ask about meals, tasks, rewards, or the calendar</p>
+      </div>
+      <%= link_to chats_path, class: "btn btn-outline-dark" do %>
+        <i class="bi bi-list-ul me-1"></i> All chats
       <% end %>
-    </h2>
+    </div>
 
-    <%= link_to chats_path, class: "btn d-inline-flex align-items-center" do %>
-      <i class="bi bi-arrow-left me-2"></i>
-      Back to chats
-    <% end %>
+    <div class="card rounded-5 border-0 shadow-sm overflow-hidden" style="background: #fff;">
+      <div id="messages" class="p-4" style="min-height: 420px; background: #fff;">
+        <%= render "messages/messages", messages: @chat.messages %>
+      </div>
+      <div class="border-top p-3" id="new_message_container" style="background: #fff;">
+        <%= render "messages/form", chat: @chat, message: @message %>
+      </div>
+    </div>
 
   </div>
-
-  <div id="messages">
-    <%= render "messages/messages", messages: @chat.messages %>
-  </div>
-
-  <div id="new_message_container" class="ps-3 pb-0 pt-3">
-    <%= render "messages/form", chat: @chat, message: @message %>
-  </div>
-
 </div>

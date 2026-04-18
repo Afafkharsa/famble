@@ -1,19 +1,10 @@
 Rails.application.routes.draw do
-  get 'events/index'
-  get 'events/new'
-
-  # devise_for :users
-  devise_for :users, :controllers => { registrations: 'users/registrations' }
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   root to: "pages#home"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check — used by uptime monitors
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 
   resources :recipes
 
@@ -21,31 +12,31 @@ Rails.application.routes.draw do
     resources :messages, only: [:create]
   end
 
-  resources :tasks
-  resources :task_templates
+  resources :tasks, only: [:index, :new, :create, :edit, :update, :destroy]
+  resources :task_templates, only: [:index, :new, :create, :edit, :update, :destroy]
 
-  resources :reward_templates, only: [:index, :new, :create, :destroy]
+  resources :reward_templates, only: [:index, :new, :create, :edit, :update, :destroy]
 
-  resources :rewards, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
-    member do
-      patch :redeem
-    end
+  resources :rewards, only: [:index, :new, :create, :edit, :update, :destroy] do
+    member { patch :redeem }
   end
 
-  resources :meal_plans, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+  resources :point_adjustments, only: :create do
+    collection { post :reset }
+  end
 
-  resources:families do
-    resources :member, only: [:index, :show, :new, :create]
-    end
+  resources :users, only: [] do
+    member { patch :update_color }
+  end
 
-  resources :recipe_meal_plans, only: [:destroy, :edit, :update]
+  resources :meal_plans, only: [:index, :new, :create, :edit, :update, :destroy]
+  resources :recipe_meal_plans, only: [:edit, :update, :destroy]
 
-  resources :calendars, only: [:index] do
-    collection do
-      get 'day_detail'
-    end
+  resources :families, only: [:index, :show, :new, :create]
+
+  resources :calendars, only: :index do
+    collection { get :day_detail }
   end
 
   resources :events, only: [:index, :new, :create, :edit, :update, :destroy]
-
 end

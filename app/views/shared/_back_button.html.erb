@@ -1,0 +1,9 @@
+<% unless current_page?(root_path) %>
+  <div class="container pt-3">
+    <button type="button"
+            class="btn btn-sm btn-link text-decoration-none text-muted ps-0"
+            onclick="window.history.length > 1 ? window.history.back() : window.location.href='/'">
+      <i class="bi bi-arrow-left me-1"></i>Back
+    </button>
+  </div>
+<% end %>

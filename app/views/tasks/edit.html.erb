@@ -1,4 +1,13 @@
-<<div class="card-body border border-dark-subtle mt-3 mx-auto col-md-6 bg-white">
-  <h2 class="mb-3">Edit task</h2>
-  <%= render "form", task: @task %>
+<div class="entry-form-page bg-info-subtle min-vh-100 py-4">
+  <div class="container" style="max-width: 720px;">
+    <%= link_to tasks_path, class: "btn btn-sm btn-light rounded-pill mb-3" do %>
+      <i class="bi bi-arrow-left me-1"></i> Back to tasks
+    <% end %>
+
+    <div class="card bg-white rounded-5 border-0 shadow-sm p-4" data-controller="task-template">
+      <h1 class="h4 fw-bold mb-4">Edit task</h1>
+      <%= render "library_picker", task_templates: @task_templates %>
+      <%= render "form", task: @task, users: @users %>
+    </div>
+  </div>
 </div>

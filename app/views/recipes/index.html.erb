@@ -1,74 +1,122 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 d-flex align-items-center gap-4">
-      My Recipes
-      <%= link_to new_recipe_path, class: "text-decoration-none text-secondary" do %>
-        <i class="bi bi-plus-circle fs-4"></i>
-      <% end %>
-    </h1>
-  </div>
+<% accent_colors = ["#E8AFAF", "#74B8CC", "#E6C84A", "#7FCB90", "#F6C6B8", "#C6A0E0"] %>
 
-  <div class="mb-4">
-    <%= form_with url: recipes_path, method: :get, local: true, class: "d-flex" do %>
-      <%= text_field_tag :query, params[:query], placeholder: "Search recipes...", class: "form-control me-2 recipe-search-input" %>
-      <%= submit_tag "Search", class: "btn btn-outline-primary" %>
+<div class="recipes-page">
+  <div class="container py-4 pb-5">
+
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-3">
+      <div>
+        <h1 class="h3 fw-bold mb-1">My Recipes</h1>
+        <p class="text-muted small mb-0">Save favorites and drop them into your meal plan</p>
+      </div>
+      <%= link_to "+ Add recipe", new_recipe_path, class: "btn btn-dark" %>
+    </div>
+
+    <%= form_with url: recipes_path, method: :get, local: true,
+                  class: "recipe-search d-flex align-items-center gap-2 mb-4" do %>
+      <div class="recipe-search__input flex-grow-1">
+        <i class="bi bi-search"></i>
+        <%= text_field_tag :query, params[:query],
+            placeholder: "Search recipes...",
+            class: "form-control border-0 rounded-pill" %>
+      </div>
+      <%= submit_tag "Search", class: "btn btn-dark rounded-pill px-4" %>
     <% end %>
-  </div>
 
-  <% if @recipes.any? %>
-    <div class="row g-4">
-      <% @recipes.each do |recipe| %>
-        <div class="col-md-4">
-          <div
-            class="card base-card card-hover h-100"
-            data-controller="clickable"
-            data-clickable-url-value="<%= recipe_path(recipe) %>"
-            data-action="click->clickable#go"
-            style="cursor: pointer;"
-          >
-            <div style="height: 150px;">
-              <% if recipe.photo.attached? %>
-                <%= image_tag recipe.photo,
-                    class: "w-100 h-100",
-                    style: "object-fit: cover; border-radius: 12px 12px 0 0;" %>
+    <% if @recipes.any? %>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+        <% @recipes.each_with_index do |recipe, i| %>
+          <% accent = accent_colors[i % accent_colors.length] %>
+          <div class="col">
+            <div class="card recipe-card border-0 shadow-sm h-100 bg-white rounded-5 overflow-hidden">
+
+              <%# Photo or colored placeholder with icon %>
+              <% if recipe.photo.present? %>
+                <%= image_tag recipe.photo, class: "recipe-card__photo" %>
               <% else %>
-                <div class="d-flex align-items-center justify-content-center h-100"
-                    style="background-color: #e9ecef; border-radius: 12px 12px 0 0;">
-                  <i class="fas fa-image text-secondary"></i>
+                <div class="recipe-card__photo recipe-card__photo--placeholder"
+                     style="background: <%= accent %>;">
+                  <i class="bi bi-egg-fried"></i>
                 </div>
               <% end %>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title text-success"><%= recipe.name %></h5>
-              <p class="text-muted mb-1" style="font-size: 0.85rem;">
-                <i class="fas fa-fire me-1"></i><%= recipe.calories %> kcal &nbsp;| &nbsp;
-                <i class="fas fa-exclamation-triangle me-1"></i>
-                <%= recipe.allergens.present? ? recipe.allergens : "No allergens" %>
-              </p>
-              <p class="mb-2">
-                <% recipe.keywords.to_s.split(",").first(3).each do |keyword| %>
-                  <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
-                    <%= keyword.strip %>
+
+              <div class="card-body d-flex flex-column p-4">
+                <h5 class="fw-bold mb-2">
+                  <%= link_to recipe.name, recipe_path(recipe),
+                      class: "text-reset text-decoration-none stretched-link" %>
+                </h5>
+
+                <div class="small text-muted mb-3 d-flex align-items-center gap-2 flex-wrap">
+                  <span class="d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-fire text-danger"></i><%= recipe.calories %> kcal
                   </span>
+                  <span class="text-muted">·</span>
+                  <span class="d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-exclamation-triangle text-warning"></i>
+                    <%= recipe.allergens.presence || "No allergens" %>
+                  </span>
+                </div>
+
+                <% keywords = recipe.keywords.to_s.split(",").map(&:strip).reject(&:empty?).first(3) %>
+                <% if keywords.any? %>
+                  <div class="d-flex flex-wrap gap-1 mb-3">
+                    <% keywords.each do |keyword| %>
+                      <span class="badge rounded-pill recipe-tag fw-normal px-2 py-1">
+                        <%= keyword %>
+                      </span>
+                    <% end %>
+                  </div>
                 <% end %>
-              </p>
-              <div class="mt-auto d-flex justify-content-end gap-2">
-                <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-warning btn-sm rounded-pill" %>
+
+                <div class="mt-auto d-flex justify-content-end position-relative" style="z-index: 2;">
+                  <%= link_to new_meal_plan_path(recipe_id: recipe.id),
+                      class: "btn btn-sm btn-outline-dark rounded-pill" do %>
+                    <i class="bi bi-plus-lg me-1"></i>Add to meal plan
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="row g-3">
+        <div class="col-md-8">
+          <div class="card bg-white border-0 shadow-sm rounded-5 p-5 text-center">
+            <div class="mb-3">
+              <span class="recipe-empty__icon">
+                <i class="bi bi-egg-fried"></i>
+              </span>
+            </div>
+            <h5 class="fw-bold mb-1">No recipes saved yet</h5>
+            <p class="text-muted mb-3">Ask the AI for a recipe, or add your favorites.</p>
+            <div class="d-flex justify-content-center gap-2">
+              <%= link_to "+ Add recipe", new_recipe_path, class: "btn btn-dark rounded-pill" %>
+            </div>
+          </div>
         </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="d-flex justify-content-between">
-      <div class="mt-4">
-        <p class="text-muted">No recipes saved yet. Ask the AI for a recipe!</p>
+        <div class="col-md-4">
+          <%= render "shared/ai_card" %>
+        </div>
       </div>
+    <% end %>
+  </div>
 
-      <div class="col-md-4 mt-4 text-center">
-        <%= render "shared/ai_card" %>
-      </div>
-    </div>
-  <% end %>
+  <%# Mobile bottom tab bar %>
+  <nav class="tab-bar d-md-none bg-white border-top shadow-sm">
+    <%= link_to root_path, class: "tab-bar__item" do %>
+      <i class="bi bi-house"></i><span>Home</span>
+    <% end %>
+    <%= link_to tasks_path, class: "tab-bar__item" do %>
+      <i class="bi bi-check2-square"></i><span>Tasks</span>
+    <% end %>
+    <%= link_to meal_plans_path, class: "tab-bar__item" do %>
+      <i class="bi bi-egg-fried"></i><span>Meals</span>
+    <% end %>
+    <%= link_to rewards_path, class: "tab-bar__item" do %>
+      <i class="bi bi-star"></i><span>Rewards</span>
+    <% end %>
+    <%= link_to calendars_path, class: "tab-bar__item" do %>
+      <i class="bi bi-calendar3"></i><span>Calendar</span>
+    <% end %>
+  </nav>
 </div>

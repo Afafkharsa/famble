@@ -1,28 +1,31 @@
-<div class="container mt-4">
-  <div class="row justify-content-left ms-2">
-    <div class="col-md-12">
-      <%= simple_form_for(@meal_plan) do |f| %>
+<%= simple_form_for(meal_plan) do |f| %>
+  <%= f.error_notification %>
 
-        <div class="form-inputs fw-bold">
-          <%# select_date %>
-          <%= f.input :day, as: :date,  html5: true, label:"Select Date" %>
+  <%= f.input :day, as: :date, html5: true, label: "Date",
+      input_html: { value: meal_plan.day || Date.today } %>
 
-          <%# select_meal_type %>
-          <%= f.simple_fields_for:recipe_meal_plans do |rmp| %>
-            <%= rmp.input :meal_type, collection: ["Breakfast", "Lunch", "Dinner", "Snack"],
-              prompt: "Select meal type", label: "Meal type" %>
-            <%= rmp.association :recipe, label: "Choose Recipe", prompt: "Select a recipe" %>
-          <% end %>
+  <hr class="my-4">
+  <h6 class="text-uppercase text-muted small fw-bold mb-3">Meals</h6>
 
-          <%# upload_photo %>
-          <%= f.input :photo, as: :file, label: "Photo" %>
-
-         <div class="d-flex gap-3 mb-4 mt-2">
-          <%= f.submit class: "btn btn-primary rounded-4" %>
-          <%= link_to "Cancel", meal_plans_path, class: "btn btn-outline-secondary rounded-4 fs-5" %>
-        </div>
-
-      <% end %>
+  <%= f.simple_fields_for :recipe_meal_plans do |rmp| %>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <%= rmp.input :meal_type,
+            collection: ["Breakfast", "Lunch", "Dinner", "Snack"],
+            prompt: "Pick a meal type",
+            label: "Meal type" %>
+      </div>
+      <div class="col-md-6">
+        <%= rmp.association :recipe,
+            label: "Recipe",
+            prompt: "Pick a recipe" %>
+      </div>
     </div>
+  <% end %>
+
+  <div class="d-flex gap-2 mt-4">
+    <%= f.submit (meal_plan.persisted? ? "Save changes" : "Create meal plan"),
+        class: "btn btn-dark" %>
+    <%= link_to "Cancel", meal_plans_path, class: "btn btn-outline-secondary" %>
   </div>
-</div>
+<% end %>

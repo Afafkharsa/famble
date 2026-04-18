@@ -1,4 +1,20 @@
-<%= simple_form_for [chat, message] do |f| %>
-  <%= f.input :content, label: "Ask for a recipe", required: true, placeholder: "Suggest me a high protein recipe..." %>
-  <%= f.button :submit, "Send", class: "btn btn-primary" %>
+<%= simple_form_for [chat, message], html: { data: { controller: "voice-input" } } do |f| %>
+  <%= f.input :content,
+      label: "Ask Famble AI",
+      required: true,
+      placeholder: "What's for dinner? Who has chores today?",
+      input_html: { data: { voice_input_target: "input" } } %>
+
+  <div class="d-flex gap-2 align-items-center">
+    <button type="button"
+            class="btn btn-outline-secondary rounded-circle d-none"
+            style="width: 40px; height: 40px;"
+            title="Speak"
+            data-voice-input-target="button"
+            data-action="click->voice-input#toggle">
+      <i class="bi bi-mic"></i>
+    </button>
+    <%= f.button :submit, "Send", class: "btn btn-dark" %>
+    <small class="text-muted small d-none" data-voice-input-target="status">Listening…</small>
+  </div>
 <% end %>

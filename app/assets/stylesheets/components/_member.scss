@@ -1,0 +1,77 @@
+// Family member card — white body (overrides body $light-gray bleed-through)
+.member-card {
+  --bs-card-bg: #fff;
+  --bs-list-group-bg: #fff;
+  background-color: #fff;
+
+  .list-group,
+  .list-group-item { background-color: #fff; }
+}
+
+// Colored header strip at the top of a member card
+.member-head {
+  position: relative;
+  border-radius: $border-radius-xxl $border-radius-xxl 0 0;
+}
+
+// Crown badge — shown top-left on a parent's member card
+.crown {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+}
+
+// Initial-letter / photo avatar inside the member-head
+.member-head__avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+// Circular +/- button in the member-head controls row
+.points-btn {
+  width: 32px; height: 32px;
+  padding: 0;
+  line-height: 1;
+  font-weight: 800;
+}
+
+// Clickable avatar chip in the filter row (show / hide member's column)
+.filter-chip {
+  transition: opacity 0.15s, filter 0.15s;
+
+  &.opacity-50 { filter: grayscale(0.6); }
+}
+
+// Hover-reveal action menu (3-dots) on task / reward list items
+.member-card .list-group-item {
+  position: relative;
+
+  .item-actions {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 2;
+  }
+
+  &:hover .item-actions,
+  .item-actions.show { opacity: 1; }
+}
+
+// On touch devices hover doesn't exist — keep the menu visible
+@media (hover: none) {
+  .member-card .list-group-item .item-actions { opacity: 1; }
+}
+
+.member-chip__avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}

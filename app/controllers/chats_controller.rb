@@ -36,9 +36,6 @@ class ChatsController < ApplicationController
   private
 
   def chat_params
-    # params.require(:chat).permit(:title)
-    permitted = params.require(:chat).permit(:title)
-    puts permitted.inspect
-    permitted
+    params.require(:chat).permit(:title)
   end
 end

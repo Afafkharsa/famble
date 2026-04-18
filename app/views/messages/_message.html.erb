@@ -1,15 +1,15 @@
 <!-- Message partial implementing action cable -->
 
 <% if message.role == "user" %>
-  <div class="mt-4 mb-2 row justify-content-end me-2">
-    <div class="p-3 bg-white rounded-5 col-8">
-      <%= message.content %>
+  <div class="d-flex justify-content-end mb-3">
+    <div class="px-3 py-2 rounded-4 bg-info-subtle text-dark" style="max-width: 75%;">
+      <%= simple_format(message.content) %>
     </div>
   </div>
 
 <% elsif message.role == "assistant" %>
-  <div class="d-flex justify-content-start mb-5" id="<%= dom_id(message) %>">
-    <div class="px-3 pb-0 pt-3">
+  <div class="d-flex justify-content-start mb-3" id="<%= dom_id(message) %>">
+    <div class="px-3 py-2 rounded-4 bg-light text-dark" style="max-width: 85%;">
 
       <% if message.content.present? %>
 
@@ -24,7 +24,7 @@
                 </span>
               <% end %>
             </p>
-            <p class="text-muted mb-1" style="font-size: 0.85rem;"><i class="fas fa-fire me-1"></i> <%= recipe["calories"] %> kcal &nbsp;|&nbsp; <i class="fas fa-exclamation-triangle me-1"></i> <%= Array(recipe["allergens"]).join(", ").presence || "No allergens" %></p>
+            <p class="text-muted mb-1" style="font-size: 0.85rem;"><i class="bi bi-fire me-1"></i> <%= recipe["calories"] %> kcal &nbsp;|&nbsp; <i class="bi bi-exclamation-triangle me-1"></i> <%= Array(recipe["allergens"]).join(", ").presence || "No allergens" %></p>
             <details class="mb-2">
               <summary class="text-primary" style="cursor:pointer;"><strong>Ingredients</strong></summary>
               <ul class="mt-2">

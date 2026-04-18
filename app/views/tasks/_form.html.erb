@@ -1,68 +1,63 @@
-<div class="container mt-4">
-  <div class="row justify-content-left ms-2">
-    <div class="col-md-12">
-      <%= simple_form_for(task) do |f| %>
+<%= simple_form_for(task) do |f| %>
+  <%= f.error_notification %>
 
-      <div class="mt-3">
-          <%= f.input :name, placeholder: "Task name", label: false ,
-              wrapper_html:{class: "mb-2"}%>
-          <% if task.user_id %>
-            <%= f.collection_select :user_id, @users, :id, :name,
-                { prompt: "Family member", selected: task.user_id },
-                { class: 'form-select' }  %>
-          <% else %>
-            <%= f.collection_select :user_id, @users, :id, :name,
-                { prompt: "Family member" },
-                { class: 'btn btn-primary rounded-2 fs-6' } %>
-          <% end %>
-          <%= f.input :description, placeholder: "Task description", label: false ,
-              wrapper_html:{class: "mt-3"} %>
-        </div>
-
-        <div class="d-md-flex align-items-md-center gap-1">
-          <div class="pe-2 col-md-6">
-            <% if task.status && task.validation %>
-              <%= f.input_field :status, as: :boolean,
-                  label: "Done", disabled: true %>
-            <% else %>
-              <%= f.input :status, as: :boolean, label: "Done?",
-                  wrapper_html:{class: "d-flex gap-1 col-4"}  %>
-            <% end %>
-            </div>
-          <div class="pe-2 col-md-6">
-            <%= f.input :task_points, collection: 1..10, label:"Reward",
-              wrapper_html:{class: "d-flex gap-3 align-items-center p-0"},
-              label_html: {class: "p-0 m-0"}, prompt: "Number of points" %>
-          </div>
-        </div>
-        <div class="d-md-flex gap-1">
-          <div class="col-md-6">
-            <%= f.input :start_date, as: :date, html5: true, label: "Start date",
-                input_html: { value: Date.today} %>
-          </div>
-          <div class="col-md-6">
-            <%= f.input :end_date, as: :date, html5: true, label: "End date",
-                input_html: { value: Date.today } %>
-          </div>
-        </div>
-        <div class="d-md-flex justify-content-md-between">
-          <div class="col-md-6 pe-2">
-            <%= f.input :days,
-              collection: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
-              as: :check_boxes,
-              input_html: { multiple: true},
-              label: "If repeating, on which days does the task occur?"%>
-          </div>
-          <div class="col-md-6">
-            <%= f.input :montly_frequency, collection: 0..12, selected: 0 %>
-            </div>
-        </div>
-
-        <div class="d-flex gap-3 mb-4 mt-2">
-          <%= f.submit class: "btn btn-primary rounded-4" %>
-          <%= link_to "Cancel", tasks_path, class: "btn btn-outline-secondary rounded-4" %>
-        </div>
-      <% end %>
+  <div class="row g-3">
+    <div class="col-md-8">
+      <%= f.input :name, label: "Task name", placeholder: "e.g. Walk the dog" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :task_points, label: "Reward points",
+          collection: 1..10, selected: task.task_points || 1,
+          include_blank: false %>
     </div>
   </div>
-</div>
+
+  <%= f.input :user_id, label: "Assign to", collection: users,
+      label_method: :name, value_method: :id,
+      prompt: "Pick a family member",
+      selected: task.user_id %>
+
+  <%= f.input :description, label: "Description", as: :text,
+      input_html: { rows: 3, placeholder: "Details, instructions, etc." } %>
+
+  <hr class="my-4">
+  <h6 class="text-uppercase text-muted small fw-bold mb-3">Schedule</h6>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= f.input :start_date, as: :date, html5: true, label: "Starts",
+          input_html: { value: task.start_date || Date.today } %>
+    </div>
+    <div class="col-md-6">
+      <%= f.input :end_date, as: :date, html5: true, label: "Ends",
+          input_html: { value: task.end_date || Date.today } %>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-8">
+      <%= f.input :days, label: "Repeat weekly on",
+          collection: %w[monday tuesday wednesday thursday friday saturday sunday]
+                        .map { |d| [d.first(3).capitalize, d] },
+          as: :check_boxes,
+          input_html: { multiple: true },
+          item_wrapper_class: "form-check-inline" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.input :montly_frequency, label: "Repeat X times/year",
+          collection: 0..12, selected: task.montly_frequency || 0,
+          include_blank: false %>
+    </div>
+  </div>
+
+  <% if task.persisted? %>
+    <hr class="my-4">
+    <%= f.input :status, as: :boolean, label: "Marked complete",
+        disabled: task.validation %>
+  <% end %>
+
+  <div class="d-flex gap-2 mt-4">
+    <%= f.submit (task.persisted? ? "Save changes" : "Create task"), class: "btn btn-dark" %>
+    <%= link_to "Cancel", tasks_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>
