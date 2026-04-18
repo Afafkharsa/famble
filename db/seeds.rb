@@ -44,6 +44,10 @@ user_1 = User.create!(
   birthdate: "1981-04-09".to_date,
   family: family_1
 )
+user_1.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_anakin.jpg')),
+  filename: 'user_anakin.jpg'
+)
 
 user_2 = User.create!(
   email: "leia@test.com",
@@ -52,6 +56,10 @@ user_2 = User.create!(
   name: "Leia",
   birthdate: "2005-04-25".to_date,
   family: family_1
+)
+user_2.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_leia.jpg')),
+  filename: 'user_leia.jpg'
 )
 
 user_3 = User.create!(
@@ -62,7 +70,10 @@ user_3 = User.create!(
   birthdate: "2005-04-25".to_date,
   family: family_1
 )
-
+user_3.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_luke.jpg')),
+  filename: 'user_luke.jpg'
+)
 
 user_4 = User.create!(
   email: "amidala@test.com",
@@ -71,6 +82,10 @@ user_4 = User.create!(
   name: "Padme",
   birthdate: "1981-07-09".to_date,
   family: family_1
+)
+user_4.photo.attach(
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_amidala.jpg')),
+  filename: 'user_amidala.jpg'
 )
 
 puts "Creating Lion King family..."
@@ -195,6 +210,7 @@ Task.create!(
 Task.create!(
   name: "Starting Sith revolution",
   status: true,
+  validation: true,
   start_date: Date.today,
   end_date: Date.today,
   task_points: 4,
@@ -202,6 +218,33 @@ Task.create!(
   user: user_1
 )
 
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 4,
+  status: true,
+  validation: true,
+  days: ["monday"],
+  montly_frequency: 0,
+  start_date: Date.today-62,
+  end_date: Date.today-62,
+  user: user_3,
+  task_template: template_2
+)
+
+Task.create!(
+  name: "Oil R2-D2",
+  description: "Each month, put some oil inside R2-D2 collar",
+  task_points: 4,
+  status: true,
+  validation: true,
+  days: ["monday"],
+  montly_frequency: 0,
+  start_date: Date.today-30,
+  end_date: Date.today-30,
+  user: user_3,
+  task_template: template_2
+)
 Task.create!(
   name: "Oil R2-D2",
   description: "Each month, put some oil inside R2-D2 collar",
@@ -347,7 +390,7 @@ recipe_5 = Recipe.create!(
 
 puts "Generating AI photo..."
 
-[recipe_1, recipe_2, recipe_3].each do |recipe|
+[recipe_1, recipe_2, recipe_3, recipe_4, recipe_5].each do |recipe|
   ImageGeneratorService.generate_and_attach(recipe)
   sleep 2
 end
@@ -431,8 +474,8 @@ Reward.create!(
   name: "Sleep in Saturday",
   description: "No chores until noon on Saturday",
   reward_points: 8,
-  redeemed: false,
-  user: user_1
+  redeemed: true,
+  user: user_3
 )
 
 puts "Creating Meal plans..."
@@ -501,6 +544,21 @@ chat_1 = Chat.create!(
 chat_2 = Chat.create!(
   user: user_1,
   title: "Funny Breakfast",
+)
+
+chat_3 = Chat.create!(
+  user: user_1,
+  title: "Healthy snacks"
+)
+
+chat_4 = Chat.create!(
+  user: user_1,
+  title: "Quick lunch ideas"
+)
+
+chat_5 = Chat.create!(
+  user: user_1,
+  title: "Vegetarian recipes"
 )
 
 puts "Creating chat's messages..."
@@ -609,6 +667,105 @@ Message.create!(
       "keywords": ["fun breakfast", "animal faces", "kids meal"],
       "calories": 320,
       "allergens": ["gluten", "dairy", "eggs"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_3,
+  role: "user",
+  content: "suggest me a healthy snack"
+)
+
+Message.create!(
+  chat: chat_3,
+  role: "assistant",
+  content: '
+    {
+      "name": "Peanut Butter Apple Slices",
+      "ingredients": [
+        {"ingredient": "apple", "quantity": "1, sliced"},
+        {"ingredient": "peanut butter", "quantity": "2 tbsp"},
+        {"ingredient": "granola", "quantity": "1 tbsp"}
+      ],
+      "description": [
+        "Wash and slice the apple into thin wedges.",
+        "Spread peanut butter evenly on each slice.",
+        "Sprinkle granola on top for added crunch.",
+        "Serve immediately as a healthy snack."
+      ],
+      "keywords": ["snack", "healthy", "quick"],
+      "calories": 250,
+      "allergens": ["peanuts"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_4,
+  role: "user",
+  content: "give me a quick lunch recipe"
+)
+
+Message.create!(
+  chat: chat_4,
+  role: "assistant",
+  content: '
+    {
+      "name": "Turkey Avocado Wrap",
+      "ingredients": [
+        {"ingredient": "tortilla wrap", "quantity": "1"},
+        {"ingredient": "sliced turkey", "quantity": "100 g"},
+        {"ingredient": "avocado", "quantity": "1/2, sliced"},
+        {"ingredient": "lettuce", "quantity": "1 handful"},
+        {"ingredient": "tomato", "quantity": "1/2, sliced"},
+        {"ingredient": "mayonnaise", "quantity": "1 tbsp"}
+      ],
+      "description": [
+        "Lay the tortilla flat on a clean surface.",
+        "Spread mayonnaise evenly over the wrap.",
+        "Layer turkey, avocado, lettuce, and tomato.",
+        "Roll the wrap tightly and slice in half.",
+        "Serve immediately."
+      ],
+      "keywords": ["lunch", "quick", "wrap"],
+      "calories": 400,
+      "allergens": ["gluten", "eggs"]
+    }
+  '
+)
+
+Message.create!(
+  chat: chat_5,
+  role: "user",
+  content: "i want a vegetarian dinner"
+)
+
+Message.create!(
+  chat: chat_5,
+  role: "assistant",
+  content: '
+    {
+      "name": "Chickpea Spinach Curry",
+      "ingredients": [
+        {"ingredient": "chickpeas (canned)", "quantity": "200 g"},
+        {"ingredient": "spinach", "quantity": "100 g"},
+        {"ingredient": "coconut milk", "quantity": "200 ml"},
+        {"ingredient": "onion", "quantity": "1, diced"},
+        {"ingredient": "garlic", "quantity": "2 cloves"},
+        {"ingredient": "curry powder", "quantity": "1 tbsp"},
+        {"ingredient": "olive oil", "quantity": "1 tbsp"}
+      ],
+      "description": [
+        "Heat olive oil in a pan and sauté onion and garlic.",
+        "Add curry powder and cook for 1 minute.",
+        "Add chickpeas and coconut milk, then simmer for 10 minutes.",
+        "Stir in spinach and cook until wilted.",
+        "Serve hot with rice or bread."
+      ],
+      "keywords": ["vegetarian", "dinner", "curry"],
+      "calories": 380,
+      "allergens": []
     }
   '
 )

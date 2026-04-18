@@ -1,0 +1,25 @@
+.chat-row {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chat-row:last-child {
+  border-bottom: none;
+}
+
+.chat-row:hover {
+  background-color: rgba(116, 184, 204, 0.12); /* $blue with opacity */
+}
+
+.chat-row a {
+  color: #0E0000;
+  transition: color 0.2s ease;
+}
+
+.chat-row:hover a {
+  color: #74B8CC;
+}
+
+.chat-row {
+  cursor: pointer;
+}

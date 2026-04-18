@@ -1,15 +1,17 @@
 <%= link_to task.name, task_path(task),
     class:"link-success link-underline-opacity-0"%>
-<%= link_to edit_task_path(task) do %>
-  <% if policy(Task).edit?  %>
-    <div style= "text-decoration: none; cursor: pointer; color: inherit;">
-      <i class="fa-regular fa-pen-to-square text-success"></i>
-    </div>
+
+<% if task.user.role == "parent" %>
+  <%= link_to edit_task_path(task)  do %>
+      <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+        <i class="fa-regular fa-pen-to-square text-success"></i>
+      </div>
   <% end %>
 <% end %>
+
 <%= link_to task_path(task),
   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
-  <% if policy(Task).destroy?  %>
+  <% if policy(task).destroy?  %>
     <div style= "text-decoration: none; cursor: pointer; color: inherit;">
       <i class="fa-solid fa-eraser text-success"></i>
     </div>

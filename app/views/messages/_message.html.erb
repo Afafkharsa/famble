@@ -42,46 +42,49 @@
               </ol>
             </details>
 
-          <%= form_with url: recipes_path, method: :post do |f| %>
-            <div class="row g-2">
-              <div class="col-6">
-                <%= date_field_tag "recipe[meal_plan_date]", Date.today, class: "form-control form-control-sm rounded-pill" %>
+            <%= form_with url: recipes_path, method: :post do |f| %>
+              <div class="row g-2">
+                <div class="col-6">
+                  <%= date_field_tag "recipe[meal_plan_date]", Date.today, class: "form-control form-control-sm rounded-pill" %>
+                </div>
+                <div class="col-6">
+                  <%= select_tag "recipe[meal_plan_type]",
+                    options_for_select(["Breakfast", "Lunch", "Dinner"]),
+                    class: "form-select form-select-sm rounded-pill" %>
+                </div>
               </div>
-              <div class="col-6">
-                <%= select_tag "recipe[meal_plan_type]",
-                  options_for_select(["Breakfast", "Lunch", "Dinner"]),
-                  class: "form-select form-select-sm rounded-pill" %>
+              <div class="mt-2">
+                <%= text_field_tag "recipe[photo]", nil,
+                  class: "form-control form-control-sm rounded-pill",
+                  placeholder: "Paste an image URL (optional)..." %>
               </div>
-            </div>
-            <div class="mt-2">
-              <%= text_field_tag "recipe[photo]", nil,
-                class: "form-control form-control-sm rounded-pill",
-                placeholder: "Paste an image URL (optional)..." %>
-            </div>
-            <%= hidden_field_tag "recipe[name]", recipe["name"] %>
-            <%= hidden_field_tag "recipe[ingredients]", Array(recipe["ingredients"]).map { |i| "#{i['ingredient']} - #{i['quantity']}" }.join("\n") %>
-            <%= hidden_field_tag "recipe[description]", Array(recipe["description"]).join("\n") %>
-            <%= hidden_field_tag "recipe[keywords]", Array(recipe["keywords"]).join(", ") %>
-            <%= hidden_field_tag "recipe[calories]", recipe["calories"] %>
-            <%= hidden_field_tag "recipe[allergens]", Array(recipe["allergens"]).join(", ") %>
-            <div class="row g-2 mt-1">
-              <div class="col-6">
-                <%= submit_tag "Add to Meal Plan", name: "save_to_meal_plan", class: "btn btn-warning btn-sm w-100 rounded-pill" %>
+              <%= hidden_field_tag "recipe[name]", recipe["name"] %>
+              <%= hidden_field_tag "recipe[ingredients]", Array(recipe["ingredients"]).map { |i| "#{i['ingredient']} - #{i['quantity']}" }.join("\n") %>
+              <%= hidden_field_tag "recipe[description]", Array(recipe["description"]).join("\n") %>
+              <%= hidden_field_tag "recipe[keywords]", Array(recipe["keywords"]).join(", ") %>
+              <%= hidden_field_tag "recipe[calories]", recipe["calories"] %>
+              <%= hidden_field_tag "recipe[allergens]", Array(recipe["allergens"]).join(", ") %>
+              <div class="row g-2 mt-1">
+                <div class="col-6">
+                  <%= submit_tag "Add to Meal Plan", name: "save_to_meal_plan", class: "btn btn-warning btn-sm w-100 rounded-pill" %>
+                </div>
+                <div class="col-6">
+                  <%= button_tag type: "submit",
+                        name: "save_recipe",
+                        class: "btn btn-outline-warning btn-sm w-100 rounded-pill" do %>
+                    <i class="fa-regular fa-floppy-disk"></i>
+                    Save
+                  <% end %>
+                </div>
               </div>
-              <div class="col-6">
-                <%= button_tag type: "submit",
-                      name: "save_recipe",
-                      class: "btn btn-outline-warning btn-sm w-100 rounded-pill" do %>
-                  <i class="fa-regular fa-floppy-disk"></i>
-                  Save Recipe
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-        </div>
+            <% end %>
+          </div>
 
-        <% rescue JSON::ParserError %>
-          <%= simple_format(message.content) %>
+          <% rescue JSON::ParserError %>
+          <div class="text-muted fst-italic d-flex align-items-center gap-2">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+            Cooking something delicious...
+          </div>
         <% end %>
 
       <% else %>
