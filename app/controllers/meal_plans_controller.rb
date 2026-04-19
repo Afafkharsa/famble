@@ -7,6 +7,7 @@ class MealPlansController < ApplicationController
   end
 
   def show
+    @meal_plan = MealPlan.find(params[:id])
     authorize @meal_plan
   end
 
