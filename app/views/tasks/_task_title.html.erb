@@ -1,11 +1,10 @@
 <%= link_to task.name, task_path(task),
     class:"link-success link-underline-opacity-0"%>
-
-<% if task.user.role == "parent" %>
-  <%= link_to edit_task_path(task)  do %>
-      <div style= "text-decoration: none; cursor: pointer; color: inherit;">
-        <i class="fa-regular fa-pen-to-square text-success"></i>
-      </div>
+<%= link_to edit_task_path(task) do %>
+  <% if policy(task).edit?  %>
+    <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+      <i class="fa-regular fa-pen-to-square text-success"></i>
+    </div>
   <% end %>
 <% end %>
 
