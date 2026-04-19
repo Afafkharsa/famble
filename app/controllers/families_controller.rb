@@ -21,8 +21,7 @@ class FamiliesController < ApplicationController
  end
 
  def create
-   # @member = User.new(params[:id])
-   @member = User.find_by(email:params[:user][:email])
+   @member = User.find_by(email: params.dig(:user, :email))
    @family = current_user.family
     if @member
       if @member.update(family: @family)
@@ -31,10 +30,18 @@ class FamiliesController < ApplicationController
         redirect_to families_path, alert: "Could not add member"
       end
     else
-      # Can not find email "
-      flash[:alert] = "User with email #{params[:email]} not found"
-      render :new, status: :unprocessable_entity
+      flash[:alert] = "User with email #{params.dig(:user, :email)} not found"
+      redirect_to families_path
     end
+ end
+
+ def update
+   @member = User.find(params[:id])
+   if @member.update(user_params)
+     redirect_to families_path, notice: "Updated #{@member.name}"
+   else
+     redirect_to families_path, alert: @member.errors.full_messages.join(", ")
+   end
  end
 
 
