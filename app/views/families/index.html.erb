@@ -21,3 +21,35 @@
   </div>
 
 </div>
+
+<script>
+  // Call the member by id
+  function loadMember(id) {
+  const contentArea = document.getElementById('modal-content-area');
+  contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
+
+  // call to route of member#show
+  fetch(`/families/${id}`)
+    .then(response => response.text())
+    .then(html => {
+      contentArea.innerHTML = html;
+    });
+  }
+
+  function addNewMember(id) {
+  const contentArea = document.getElementById('modal-content-area');
+  contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
+
+  fetch('/families/new')
+    .then(response => response.text())
+    .then(html => {
+      contentArea.innerHTML = html;
+
+      const modalElement = document.getElementById('memberModal');
+      // แก้ไขบรรทัดนี้: ใช้ getOrCreateInstance แทน new
+      const myModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      myModal.show();
+    })
+    .catch(err => console.error("Error loading form:", err));
+  }
+</script>

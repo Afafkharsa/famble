@@ -6,8 +6,14 @@
 <%# 2. สั่งปิด Modal %>
 <script>
   const modalElement = document.getElementById('memberModal');
-  const modal = bootstrap.Modal.getInstance('memberModal');
-  if (modal) {
-    modal.hide(); }
+  let modal = bootstrap.Modal.getInstance(modalElement);
+
+  if (!modal) {
+    modal = new bootstrap.Modal(modalElement);
+  }
+  modal.hide();
+
+  // Clear Backdrop
+  document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
 </script>
 <% end %>
