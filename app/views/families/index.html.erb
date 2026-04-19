@@ -3,7 +3,7 @@
   <div class="meal-plan-section mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div class="d-flex gap-3">
-        <h1 class="fw-bold m-0">My Family</h1>
+        <h1 class="fw-bold m-0 ms-3">My Family</h1>
         <i class="fa-solid fa-house text-light-emphasis d-block fs-1 mb-1"></i>
       </div>
 
@@ -11,51 +11,11 @@
                 onclick="addNewMember('<%= new_family_member_path(@family) %>')"
                 style="width: 150px; height: 50px; border-width: 2px; font-weight: bold;">Add member</button>
     </div>
-
-    <!--Member photo and add modal pop up -->
-    <div class="row gx-2 gy-2">
-      <%#= @members.each do |member| %>
-      <% current_user.family.users.each do |member| %>
-        <div class="col-auto text-center ms-5">
-          <div class="member-wrapper" onclick="loadMember('<%= member.id %>')"
-               style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#memberModal" onclick="loadMember(<%= member.id %>)">
-
-            <div class="photo-circle mx-auto mb-2 shadow-sm d-flex align-items-center justify-content-center
-              fs-3 fw-bold" style="width: 120px; height: 120px; background-color: #5f84a4; border-radius: 50%;
-              overflow: hidden; border: 2px solid #eee; font-size: 16px;">
-
-
-              <% if member.photo.attached? %>
-                <%= image_tag member.photo, style: "width: 100%; height: 100%; object-fit: cover;" %>
-              <% else %>
-                <div style="color: white; font-size: 0.8rem;">Photo</div>
-              <% end %>
-
-            </div>
-
-          <!--Member name -->
-            <span class="member-name fw-semibold" style="font-size: 1.5rem; color: #333;">
-              <%= link_to member.name.presence || "No name",
-                  family_member_path(@family, member),
-                  data: { bs_toggle: "modal", bs_target: "#memberModal" },
-                  style: "text-decoration: none;"  %>
-            </span>
-          </div>
-        </div>
-        <% end %>
-        <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius:20px; border: none;">
-              <div class="modal-body">
-              <div id="modal-content-area"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+    <div id="member-list" class="row">
+    <%= render partial:"members/member", collection: @members, as: :member %>
     </div>
 
-    <div class="mt-5 ms-5">
+    <div class="d-flex gap-3 ms-3 mt-5">
       <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success border-radius-5 align-items-center py-3", style:"w-auto;" %>
     </div>
   </div>
@@ -65,31 +25,33 @@
 <script>
   // Call the member by id
   function loadMember(id) {
-  const contentArea = document.getElementById('modal-content-area');
-  contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
+    const familyId = <%= @family.id %>
+    const contentArea = document.getElementById('modal-content-area');
+    contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
 
-  // call to route of member#show
-  fetch(`/families/${id}`)
-    .then(response => response.text())
-    .then(html => {
-      contentArea.innerHTML = html;
+    // call to route of member#show
+    fetch(`/families/${id}/members/${id}`)
+      .then(response => response.text())
+      .then(html => {
+        contentArea.innerHTML = html;
+
     });
-}
+  }
 
   function addNewMember(id) {
     const contentArea = document.getElementById('modal-content-area');
     contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
 
-    // Call Controller#new to show on Modal
     fetch('/families/new')
       .then(response => response.text())
       .then(html => {
         contentArea.innerHTML = html;
-        // Open Modal with black background)
-        const myModal = new
-        bootstrap.Modal(document.getElementById('memberModal'));
+
+        const modalElement = document.getElementById('memberModal');
+        // แก้ไขบรรทัดนี้: ใช้ getOrCreateInstance แทน new
+        const myModal = bootstrap.Modal.getOrCreateInstance(modalElement);
         myModal.show();
       })
-      .catch(err => console.error("Error loading form:", err));
+    .catch(err => console.error("Error loading form:", err));
   }
 </script>

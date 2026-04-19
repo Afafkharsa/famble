@@ -3,71 +3,68 @@ class MembersController < ApplicationController
   before_action :set_family
   before_action :set_member, only: [:show, :edit, :update, :destroy]
 
-  # GET /families/:family_id/members
-  def index
-    # @family = current_user.family
-    if @family.present?
-      @members = @family.users.includes(:photo_attachment)
-    else
-      redirect_to root_path, alert: "You are not a member of a family"
-    end
-  end
 
-  # GET /families/:family_id/members/:id
   def show
     # @family = current_user.family
     @member = @family.users.find(params[:id])
     render layout: false
   end
 
-  # GET /families/:family_id/members/new
   def new
     @member = @family.users.build
     render layout: false
   end
 
-  # POST /families/:family_id/members
   def create
-    @member = User.find_by(email: user_params[:email])
+    @member = User.find_by(email: member_params[:email])
 
     if @member
-      @member.update(user_params.merge(family: @family))
+      @member.update(member_params.merge(family: @family))
     else
-      @member = @family.users.build(user_params)
+      @member = @family.users.build(member_params)
       @member.password = "123456"
       @member.save
     end
 
     if @member.persisted?
-      redirect_to family_path(@family), notice: "Added member successfully"
+      respond_to do |format|
+      #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
+      format.turbo_stream
+      end
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  # GET /families/:family_id/members/:id/edit
   def edit
     #@member = @family.users.find(params[:id])
     #authorize @member
     render layout: false
   end
 
-  # PATCH/PUT /families/:family_id/members/:id
   def update
+    @member = User.find(params[:id])
     #authorize @member
 
     if @member.update(member_params)
-      redirect_to family_path(@family), notice: "Member updated!"
+      respond_to do |format|
+        #format.html { redirect_to family_path(@family),
+        #status: :see_other, notice: "Member Updated" }
+        format.turbo_stream
+      end
     else
-      render :show, status: :unprocessable_entity
+      render :index, status: :unprocessable_entity
     end
   end
 
-  # DELETE /families/:family_id/members/:id
   def destroy
     #@member = @family.users.find(params[:id])
     @member.destroy
-  redirect_to family_path(@family), notice: "Member deleted"
+    respond_to do |format|
+      #format.html { redirect_to family_path(@family),
+      #status: :see_other, notice: "Member deleted" }
+      format.turbo_stream #Use for delete without non-reload the page
+    end
   end
 
   private
@@ -82,7 +79,11 @@ class MembersController < ApplicationController
 
   def member_params
     params.require(:user).permit(
-      :name, :email, :relationship, :birthday, :photo
+      :name,
+      :email,
+      :relationship,
+      :birthday,
+      :photo
     )
   end
 end
