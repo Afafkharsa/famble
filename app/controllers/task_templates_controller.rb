@@ -20,7 +20,7 @@ class TaskTemplatesController < ApplicationController
     if @task_template.save
       redirect_to task_template_path(@task_template)
     else
-      render :new, status: :unprocessable_entity
+      render new, status: :unprocessable_entity
     end
   end
 
