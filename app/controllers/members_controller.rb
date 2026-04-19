@@ -48,18 +48,18 @@ class MembersController < ApplicationController
   # GET /families/:family_id/members/:id/edit
   def edit
     #@member = @family.users.find(params[:id])
-    authorize @member
+    #authorize @member
     render layout: false
   end
 
   # PATCH/PUT /families/:family_id/members/:id
   def update
-    authorize @member
+    #authorize @member
 
-    if @member.update(user_params)
+    if @member.update(member_params)
       redirect_to family_path(@family), notice: "Member updated!"
     else
-      render :edit, status: :unprocessable_entity
+      render :show, status: :unprocessable_entity
     end
   end
 

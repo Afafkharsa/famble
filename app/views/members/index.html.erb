@@ -18,18 +18,7 @@
     <% @members.each do |member| %>
       <div class="col-auto text-center mb-4">
 
-        <%= link_to edit_family_member_path(@family, member),
-          data: {
-            turbo_frame: "modal-body",
-            bs_toggle: "modal",
-            bs_target: "#memberModal"
-          },
-          class: "text-decoration-none" do %>
-
-
-        <%#= link_to family_member_path(@family, member),
-            data: { bs_toggle: "modal", bs_target: "#memberModal" },
-            class: "text-decoration-none" do %>
+        <%= link_to edit_family_member_path(@family, member),onclick: "loadMember('#{family_member_path(@family, member)}')", class: "text-decoration-none" do %>
 
           <!-- Profile Photo -->
           <div class="rounded-circle overflow-hidden mx-auto mb-2
@@ -45,27 +34,27 @@
 
           <!--Member name -->
           <div class="member-name mt-2 fw-semibold  fw-semibold" style="font-size: 1.5rem; color: #333;">
-            <%= link_to member.name.presence || "No name",
-                edit_family_member_path(@family, member),
+            <%= link_to member.name.presence || "No name", family_member_path(@family, member),
                 data: { bs_toggle: "modal", bs_target: "#memberModal" }, style: "text-decoration: none;" %>
           </div>
         <% end %>
       </div>
     <% end %>
+  <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:20px; border: none;">
+        <div class="modal-body">
+        <div id="modal-content-area"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
   <div class="d-flex gap-3 ms-3 mt-5">
       <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success border-radius-5 align-items-center py-3", style:"w-auto;" %>
     </div>
 </div>
-<div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius:20px; border: none;">
-      <div class="modal-body">
-      <div id="modal-content-area"></div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <script>
   // Call the member by id
