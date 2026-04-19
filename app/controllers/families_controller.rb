@@ -69,6 +69,15 @@ class FamiliesController < ApplicationController
   end
 
 
+ def update
+   @member = User.find(params[:id])
+   if @member.update(user_params)
+     redirect_to families_path, notice: "Updated #{@member.name}"
+   else
+     redirect_to families_path, alert: @member.errors.full_messages.join(", ")
+   end
+ end
+
 
  private
 
