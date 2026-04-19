@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  before_action :set_users, only: [:new, :edit]
+  before_action :set_users, only: [:new, :create, :edit, :update]
 
   def index
     @tasks = policy_scope(Task)
@@ -10,7 +10,7 @@ class TasksController < ApplicationController
   end
 
   def show
-
+    @user = current_user
   end
 
   def new
@@ -32,7 +32,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to task_path(@task)
     else
-      render new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -47,12 +47,6 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.html { redirect_to task_path(@task), notice: "Task updated." }
         format.json { render json: @task, status: :ok }
-      end
-      # Adding task points to user points
-      if @task.validation
-        @task.user.available_points += @task.task_points
-        @task.user.earned_points += @task.task_points
-        @task.user.save
       end
     else
       respond_to do |format|
