@@ -3,16 +3,6 @@ class MembersController < ApplicationController
   before_action :set_family
   before_action :set_member, only: [:show, :edit, :update, :destroy]
 
-  # GET /families/:family_id/members
-  def index
-    # @family = current_user.family
-    if @family.present?
-      @members = @family.users.includes(:photo_attachment)
-    else
-      redirect_to root_path, alert: "You are not a member of a family"
-    end
-  end
-
   # GET /families/:family_id/members/:id
   def show
     # @family = current_user.family
@@ -28,18 +18,21 @@ class MembersController < ApplicationController
 
   # POST /families/:family_id/members
   def create
-    @member = User.find_by(email: user_params[:email])
+    @member = User.find_by(email: member_params[:email])
 
     if @member
-      @member.update(user_params.merge(family: @family))
+      @member.update(member_params.merge(family: @family))
     else
-      @member = @family.users.build(user_params)
+      @member = @family.users.build(member_params)
       @member.password = "123456"
       @member.save
     end
 
     if @member.persisted?
-      redirect_to family_path(@family), notice: "Added member successfully"
+      respond_to do |format|
+      #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
+      format.turbo_stream
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -48,18 +41,27 @@ class MembersController < ApplicationController
   # GET /families/:family_id/members/:id/edit
   def edit
     #@member = @family.users.find(params[:id])
-    authorize @member
+    #authorize @member
     render layout: false
   end
 
-  # PATCH/PUT /families/:family_id/members/:id
-  def update
-    authorize @member
 
-    if @member.update(user_params)
-      redirect_to family_path(@family), notice: "Member updated!"
+  def update
+    @member = User.find(params[:id])
+    #authorize @member
+
+    if @member.update(member_params)
+      respond_to do |format|
+        # 1. สำหรับให้หน้าจอรีเฟรชกลับไปที่หน้าครอบครัว (แก้ปัญหาเด้งไปหน้า Profile ตัวเอง)
+        #format.html { redirect_to family_path(@family),
+        #notice: "อัปเดตเรียบร้อย!", status: :see_other }
+
+        # 2. สำหรับอัปเดตข้อมูลทันทีโดยไม่รีเฟรชหน้า (ถ้าคุณเตรียมไฟล์ .turbo_stream.erb ไว้)
+        format.turbo_stream
+      end
     else
-      render :edit, status: :unprocessable_entity
+      # ถ้าบันทึกไม่ผ่าน ให้พ่น Error ใน Terminal และ Render หน้าเดิม
+      render :index, status: :unprocessable_entity
     end
   end
 
@@ -67,7 +69,11 @@ class MembersController < ApplicationController
   def destroy
     #@member = @family.users.find(params[:id])
     @member.destroy
-  redirect_to family_path(@family), notice: "Member deleted"
+    respond_to do |format|
+      #format.html { redirect_to family_path(@family),
+      #status: :see_other, notice: "Member deleted" }
+      format.turbo_stream #Use for delete without non-reload the page
+    end
   end
 
   private
@@ -82,7 +88,11 @@ class MembersController < ApplicationController
 
   def member_params
     params.require(:user).permit(
-      :name, :email, :relationship, :birthday, :photo
+      :name,
+      :email,
+      :role,
+      :birthdate,
+      :photo
     )
   end
 end

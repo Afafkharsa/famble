@@ -1,0 +1,14 @@
+
+<%# 1. เอาสมาชิกใหม่ไปแปะต่อท้ายลิสต์ %>
+<%= turbo_stream.append "member-list", partial: "members/member", locals: { member: @member } %>
+<%= turbo_stream.update "modal-content-area", "" %>
+<%= turbo_stream.append "body" do %>
+
+<%# 2. สั่งปิด Modal (ใช้ ID ของ Modal คุณ เช่น memberModal) %>
+<script>
+  const modalEl = document.getElementById('memberModal');
+  const modal = bootstrap.Modal.getInstance(modalEl);
+  modal.hide();
+</script>
+
+<% end %>

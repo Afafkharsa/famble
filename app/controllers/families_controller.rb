@@ -1,7 +1,8 @@
 class FamiliesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_family
-  # before_action :set_users
+  before_action :set_member, only: [:show, :edit, :update, :destroy]
+
 
   def index
     # @family = current_user.family
@@ -18,69 +19,88 @@ class FamiliesController < ApplicationController
     render layout: false
   end
 
+  # GET /families/:family_id/members/new
   def new
-    # @family = current_user.family
-    @member = User.new
+    @member = @family.users.build
     render layout: false
   end
 
+  # POST /families/:family_id/members
   def create
-    @member = User.find_by(email: params[:member][:email])
-    @family = current_user.family
+    @member = User.find_by(email: member_params[:email])
 
     if @member
-      # กรณีมี User ในระบบอยู่แล้ว แต่อยากดึงเข้าครอบครัว
-      @member.update(user_params.merge(family: @family))
+      @member.update(member_params.merge(family: @family))
     else
-      # กรณีสร้าง User ใหม่ (ตามภาพที่ 1 ของคุณ)
-      @member = User.new(user_params) # ข้อมูล name, birthday จะถูกดึงจากตรงนี้
-      @member.family = @family
-      @member.password = "123456" # หรือรหัสผ่านเริ่มต้น
+      @member = @family.users.build(member_params)
+      @member.password = "123456"
       @member.save
     end
 
     if @member.persisted?
-      redirect_to families_path, notice: "Added member successfully"
+      respond_to do |format|
+      #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
+      format.turbo_stream
+      end
     else
       render :new, status: :unprocessable_entity
     end
   end
 
+  # GET /families/:family_id/members/:id/edit
   def edit
-    @member = @family.users.find(params[:id])
-    authorize @member
+    #@member = @family.users.find(params[:id])
+    #authorize @member
     render layout: false
   end
 
+  # PATCH/PUT /families/:family_id/members/:id
   def update
     @member = User.find(params[:id])
-    authorize @member
-    if @member.update(user_params)
-      redirect_to families_path, notice: "Member updated!"
+    #authorize @member
+
+    if @member.update(member_params)
+      respond_to do |format|
+        # 1. สำหรับให้หน้าจอรีเฟรชกลับไปที่หน้าครอบครัว (แก้ปัญหาเด้งไปหน้า Profile ตัวเอง)
+        #format.html { redirect_to family_path(@family),
+        #notice: "อัปเดตเรียบร้อย!", status: :see_other }
+
+        # 2. สำหรับอัปเดตข้อมูลทันทีโดยไม่รีเฟรชหน้า (ถ้าคุณเตรียมไฟล์ .turbo_stream.erb ไว้)
+        format.turbo_stream
+      end
     else
-      render :edit, status: :unprocessable_entity
+      render :index, status: :unprocessable_entity
     end
   end
 
+  # DELETE /families/:family_id/members/:id
   def destroy
-    @member = @family.users.find(params[:id])
+    #@member = @family.users.find(params[:id])
     @member.destroy
-    redirect_to families_path, status: :see_other
+    respond_to do |format|
+      #format.html { redirect_to family_path(@family),
+      #status: :see_other, notice: "Member deleted" }
+      format.turbo_stream
+    end
   end
 
-
-
- private
-
-  def set_member
-    @member = User.find(params[:id])
-  end
+  private
 
   def set_family
     @family = current_user.family
   end
 
- def member_params
-    params.require(:user).permit(:email, :name, :birthdate, :role, :photo)
- end
+  def set_member
+    @member = @family.users.find(params[:id])
+  end
+
+  def member_params
+    params.require(:member).permit(
+      :name,
+      :email,
+      :role,
+      :birthdate,
+      :photo
+    )
+  end
 end

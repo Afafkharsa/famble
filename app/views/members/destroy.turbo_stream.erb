@@ -1,0 +1,15 @@
+
+<%# 1. ลบสมาชิกออกจากหน้าจอ %>
+<%= turbo_stream.remove dom_id(@member) %>
+
+<%# 2. สั่งปิด Modal ทันที %>
+<script>
+  (function() {
+    const modalElement = document.getElementById('memberModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) { modalInstance.hide(); }
+
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+  })();
+</script>

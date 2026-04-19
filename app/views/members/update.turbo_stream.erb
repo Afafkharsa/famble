@@ -1,0 +1,13 @@
+
+<%# 1. เอาข้อมูลใหม่ไปวางทับก้อนเดิมที่มี ID ตรงกัน %>
+<%= turbo_stream.replace dom_id(@member), partial: "members/member", locals: { member: @member } %>
+<%= turbo_stream.append "body" do %>
+
+<%# 2. สั่งปิด Modal %>
+<script>
+  const modalElement = document.getElementById('memberModal');
+  const modal = bootstrap.Modal.getInstance('memberModal');
+  if (modal) {
+    modal.hide(); }
+</script>
+<% end %>
