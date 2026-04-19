@@ -1,12 +1,13 @@
 
-<%# 1. ลบสมาชิกออกจากหน้าจอ %>
+<%# 1. Delete member from screen %>
 <%= turbo_stream.remove dom_id(@member) %>
 
 
-<%# 2. สั่งปิด Modal และล้าง Backdrop (ฉากหลังขาว/ดำ) %>
+
+<%# Close Modal %>
 <script>
   (function() {
-    // อ้างอิง ID 'memberModal' ตามที่คุณตั้งไว้ใน index.html.erb
+    // Refer ID 'memberModal' from index.html.erb
     const modalElement = document.getElementById('memberModal');
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
 
@@ -14,7 +15,7 @@
       modalInstance.hide();
     }
 
-    // ล้างฉากหลังค้าง (แก้ปัญหาแถบขาว/ดำค้างตามภาพที่ 2)
+    // Clear Backdrop and Return to Body screen
     document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
     document.body.classList.remove('modal-open');
     document.body.style.overflow = 'auto';

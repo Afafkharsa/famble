@@ -1,9 +1,9 @@
 
-<%# 1. เอาสมาชิกใหม่ไปแปะต่อท้ายลิสต์ %>
+<%# Put new member at last %>
 <%= turbo_stream.append "member-list", partial: "members/member", locals: { member: @member } %>
 <%= turbo_stream.update "modal-content-area", "" %>
 
-<%# 2. สั่งปิด Modal (ใช้ ID ของ Modal คุณ เช่น memberModal) %>
+<%# Close Modal %>
 <script>
   (function() {
     const modalElement = document.getElementById('memberModal');
@@ -12,10 +12,10 @@
       modal.hide();
     }
 
-    // ลบฉากหลัง (Backdrop) ที่ค้างอยู่ทั้งหมดออกไป
+    // Clear Backdrop
     document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
 
-    // คืนค่า Body ให้เลื่อนหน้าจอได้ปกติ
+    // Return to Body screen
     document.body.classList.remove('modal-open');
     document.body.style.overflow = 'auto';
     document.body.style.paddingRight = '0';

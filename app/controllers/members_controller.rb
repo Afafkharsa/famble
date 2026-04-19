@@ -3,7 +3,6 @@ class MembersController < ApplicationController
   before_action :set_family
   before_action :set_member, only: [:show, :edit, :update, :destroy]
 
-
   def show
     # @family = current_user.family
     @member = @family.users.find(params[:id])
@@ -63,7 +62,7 @@ class MembersController < ApplicationController
     respond_to do |format|
       #format.html { redirect_to family_path(@family),
       #status: :see_other, notice: "Member deleted" }
-      format.turbo_stream #Use for delete without non-reload the page
+      format.turbo_stream
     end
   end
 
@@ -81,8 +80,8 @@ class MembersController < ApplicationController
     params.require(:user).permit(
       :name,
       :email,
-      :relationship,
-      :birthday,
+      :role,
+      :birthdate,
       :photo
     )
   end
