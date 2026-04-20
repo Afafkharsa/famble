@@ -37,7 +37,7 @@ family_1 = Family.create!(
 
 puts "Creating Star Wars family members..."
 user_1 = User.create!(
-  email: "famble@test.com",
+  email: "famble@gmail.com",
   password: "123456",
   role: "parent",
   name: "Anakin",
@@ -50,7 +50,7 @@ user_1.photo.attach(
 )
 
 user_2 = User.create!(
-  email: "leia@test.com",
+  email: "leia@gmail.com",
   password: "only_hope",
   role: "child",
   name: "Leia",
@@ -63,7 +63,7 @@ user_2.photo.attach(
 )
 
 user_3 = User.create!(
-  email: "luke@test.com",
+  email: "luke@gmail.com",
   password: "light_saber",
   role: "child",
   name: "Luke",
@@ -76,7 +76,7 @@ user_3.photo.attach(
 )
 
 user_4 = User.create!(
-  email: "amidala@test.com",
+  email: "amidala@gmail.com",
   password: "naboo_987",
   role: "parent",
   name: "Padme",
@@ -95,7 +95,7 @@ family_2 = Family.create!(
 
 puts "Creating Lion King family members..."
 user_5 = User.create!(
-  email: "sarabi@test.com",
+  email: "sarabi@gmail.com",
   password: "mufasa",
   role: "parent",
   name: "Sarabi",
@@ -104,7 +104,7 @@ user_5 = User.create!(
 )
 
 User.create!(
-  email: "simba@test.com",
+  email: "simba@gmail.com",
   password: "hakuna_matata",
   role: "child",
   name: "Simba",
