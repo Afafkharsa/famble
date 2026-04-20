@@ -1,3 +1,5 @@
+<!-- Not done ! -->
+
 <div class="container mt-4">
   <div class="row justify-content-left ms-2">
     <div class="col-md-12">
@@ -48,22 +50,57 @@
         </div>
         <div class="d-md-flex justify-content-md-between">
           <div class="col-md-6 pe-2">
-            <%= f.input :days,
+            <!--<%= f.input :days,
               collection: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
               as: :check_boxes,
               input_html: { multiple: true},
-              label: "If repeating, on which days does the task occur?"%>
+              label: "If repeating, on which days does the task occur?"%>-->
+              <%= f.input :days, as: :check_boxes, input_html: { multiple: true},
+                          collection: {
+                            'Monday' => 1,
+                            'Tuesday' => 2,
+                            "Wednesday" => 3,
+                            "Thursday" => 4,
+                            "Friday" => 5,
+                            "Saturday" => 6,
+                            "Sunday" => 7
+                          } %>
           </div>
           <div class="col-md-6">
-            <%= f.input :montly_frequency, collection: 0..12, selected: 0 %>
-            </div>
-        </div>
+            Frequency
+            <!-- <%= f.input :montly_frequency, collection: 0..12, selected: 0 %> -->
+            <%= f.input :weekly_flag, as: :boolean, label: 'Repeat weekly',
+                        input_html: {checked: "unchecked"},
+                        wrapper_html:{class: "m-0"}  %>
+            <%= f.input :monthly_flag, as: :boolean, label: 'Repeat monthly',
+                        input_html: {checked: "unchecked"},
+                        wrapper_html:{class: "m-0"}  %>
+          </div>
+      </div>
 
-        <div class="d-flex gap-3 mb-4 mt-2">
-          <%= f.submit class: "btn btn-primary rounded-4" %>
-          <%= link_to "Cancel", tasks_path, class: "btn btn-outline-secondary rounded-4" %>
-        </div>
-      <% end %>
+      <div class="d-flex gap-3 mb-4 mt-2">
+        <%= f.submit class: "btn btn-primary rounded-4" %>
+        <%= link_to "Cancel", tasks_path, class: "btn btn-outline-secondary rounded-4" %>
+      </div>
+    <% end %>
     </div>
   </div>
 </div>
+
+<!--
+RUBY METHOD TO CONVERT DATE TO DAY :
+date.wday        # 0..6 (Sunday == 0)
+date.cwday       # 1..7 (Monday == 1)
+date.strftime("%A")  # "Monday" full name
+date.strftime("%a")  # "Mon" short name
+
+@task_wday = @task.wday
+
+@task.days.each do |day|
+  if day > @task_wday
+    # create copy of task changing start_date = @task.start_date + day
+  else
+    # create copy of task changing start_date = @task.start_date + day + 7
+  end
+end
+-- >

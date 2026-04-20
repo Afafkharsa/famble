@@ -29,7 +29,11 @@ class TaskPolicy < ApplicationPolicy
   end
 
   def edit?
-    return update?
+    if user.role == "parent"
+      true
+    else
+      false
+    end
   end
 
   def update?
