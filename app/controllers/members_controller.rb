@@ -1,17 +1,7 @@
-class FamiliesController < ApplicationController
+class MembersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_family
   before_action :set_member, only: [:show, :edit, :update, :destroy]
-
-
-  def index
-    # @family = current_user.family
-    if @family.present?
-      @members = @family.users.includes(:photo_attachment).order(created_at: :asc)
-    else
-      redirect_to root_path, alert: "You are not a member of a family"
-    end
-  end
 
   def show
     # @family = current_user.family
@@ -58,7 +48,7 @@ class FamiliesController < ApplicationController
     if @member.update(member_params)
       respond_to do |format|
         #format.html { redirect_to family_path(@family),
-        #notice: "อัปเดตเรียบร้อย!", status: :see_other }
+        #status: :see_other, notice: "Member Updated" }
         format.turbo_stream
       end
     else
@@ -87,7 +77,7 @@ class FamiliesController < ApplicationController
   end
 
   def member_params
-    params.require(:member).permit(
+    params.require(:user).permit(
       :name,
       :email,
       :role,

@@ -1,0 +1,23 @@
+
+<%# Put new member at last %>
+<%= turbo_stream.append "member-list", partial: "members/member", locals: { member: @member } %>
+<%= turbo_stream.update "modal-content-area", "" %>
+
+<%# Close Modal %>
+<script>
+  (function() {
+    const modalElement = document.getElementById('memberModal');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide();
+    }
+
+    // Clear Backdrop
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+    // Return to Body screen
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = '0';
+  })();
+</script>
