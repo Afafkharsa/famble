@@ -21,7 +21,6 @@
 
         <%= render "task_completing", task: @task, user: @user  %>
 
-
         <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
           <i class="fa-solid fa-award"></i>
           <%= @task.task_points > 0 ? "#{@task.task_points} points" : "#{@task.task_points} point"  %>

@@ -1,5 +1,5 @@
 <!-- Description or username, depending on who is designed
-for the task -->
+            for the task -->
 <% if task.user == user %>
   <div class="mt-2 text-secondary-emphasis">
     <%= task.description? ? task.description : "No description" %>
@@ -11,23 +11,28 @@ for the task -->
 <% end %>
 
 <!-- Badge -->
-<div class="mb-0 mt-1 d-flex justify-content-between badge bg-primary-subtle rounded-2 text-primary  py-2">
+<div class="mb-0 mt-1 d-flex justify-content-between badge
+            bg-primary-subtle rounded-2 text-primary py-2 align-items-center">
   <div>
-    <i class="fa-solid fa-calendar-days"></i>
-    <%= task.start_date %>
-    <% if task.start_date != task.end_date %>
-      <i class="fa-solid fa-arrow-right"></i>
-      <%= task.end_date %>
+    <%= link_to calendars_path(start_date: task.start_date),
+        style:"text-decoration: none; cursor: pointer; color: inherit;" do %>
+      <i class="fa-solid fa-calendar-days fw-bold" ></i>
+      <%= task.start_date %>
+      <% if task.start_date != task.end_date %>
+        <i class="fa-solid fa-arrow-right"></i>
+        <%= task.end_date %>
+      <% end %>
     <% end %>
   </div>
   <div>
-  <% if task.status && !task.validation %>
-    <i class="fa-solid fa-hourglass-half"></i> Pending
-  <% elsif task.status && task.validation  %>
-    <i class="fa-regular fa-circle-check"></i> Done
-  <% else %>
-    <i class="fa-regular fa-circle" ></i> To do
-  <% end %>
+    <%= render "task_completing", task: task, user: user  %>
+    <!-- <% if task.status && !task.validation %>
+      <i class="fa-solid fa-hourglass-half"></i> Pending
+    <% elsif task.status && task.validation  %>
+      <i class="fa-regular fa-circle-check"></i> Done
+    <% else %>
+      <i class="fa-regular fa-circle" ></i> To do
+    <% end %> -->
   </div>
   <div>
     <i class="fa-solid fa-award"></i>

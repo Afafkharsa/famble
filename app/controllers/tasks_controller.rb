@@ -28,6 +28,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @users = current_user.family.users
+
     authorize @task
 
     if @task.save
@@ -35,6 +36,8 @@ class TasksController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+
+
   end
 
   def edit
