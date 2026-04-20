@@ -1,4 +1,10 @@
 <!-- Message partial implementing action cable -->
+<% loading_messages = [
+  "Cooking something delicious...",
+  "Stirring the ingredients together...",
+  "Simmering something tasty...",
+  "Adding a pinch of magic...",
+] %>
 
 <% if message.role == "user" %>
   <div class="mt-4 mb-2 row justify-content-end me-2">
@@ -83,7 +89,7 @@
           <% rescue JSON::ParserError %>
           <div class="text-muted fst-italic d-flex align-items-center gap-2">
             <div class="spinner-border spinner-border-sm" role="status"></div>
-            Cooking something delicious...
+            <%= loading_messages.sample %>
           </div>
         <% end %>
 
