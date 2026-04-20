@@ -24,7 +24,7 @@
       <% end %>
     <% end %>
   </div>
-  <div>
+  <div data-controller="task-status" data-task-status-id-value="<%= task.id %>">
     <%= render "task_completing", task: task, user: user  %>
     <!-- <% if task.status && !task.validation %>
       <i class="fa-solid fa-hourglass-half"></i> Pending
