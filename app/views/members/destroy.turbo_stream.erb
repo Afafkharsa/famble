@@ -1,0 +1,25 @@
+
+<%# 1. Delete member from screen %>
+<%= turbo_stream.remove dom_id(@member) %>
+
+
+
+<%# Close Modal %>
+<script>
+  (function() {
+    // Refer ID 'memberModal' from index.html.erb
+    const modalElement = document.getElementById('memberModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+
+    // Clear Backdrop and Return to Body screen
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = '0';
+  })();
+
+</script>

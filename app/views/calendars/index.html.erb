@@ -11,7 +11,7 @@
       <% if day_events.any? %>
       <div class="d-block">
         <%= link_to events_path, class:"text-decoration-none" do %>
-        <small class="text-warning hover:!text-underline fs-6 d-inline-block" ><i class="fa-regular fa-calendar-check fs-5 ms-1 me-2"></i><%= day_events.count %>  Events</small>
+        <small class="text-warning fs-6 d-inline-block" ><i class="fa-regular fa-calendar-check fs-5 ms-1 me-2"></i><%= day_events.count %>  Events</small>
         <% end %>
       </div>
       <% end %>

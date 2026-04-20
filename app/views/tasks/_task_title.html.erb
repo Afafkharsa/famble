@@ -7,6 +7,7 @@
     </div>
   <% end %>
 <% end %>
+
 <%= link_to task_path(task),
   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
   <% if policy(task).destroy?  %>

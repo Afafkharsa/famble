@@ -10,7 +10,7 @@ class TasksController < ApplicationController
   end
 
   def show
-
+    authorize @task
   end
 
   def new
@@ -32,16 +32,17 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to task_path(@task)
     else
-      render new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    authorize @task
   end
 
   def update
     @task = Task.find(params[:id])
-
+    authorize @task
 
     if @task.update(task_params)
       respond_to do |format|
@@ -63,6 +64,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    authorize @task
     @task.destroy
     redirect_to tasks_path, status: :see_other
   end
@@ -71,7 +73,6 @@ class TasksController < ApplicationController
 
   def set_task
     @task = Task.find(params[:id])
-    authorize @task
   end
 
   def set_users

@@ -18,30 +18,10 @@
             <i class="fa-regular fa-user"></i>
             <%= @task.user.name %>
         </div>
-        <!-- class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1" -->
 
-        <% if @task.status && !@task.validation %>
-          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
-               data-task-status-target="approval"
-               data-turbo-confirm="Validate?"
-               data-action="click->task-status#validate"
-               type="button">
-            <i class="fa-solid fa-hourglass-half border-0">
-            </i> Waiting approval
-          </div>
-        <% elsif @task.status && @task.validation  %>
-            <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
-              <i class="fa-regular fa-circle-check border-0 disable"></i> Done
-            </div>
-        <% else %>
-          <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
-               data-task-status-target="button"
-               data-turbo-confirm="Mark complete?"
-               data-action="click->task-status#complete"
-               type="button">
-            <i class="fa-regular fa-circle border-0"></i> To do
-          </div>
-        <% end %>
+        <%= render "task_completing", task: @task, user: @user  %>
+
+
         <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
           <i class="fa-solid fa-award"></i>
           <%= @task.task_points > 0 ? "#{@task.task_points} points" : "#{@task.task_points} point"  %>

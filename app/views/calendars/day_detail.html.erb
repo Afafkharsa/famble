@@ -11,7 +11,7 @@
 
       <div class="modal-body">
       <%# Show Events lists %>
-        <h6 class="text-warning mt-2">● <%= @events.count > 0 ? @events.count : "No" %> Events</h6>
+        <h6 class="text-warning mt-2 fw-bold">● <%= @events.count > 0 ? @events.count : "No" %> Events</h6>
         <% @events.each do |event| %>
           <div class="item-row border-bottom py-1 ms-4">
             <%= event.title %>
@@ -19,7 +19,7 @@
         <% end %>
 
       <%# Show Tasks lists %>
-        <h6 class="text-primary mt-2">● <%= @tasks.count > 0 ? @tasks.count : "No" %> Tasks</h6>
+        <h6 class="text-primary mt-2 fw-bold">● <%= @tasks.count > 0 ? @tasks.count : "No" %> Tasks</h6>
         <% @tasks.each do |task| %>
           <div class="item-row border-bottom py-1 ms-4">
             <%= task.name %>
@@ -28,7 +28,7 @@
 
       <%# Show Meals lists %>
         <% meals_count = @meal_plans.sum { |plan| plan.recipe_meal_plans.count } %>
-        <h6 class="text-success mt-2"> ● <%= meals_count.zero? ? "No meals" : "#{meals_count} Meals" %></h6>
+        <h6 class="text-success mt-2 fw-bold"> ● <%= meals_count.zero? ? "No meals" : "#{meals_count} Meals" %></h6>
         <% @meal_plans.each do |plan| %>
         <% plan.recipe_meal_plans.each do |meal| %>
           <div class="item-row border-bottom py-1 ms-4">
@@ -40,9 +40,9 @@
 
       <div class="modal-footer mt-4 d-flex gap-2">
         <!--<button class="btn btn-dark w-100">Add an Event</button>-->
-        <%= link_to "Add an event", new_event_path(date: @date), class: "btn btn-dark w-100", data: { turbo: false } %>
-        <%= link_to "Add a task", new_task_path(date: @date), class: "btn btn-dark w-100", data: { turbo: false } %>
-        <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn btn-dark w-100", data: { turbo: false } %>
+        <%= link_to "Add an event", new_event_path(date: @date), class: "btn btn-outline-warning w-100", data: { turbo: false } %>
+        <%= link_to "Add a task", new_task_path(date: @date), class: "btn btn-outline-primary w-100", data: { turbo: false } %>
+        <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn btn-outline-success w-100", data: { turbo: false } %>
       </div>
     </div>
   </div>
