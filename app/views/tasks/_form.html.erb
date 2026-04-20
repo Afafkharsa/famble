@@ -30,8 +30,9 @@
             <% end %>
             </div>
           <div class="pe-2 col-md-6">
-            <%= f.input :task_points, collection: 1..10, label:"Reward",
+            <%= f.input :task_points, collection: 1..10, label:"Reward points",
               wrapper_html:{class: "d-flex gap-3 align-items-center p-0"},
+              selected: 1,
               label_html: {class: "p-0 m-0"}, prompt: "Number of points" %>
           </div>
         </div>
