@@ -1,6 +1,19 @@
-<div class="card-body">
-  <button type="button" class="btn-close float-end me-3" data-bs-dismiss="modal"></button>
-    <h1 class="mt-4 mb-2 text-center fw-bold">New member</h1>
 
-    <%= render "form", member: @member %>
-</div>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal-backdrop fade show"></div> <div class="modal d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Member</h5>
+          <%# Close button of modal %>
+          <button type="button" class="btn-close"
+        onclick="const frame = this.closest('turbo-frame'); frame.src = ''; frame.innerHTML = '';">
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= render "form", member: @member %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

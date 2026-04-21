@@ -1,23 +1,31 @@
 
 <%# Put new member at last %>
-<%= turbo_stream.append "member-list", partial: "members/member", locals: { member: @member } %>
-<%= turbo_stream.update "modal-content-area", "" %>
+    <%= turbo_stream.append "member-list", partial: "members/member", locals: { member: @member } %>
 
 <%# Close Modal %>
-<script>
-  (function() {
-    const modalElement = document.getElementById('memberModal');
-    const modal = bootstrap.Modal.getInstance(modalElement);
-    if (modal) {
-      modal.hide();
-    }
+<%#= turbo_stream.update "modal", "" %>
+<%= turbo_stream.replace "modal" do %>
+  <turbo-frame id="modal"></turbo-frame>
+<% end %>
 
-    // Clear Backdrop
-    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+<!--
+<% turbo_stream.append "body" do %>
+  <script>
+    (function() {
+      const modalElement = document.getElementById('memberModal');
+      const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      // const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
 
-    // Return to Body screen
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = 'auto';
-    document.body.style.paddingRight = '0';
-  })();
-</script>
+      // Clear Backdrop and Return to Body screen
+      setTimeout(() => {
+      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = 'auto';
+      document.body.style.paddingRight = '0';
+      }, 100);
+    })();
+  </script>
+<% end %> -->

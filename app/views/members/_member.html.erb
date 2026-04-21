@@ -1,27 +1,26 @@
 
 <div id="<%= dom_id(member) %>" class="col-auto text-center ms-5">
-  <div class="member-wrapper" onclick="loadMember('<%= member.id %>')"
-        style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#memberModal" onclick="loadMember(<%= member.id %>)">
+  <%= link_to family_member_path(member.family, member),
+              data: { turbo_frame: "modal" },
+              class: "text-decoration-none text-dark" do %>
 
-    <div class="photo-circle mx-auto mb-2 shadow-sm d-flex align-items-center justify-content-center
-      fs-3 mt-3 fw-bold" style="width: 120px; height: 120px; background-color: #5f84a4; border-radius: 50%;
-      overflow: hidden; border: 2px solid #eee; font-size: 16px;">
+    <div class="member-wrapper" style="cursor: pointer;">
 
-  <!--Member photo -->
-      <% if member.photo.attached? %>
-        <%= image_tag member.photo, style: "width: 100%; height: 100%; object-fit: cover;" %>
-      <% else %>
-        <div style="color: white; font-size: 0.8rem;">Photo</div>
-      <% end %>
+    <%# Photo %>
+      <div class="photo-circle mx-auto mb-2 shadow-sm d-flex align-items-center justify-content-center"
+           style="width: 120px; height: 120px; background-color: #5f84a4; border-radius: 50%; overflow: hidden; border: 2px solid #eee;">
+        <% if member.photo.attached? %>
+          <%= image_tag member.photo, style: "width: 100%; height: 100%; object-fit: cover;" %>
+        <% else %>
+          <div style="color: white; font-size: 0.8rem;">Photo</div>
+        <% end %>
+      </div>
+
+    <%# Name %>
+      <span class="member-name fw-semibold d-block" style="font-size: 1.5rem;">
+        <%= member.name %>
+      </span>
 
     </div>
-
-  <!--Member name -->
-    <span class="member-name fw-semibold" style="font-size: 1.5rem; color: #333;">
-      <%= link_to member.name.presence,
-          family_member_path(@family, member),
-          data: { bs_toggle: "modal", bs_target: "#memberModal" },
-          style: "text-decoration: none;"  %>
-    </span>
-  </div>
+  <% end %>
 </div>

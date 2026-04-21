@@ -6,7 +6,7 @@ class MembersController < ApplicationController
   def show
     # @family = current_user.family
     @member = @family.users.find(params[:id])
-    render layout: false
+    render layout: "modal"
   end
 
   def new
@@ -27,8 +27,8 @@ class MembersController < ApplicationController
 
     if @member.persisted?
       respond_to do |format|
-      #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
-      format.turbo_stream
+        format.turbo_stream
+        #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
       end
     else
       render :new, status: :unprocessable_entity
@@ -47,12 +47,12 @@ class MembersController < ApplicationController
 
     if @member.update(member_params)
       respond_to do |format|
-        #format.html { redirect_to family_path(@family),
-        #status: :see_other, notice: "Member Updated" }
         format.turbo_stream
+        format.html { redirect_to family_path(@family),
+        status: :see_other, notice: "Member Updated" }
       end
-    else
-      render :index, status: :unprocessable_entity
+    #else
+      #render :index, status: :unprocessable_entity
     end
   end
 
@@ -60,9 +60,9 @@ class MembersController < ApplicationController
     #@member = @family.users.find(params[:id])
     @member.destroy
     respond_to do |format|
-      #format.html { redirect_to family_path(@family),
-      #status: :see_other, notice: "Member deleted" }
       format.turbo_stream
+      #format.html { redirect_to family_path(@family),
+      #status: :see_other, notice: "Member deleted"
     end
   end
 
