@@ -31,6 +31,7 @@ class RewardsController < ApplicationController
 
   def destroy
     @reward = Reward.find(params[:id])
+    authorize @reward
     @reward.destroy
     redirect_to rewards_path, notice: "Reward deleted."
   end
@@ -49,11 +50,13 @@ class RewardsController < ApplicationController
 
   def edit
     @reward = Reward.find(params[:id])
+    authorize @reward
     @family_members = current_user.family.users
   end
 
   def update
     @reward = Reward.find(params[:id])
+    authorize @reward
     if @reward.update(reward_params)
       redirect_to rewards_path, notice: "Reward updated!"
     else
@@ -65,6 +68,6 @@ class RewardsController < ApplicationController
   private
 
   def reward_params
-    params.require(:reward).permit(:name, :description, :reward_points, :user_id, :photo, :reward_template_id)
+    params.require(:reward).permit(:name, :description, :reward_points, :user_id, :photo, :reward_template_id, :icon)
   end
 end

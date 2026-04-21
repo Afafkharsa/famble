@@ -1,31 +1,39 @@
 <div class="container mt-4" data-controller="reward-template">
-  <h1>Create a Reward</h1>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-9 col-lg-7">
 
-  <% if @reward_templates.any? %>
-    <h5 class="mt-3">Reward Library</h5>
-    <div class="row mb-4">
-      <% @reward_templates.each do |template| %>
-        <div class="col-6 col-md-3 col-lg-2 mb-3">
-          <div class="card h-100 text-center">
-            <% if template.photo.attached? %>
-              <%= image_tag template.photo, class: "card-img-top", style: "height: 100px; object-fit: cover;" %>
-            <% end %>
-            <div class="card-body p-2">
-              <p class="card-text small mb-1"><%= template.name %></p>
-              <button type="button" class="btn btn-outline-primary btn-sm"
-                data-template-id="<%= template.id %>"
-                data-template-name="<%= template.name %>"
-                data-template-photo-url="<%= template.photo.attached? ? url_for(template.photo) : '' %>"
-                data-template-reward-points="<%= template.reward_points %>"
-                data-action="reward-template#fill">
-                +
-              </button>
+      <% if @reward_templates.any? %>
+        <p class="fw-bold small text-uppercase mb-2" style="letter-spacing: 0.04em; color: rgba(14,0,0,0.4);">Reward Library</p>
+        <div class="row g-2 mb-4">
+          <% @reward_templates.each do |template| %>
+            <div class="col-4 col-md-3">
+              <div class="reward-template-card"
+                   data-action="click->reward-template#fill"
+                   data-template-id="<%= template.id %>"
+                   data-template-name="<%= template.name %>"
+                   data-template-photo-url="<%= template.photo.attached? ? url_for(template.photo) : '' %>"
+                   data-template-reward-points="<%= template.reward_points %>"
+                   data-template-icon="<%= template.icon %>">
+                <% if template.photo.attached? %>
+                  <%= image_tag template.photo, class: "reward-template-card__img" %>
+                <% elsif template.icon.present? %>
+                  <i class="bi bi-<%= template.icon %>" style="font-size: 22px; color: rgba(14,0,0,0.3); display: block; margin-bottom: 6px;"></i>
+                <% end %>
+                <p class="reward-template-card__name"><%= template.name %></p>
+                <p class="reward-template-card__pts"><%= template.reward_points %> pts</p>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
-    </div>
-  <% end %>
 
-  <%= render "form", reward: @reward, family_members: @family_members %>
+      <div class="form-page-wrapper">
+        <div class="form-card">
+          <h2 class="form-card__title">New Reward</h2>
+          <%= render "form", reward: @reward, family_members: @family_members %>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

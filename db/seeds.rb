@@ -13,6 +13,7 @@ Message.destroy_all
 Chat.destroy_all
 RecipeMealPlan.destroy_all
 MealPlan.destroy_all
+PointAdjustment.destroy_all
 Task.destroy_all
 TaskTemplate.destroy_all
 Reward.destroy_all
@@ -28,6 +29,7 @@ ActiveRecord::Base.connection.reset_pk_sequence!('tasks')
 ActiveRecord::Base.connection.reset_pk_sequence!('recipes')
 ActiveRecord::Base.connection.reset_pk_sequence!('rewards')
 ActiveRecord::Base.connection.reset_pk_sequence!('reward_templates')
+ActiveRecord::Base.connection.reset_pk_sequence!('point_adjustments')
 ActiveRecord::Base.connection.reset_pk_sequence!('meal_plans')
 
 puts "Creating Star Wars family..."
@@ -42,7 +44,8 @@ user_1 = User.create!(
   role: "parent",
   name: "Anakin",
   birthdate: "1981-04-09".to_date,
-  family: family_1
+  family: family_1,
+  color: "#F5D2D2"
 )
 user_1.photo.attach(
   io:  File.open(File.join(Rails.root,'app/assets/images/user_anakin.jpg')),
@@ -55,7 +58,8 @@ user_2 = User.create!(
   role: "child",
   name: "Leia",
   birthdate: "2005-04-25".to_date,
-  family: family_1
+  family: family_1,
+  color: "#F8F7BA"
 )
 user_2.photo.attach(
   io:  File.open(File.join(Rails.root,'app/assets/images/user_leia.jpg')),
@@ -68,7 +72,8 @@ user_3 = User.create!(
   role: "child",
   name: "Luke",
   birthdate: "2005-04-25".to_date,
-  family: family_1
+  family: family_1,
+  color: "#A3CCDA"
 )
 user_3.photo.attach(
   io:  File.open(File.join(Rails.root,'app/assets/images/user_luke.jpg')),
@@ -81,7 +86,8 @@ user_4 = User.create!(
   role: "parent",
   name: "Padme",
   birthdate: "1981-07-09".to_date,
-  family: family_1
+  family: family_1,
+  color: "#BDE3C3"
 )
 user_4.photo.attach(
   io:  File.open(File.join(Rails.root,'app/assets/images/user_amidala.jpg')),
@@ -100,16 +106,18 @@ user_5 = User.create!(
   role: "parent",
   name: "Sarabi",
   birthdate: "1994-12-31".to_date,
-  family: family_2
+  family: family_2,
+  color: "#F5D2D2"
 )
 
-User.create!(
+user_6 = User.create!(
   email: "simba@gmail.com",
   password: "hakuna_matata",
   role: "child",
   name: "Simba",
   birthdate: "2019-07-19".to_date,
-  family: family_2
+  family: family_2,
+  color: "#F8F7BA"
 )
 
 puts "Creating generic task templates..."
@@ -423,83 +431,38 @@ puts "Generated photo successful!"
 
 puts "Creating reward templates..."
 
-RewardTemplate.create!(
-  name: "Movie night",
-  description: "Pick a movie for the whole family to watch together",
-  reward_points: 10
-)
-
-RewardTemplate.create!(
-  name: "Extra screen time",
-  description: "30 minutes of bonus screen time",
-  reward_points: 5
-)
-
-RewardTemplate.create!(
-  name: "Ice cream outing",
-  description: "A trip to the ice cream shop",
-  reward_points: 15
-)
-
-RewardTemplate.create!(
-  name: "New book",
-  description: "Choose a new book to read",
-  reward_points: 20
-)
-
-RewardTemplate.create!(
-  name: "Sleep in Saturday",
-  description: "No chores until noon on Saturday",
-  reward_points: 8
-)
-
-RewardTemplate.create!(
-  name: "Pick dinner",
-  description: "Choose what the family eats for dinner",
-  reward_points: 7
-)
+RewardTemplate.create!(name: "Movie night",      description: "Pick a movie for the whole family to watch together", reward_points: 10, icon: "film")
+RewardTemplate.create!(name: "Extra screen time", description: "30 minutes of bonus screen time",                         reward_points: 5,  icon: "controller")
+RewardTemplate.create!(name: "Ice cream outing",  description: "A trip to the ice cream shop",                            reward_points: 15, icon: "gift")
+RewardTemplate.create!(name: "New book",          description: "Choose a new book to read",                               reward_points: 20, icon: "book")
+RewardTemplate.create!(name: "Sleep in Saturday", description: "No chores until noon on Saturday",                        reward_points: 8,  icon: "star-fill")
+RewardTemplate.create!(name: "Pick dinner",       description: "Choose what the family eats for dinner",                  reward_points: 7,  icon: "cup-hot")
 
 puts "Creating rewards..."
 
-Reward.create!(
-  name: "Movie night",
-  description: "Pick a movie for the whole family to watch together",
-  reward_points: 10,
-  redeemed: false,
-  user: user_2
-)
+# Anakin (parent, #F5D2D2)
+Reward.create!(name: "New book", description: "Choose a new book to read", reward_points: 20, icon: "book", redeemed: false, user: user_1)
+Reward.create!(name: "Pick dinner", description: "Choose what the family eats for dinner", reward_points: 7, icon: "cup-hot", redeemed: true, redeemed_at: 3.days.ago, user: user_1)
 
-Reward.create!(
-  name: "Extra screen time",
-  description: "30 minutes of bonus screen time",
-  reward_points: 5,
-  redeemed: false,
-  user: user_2
-)
+# Leia (child, #F8F7BA)
+Reward.create!(name: "Movie night", description: "Pick a movie for the whole family to watch together", reward_points: 10, icon: "film", redeemed: false, user: user_2)
+Reward.create!(name: "Extra screen time", description: "30 minutes of bonus screen time", reward_points: 5, icon: "controller", redeemed: false, user: user_2)
+Reward.create!(name: "Ice cream outing", description: "A trip to the ice cream shop", reward_points: 15, icon: "gift", redeemed: false, user: user_2)
 
-Reward.create!(
-  name: "Ice cream outing",
-  description: "A trip to the ice cream shop",
-  reward_points: 15,
-  redeemed: false,
-  user: user_2
-)
+# Luke (child, #A3CCDA)
+Reward.create!(name: "Sleep in Saturday", description: "No chores until noon on Saturday", reward_points: 8, icon: "star-fill", redeemed: true, redeemed_at: 7.days.ago, user: user_3)
+Reward.create!(name: "Movie night", description: "Pick a movie for the whole family to watch together", reward_points: 10, icon: "film", redeemed: false, user: user_3)
 
-Reward.create!(
-  name: "New book",
-  description: "Choose a new book to read",
-  reward_points: 20,
-  redeemed: false,
-  user: user_1
-)
+# Padme (parent, #BDE3C3)
+Reward.create!(name: "Spa afternoon", description: "An afternoon off to relax", reward_points: 25, icon: "heart-fill", redeemed: false, user: user_4)
+Reward.create!(name: "Pick dinner", description: "Choose what the family eats for dinner", reward_points: 7, icon: "cup-hot", redeemed: false, user: user_4)
 
-Reward.create!(
-  name: "Sleep in Saturday",
-  description: "No chores until noon on Saturday",
-  reward_points: 8,
-  redeemed: true,
-  user: user_3
-)
+# Sarabi (parent, #F5D2D2)
+Reward.create!(name: "New book", description: "Choose a new book to read", reward_points: 20, icon: "book", redeemed: false, user: user_5)
+
+# Simba (child, #F8F7BA)
+Reward.create!(name: "Extra screen time", description: "30 minutes of bonus screen time", reward_points: 5, icon: "controller", redeemed: false, user: user_6)
+Reward.create!(name: "Ice cream outing", description: "A trip to the ice cream shop", reward_points: 15, icon: "gift", redeemed: false, user: user_6)
 
 puts "Creating Meal plans..."
 

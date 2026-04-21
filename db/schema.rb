@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_21_192839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,6 +83,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
+  create_table "point_adjustments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "amount"
+    t.string "kind"
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_point_adjustments_on_user_id"
+  end
+
   create_table "recipe_meal_plans", force: :cascade do |t|
     t.bigint "recipe_id", null: false
     t.bigint "meal_plan_id", null: false
@@ -110,6 +120,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
     t.integer "reward_points"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "icon"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -122,6 +133,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
     t.boolean "redeemed"
     t.datetime "redeemed_at"
     t.bigint "reward_template_id"
+    t.string "icon"
     t.index ["reward_template_id"], name: "index_rewards_on_reward_template_id"
     t.index ["user_id"], name: "index_rewards_on_user_id"
   end
@@ -168,6 +180,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
     t.string "name"
     t.date "birthdate"
     t.bigint "family_id", null: false
+    t.string "color"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["family_id"], name: "index_users_on_family_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -179,6 +192,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
   add_foreign_key "events", "users"
   add_foreign_key "meal_plans", "families"
   add_foreign_key "messages", "chats"
+  add_foreign_key "point_adjustments", "users"
   add_foreign_key "recipe_meal_plans", "meal_plans"
   add_foreign_key "recipe_meal_plans", "recipes"
   add_foreign_key "rewards", "reward_templates"

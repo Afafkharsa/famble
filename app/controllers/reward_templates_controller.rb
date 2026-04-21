@@ -27,6 +27,6 @@ class RewardTemplatesController < ApplicationController
   private
 
   def reward_template_params
-    params.require(:reward_template).permit(:name, :description, :reward_points, :photo)
+    params.require(:reward_template).permit(:name, :description, :reward_points, :photo, :icon)
   end
 end

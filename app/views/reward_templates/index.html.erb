@@ -1,30 +1,69 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Reward Library</h1>
-    <%= link_to "Add to Library", new_reward_template_path, class: "btn btn-primary" %>
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h1 class="mb-0">Reward Library</h1>
+    <%= link_to new_reward_template_path, class: "text-decoration-none text-secondary" do %>
+      <i class="bi bi-plus-circle fs-4"></i>
+    <% end %>
   </div>
 
   <% if @reward_templates.any? %>
-    <div class="row">
+    <div class="row g-3">
       <% @reward_templates.each do |template| %>
-        <div class="col-6 col-md-4 col-lg-3 mb-3">
-          <div class="card h-100 text-center">
-            <% if template.photo.attached? %>
-              <%= image_tag template.photo, class: "card-img-top", style: "height: 150px; object-fit: cover;" %>
-            <% end %>
-            <div class="card-body">
-              <h5 class="card-title"><%= template.name %></h5>
-              <p class="card-text text-muted small"><%= template.description %></p>
-              <p><strong><%= template.reward_points %> pts</strong></p>
-              <%= link_to "Delete", reward_template_path(template),
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                  class: "btn btn-outline-danger btn-sm" %>
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="rt-card">
+
+            <%# Icon / photo %>
+            <div class="rt-card__icon">
+              <% if template.photo.attached? %>
+                <%= image_tag template.photo, class: "rt-card__photo" %>
+              <% elsif template.icon.present? %>
+                <i class="bi bi-<%= template.icon %> rt-card__bi"></i>
+              <% else %>
+                <i class="bi bi-gift rt-card__bi"></i>
+              <% end %>
             </div>
+
+            <p class="rt-card__name"><%= template.name %></p>
+            <% if template.description.present? %>
+              <p class="rt-card__desc"><%= template.description %></p>
+            <% end %>
+            <span class="badge rounded-pill rt-card__pts"><%= template.reward_points %> pts</span>
+
+            <%# Footer: Use + 3-dot %>
+            <div class="rt-card__footer">
+              <%= link_to new_reward_path, class: "btn rt-card__use-btn" do %>
+                Use template
+              <% end %>
+
+              <div class="dropdown">
+                <button class="rt-card__dot-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="opacity:0.4;">
+                    <circle cx="8" cy="3" r="1.2"/>
+                    <circle cx="8" cy="8" r="1.2"/>
+                    <circle cx="8" cy="13" r="1.2"/>
+                  </svg>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size:12px; min-width:130px; border-radius:10px;">
+                  <li>
+                    <%= link_to reward_template_path(template),
+                        data: { turbo_method: :delete, turbo_confirm: "Remove from library?" },
+                        class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                      </svg>
+                      Delete
+                    <% end %>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-muted">No rewards in the library yet.</p>
+    <p class="text-muted fst-italic small">No rewards in the library yet.</p>
   <% end %>
 </div>

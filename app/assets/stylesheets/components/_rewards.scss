@@ -1,0 +1,524 @@
+// ── Member header ──────────────────────────────────────────
+.member-header {
+  border-radius: $border-radius-xxl $border-radius-xxl 0 0;
+  padding: 16px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.member-header__crown {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.35;
+}
+
+.member-header__name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.member-header__role {
+  font-size: 11px;
+  color: rgba($gray, 0.5);
+  margin-top: 1px;
+}
+
+.member-header__pills {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+// Points pills (extend Bootstrap .badge in HTML with these modifiers)
+.pts-pill--avail {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: rgba($gray, 0.8) !important;
+}
+
+.pts-pill--earned {
+  background: rgba(255, 255, 255, 0.65) !important;
+  color: rgba($gray, 0.6) !important;
+}
+
+// Points +/- controls
+.pts-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 0.5px solid rgba($gray, 0.08);
+  width: 100%;
+}
+
+.pts-controls__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba($gray, 0.4);
+}
+
+.pts-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: $body-font;
+  transition: transform 0.1s;
+  &:active { transform: scale(0.92); }
+}
+
+.pts-btn--add {
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba($gray, 0.5);
+  &:hover { background: white; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
+}
+
+.pts-btn--rem {
+  background: rgba($danger, 0.12);
+  color: $danger;
+  &:hover { background: rgba($danger, 0.2); }
+}
+
+// ── Point history (Bootstrap collapse handles open/close) ──
+.plog {
+  background: white;
+  border-left: 0.5px solid rgba($gray, 0.08);
+  border-right: 0.5px solid rgba($gray, 0.08);
+}
+
+.plog-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border: none;
+  background: none;
+  font-family: $body-font;
+  cursor: pointer;
+  transition: background 0.12s;
+  &:hover { background: rgba($gray, 0.02); }
+}
+
+.plog-toggle__label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba($gray, 0.4);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.plog-toggle__count {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba($gray, 0.06);
+  color: rgba($gray, 0.4);
+}
+
+.plog-toggle__arrow {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+// Bootstrap sets aria-expanded="true" when open — rotate arrow
+.plog-toggle[aria-expanded="true"] .plog-toggle__arrow {
+  transform: rotate(180deg);
+}
+
+.plog-empty {
+  padding: 10px 14px;
+  font-size: 11px;
+  color: rgba($gray, 0.3);
+  text-align: center;
+  font-style: italic;
+}
+
+// ── Reward / content list (bottom section of column) ───────
+// Uses same border-radius as .base-card (both $border-radius-xxl = 1rem)
+.content-list {
+  background: white;
+  border-radius: 0 0 $border-radius-xxl $border-radius-xxl;
+  border: 0.5px solid rgba($gray, 0.08);
+  overflow: hidden;
+}
+
+.content-list__title {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba($gray, 0.4);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 10px 14px 6px;
+}
+
+// ── Reward template card (library index) ───────────────────
+.rt-card {
+  background: white;
+  border-radius: $border-radius-xxl;
+  border: 0.5px solid rgba($gray, 0.08);
+  padding: 20px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.rt-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba($gray, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.rt-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rt-card__bi {
+  font-size: 22px;
+  color: rgba($gray, 0.35);
+}
+
+.rt-card__name {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.rt-card__desc {
+  font-size: 11px;
+  color: rgba($gray, 0.42);
+  margin: 0 0 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rt-card__pts {
+  background: rgba($green, 0.25) !important;
+  color: #3a6b47 !important;
+  font-size: 11px !important;
+  margin-bottom: 14px;
+}
+
+.rt-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.rt-card__use-btn {
+  flex: 1;
+  background: $blue;
+  color: white;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 12px;
+  font-family: $body-font;
+  &:hover { background: darken($blue, 8%); color: white; }
+}
+
+.rt-card__dot-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover { background: $light-gray; }
+  &::after { display: none; }
+}
+
+// ── Emoji icon picker (reward form) ────────────────────────
+.reward-icon-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.icon-option {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1.5px solid rgba($gray, 0.1);
+  background: $light-gray;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+  &:hover { border-color: rgba($gray, 0.25); background: white; }
+}
+
+.icon-option--active {
+  border-color: rgba($gray, 0.45);
+  background: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.reward-item__bi-icon {
+  font-size: 17px;
+  opacity: 0.6;
+}
+
+// ── Reward list item ────────────────────────────────────────
+.reward-item {
+  padding: 10px 14px;
+  transition: background 0.12s;
+  &:hover { background: rgba($gray, 0.015); }
+  & + & { border-top: 0.5px solid rgba($gray, 0.06); }
+}
+
+.reward-item__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.reward-item__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.reward-item__info { flex: 1; min-width: 0; }
+
+.reward-item__name {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reward-item__desc {
+  font-size: 11px;
+  color: rgba($gray, 0.42);
+  margin: 1px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reward-item__bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reward-item__progress { flex: 1; }
+
+// 3-dot Bootstrap dropdown — hidden until row hovered
+.reward-three-dot > [data-bs-toggle="dropdown"] {
+  opacity: 0;
+  transition: opacity 0.15s;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  &::after { display: none; }   // remove Bootstrap caret
+}
+
+.reward-item:hover .reward-three-dot > [data-bs-toggle="dropdown"],
+.reward-three-dot.show > [data-bs-toggle="dropdown"] {
+  opacity: 1;
+  background: $light-gray;
+}
+
+// ── Add content row (generic — reusable on task page too) ───
+.add-content-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-top: 0.5px solid rgba($gray, 0.06);
+  color: rgba($gray, 0.38);
+  text-decoration: none;
+  transition: background 0.12s;
+  &:hover { background: rgba($gray, 0.02); color: rgba($gray, 0.5); }
+}
+
+.add-content-row__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: $light-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: rgba($gray, 0.3);
+}
+
+.add-content-row__label {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+// ── Point history log entries ───────────────────────────────
+.log-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  margin: 0 8px 4px;
+}
+
+
+.log-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.log-dot--pos { background: rgba($green, 0.35); color: #3a6b47; }
+.log-dot--neg { background: rgba($danger, 0.15); color: $danger; }
+
+.log-body { flex: 1; min-width: 0; }
+
+.log-reason {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba($gray, 0.7);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-date { font-size: 10px; color: rgba($gray, 0.4); margin: 1px 0 0; }
+
+.log-pts {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.log-pts--pos { background: rgba($green, 0.3); color: #3a6b47; }
+.log-pts--neg { background: rgba($danger, 0.12); color: $danger; }
+
+// ── Point adjustment modal ──────────────────────────────────
+.pts-modal__content {
+  border-radius: 18px;
+  border: none;
+  padding: 24px;
+  position: relative;
+}
+
+.pts-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.pts-modal__avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.pts-modal__title   { font-family: $headers-font; font-size: 18px; margin: 0; }
+.pts-modal__subtitle { font-size: 12px; color: rgba($gray, 0.5); margin: 1px 0 0; }
+
+.pts-modal__num-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0.5px solid rgba($gray, 0.12);
+  background: $light-gray;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba($gray, 0.5);
+  cursor: pointer;
+  font-family: $body-font;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover { background: #e8e8e8; }
+}
+
+.pts-modal__num-input { width: 90px; }
+
+.pts-modal__submit {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: $body-font;
+  cursor: pointer;
+  transition: opacity 0.12s;
+  &:active { opacity: 0.85; }
+  &[data-mode="add"]    { background: $green; color: rgba($gray, 0.75); }
+  &[data-mode="deduct"] { background: $danger; color: white; }
+}
