@@ -1,20 +1,20 @@
 
 <div class="container py-5">
 
-  <div class="family-section mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div class="d-flex align-item-center gap-3">
+  <div class="family-section mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center gap-3">
         <h1 class="fw-bold m-0 ms-3">My Family</h1>
         <i class="fa-solid fa-house text-light-emphasis d-block fs-1 mb-1"></i>
-        <div>
+      </div>
           <%= link_to new_family_member_path(@family),
                 data: { turbo_frame: "modal" },
                 class: "btn btn-outline-primary border-radius-5 d-flex align-items-center justify-content-center",
                 style: "width: 150px; height: 50px; border-width: 2px; font-weight: bold;" do %>
               Add member
-            <% end %>
-          </div>
-      </div>
+          <% end %>
+    </div>
+  </div>
 
   <div id="member-list" class="d-flex flex-wrap justify-content-start gap-4 gx-2 gy-2">
     <%# @members.each do |member| %>
@@ -44,15 +44,11 @@
       </div>
     <% end %>
 
+
   </div>
+  <div class="d-flex gap-3 ms-3 mt-5">
+      <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success border-radius-5 align-items-center py-3", style:"w-auto;" %>
+    </div>
 </div>
 
 <%= turbo_frame_tag "modal" %>
-
-
-    <div class="d-flex gap-3 ms-3 mt-5">
-      <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success border-radius-5 align-items-center py-3", style:"w-auto;" %>
-    </div>
-  </div>
-
-</div>

@@ -1,12 +1,14 @@
 
-<%# Put new member at last %>
-    <%= turbo_stream.append "member-list", partial: "members/member", locals: { member: @member } %>
+<%# 1. Put new member at last %>
+    <%= turbo_stream.append "member-list" do %>
+    <%= render partial: "members/member", locals: { member: @member } %>
+    <% end %>
 
-<%# Close Modal %>
+<%# 2. Clear data's Modal and reset SRC %>
 <%#= turbo_stream.update "modal", "" %>
-<%= turbo_stream.replace "modal" do %>
-  <turbo-frame id="modal"></turbo-frame>
-<% end %>
+    <%= turbo_stream.replace "modal" do %>
+      <turbo-frame id="modal"></turbo-frame>
+    <% end %>
 
 <!--
 <% turbo_stream.append "body" do %>

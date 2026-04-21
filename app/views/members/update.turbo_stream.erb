@@ -1,8 +1,15 @@
 
-<%# 1. Update new member's details on the same ID %>
-  <%= turbo_stream.replace dom_id(@member), partial: "members/member", locals: { member: @member } %>
-  <%#= turbo_stream.replace member_list(@member), partial: "members/member", locals: { member: @member } %>
+<%# 1. Update member's details on the same ID %>
+<%= turbo_stream.replace dom_id(@member) do %>
+  <%= render "members/member", member: @member %>
+<% end %>
 
+<!--
+  <%= turbo_stream.replace dom_id(@member) do %>
+  <%= render partial: "members/member", locals: { member: @member } %>
+  <% end %>
+  <%#= turbo_stream.replace member-list(@member), partial: "members/member", locals: { member: @member } %>
+-->
 
 <%# 2. Clear data's Modal and reset SRC %>
   <%= turbo_stream.replace "modal" do %>

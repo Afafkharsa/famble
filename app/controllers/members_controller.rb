@@ -48,7 +48,7 @@ class MembersController < ApplicationController
     if @member.update(member_params)
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to family_path(@family),
+        format.html { redirect_to family_members_path(@family),
         status: :see_other, notice: "Member Updated" }
       end
     #else
