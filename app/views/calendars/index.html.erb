@@ -1,6 +1,26 @@
 <div class="container mt-3">
   <h1 class="text-center mb-3 fs-bold">Calendar</h1>
 
+<div class="calendar-navigation mb-4">
+  <%= form_with url: calendars_path, method: :get, local: true, class: "d-flex gap-2 align-items-center" do |f| %>
+
+    <%# Select month %>
+    <%= f.select :month,
+        (1..12).map { |m| [I18n.l(Date.new(2026, m), format: '%B'), m] },
+        { selected: params[:month] || Date.today.month },
+        { class: "form-select bg-success", onchange: "this.form.requestSubmit()" } %>
+
+    <%# Select year 2 yrs before -  5 yrs after) %>
+    <%= f.select :year,
+        (Date.today.year - 2..Date.today.year + 5).to_a,
+        { selected: params[:year] || Date.today.year },
+        { class: "form-select bg-primary", onchange: "this.form.requestSubmit()" } %>
+
+    <%# Today Quick mode %>
+    <%= link_to 'Today', calendars_path, class: "btn btn-outline-primary" %>
+  <% end %>
+</div>
+
   <%= month_calendar(events: []) do |date, items| %>
   <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class:"text-decoration-none text-dark" do %>
     <div class="day-link" style="height: 120px;" onclick="showDayDetail('<%= date %>')" >
