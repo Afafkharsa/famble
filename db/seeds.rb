@@ -149,20 +149,20 @@ TaskTemplate.create!(
   montly_frequency: 7
 )
 
+template_1 = TaskTemplate.create!(
+  name: "Time out and homework",
+  description: "After school and snack, go in the garden for at least 30 minutes. After that do your homeworks. Go to a parent when finished.",
+  task_points: 1,
+  montly_frequency: 7
+)
 
-TaskTemplate.create!(
+template_2 = TaskTemplate.create!(
   name: "Setting table",
   description: "At 7 pm, set the table for dinner",
   task_points: 1,
   montly_frequency: 7
 )
 
-TaskTemplate.create!(
-  name: "Time out and homework",
-  description: "After school and snack, go in the garden for at least 30 minutes. After that do your homeworks. Go to a parent when finished.",
-  task_points: 1,
-  montly_frequency: 7
-)
 
 TaskTemplate.create!(
   name: "Pets care",
@@ -173,7 +173,7 @@ TaskTemplate.create!(
 
 puts "Creating Star wars family first task template..."
 
-template_2 = TaskTemplate.create!(
+template_3 = TaskTemplate.create!(
   name: "Oil R2-D2",
   description: "Each month, put some oil inside R2-D2 collar",
   task_points: 1,
@@ -219,6 +219,29 @@ Task.create!(
 )
 
 Task.create!(
+  name: "Time out and homework",
+  description: "After school and snack, go in the garden for at least 30 minutes. After that do your homeworks. Go to a parent when finished.",
+  task_points: 1,
+  montly_frequency: 7,
+  start_date: Date.today,
+  end_date: Date.today+30,
+  user: user_2,
+  task_template: template_1
+)
+
+Task.create!(
+  name: "Setting table",
+  description: "At 7 pm, set the table for dinner",
+  task_points: 1,
+  montly_frequency: 7,
+  days: ["monday", "wednesday", "friday"],
+  start_date: Date.today-62,
+  end_date: Date.today-62,
+  user: user_2,
+  task_template: template_2
+)
+
+Task.create!(
   name: "Oil R2-D2",
   description: "Each month, put some oil inside R2-D2 collar",
   task_points: 4,
@@ -229,7 +252,7 @@ Task.create!(
   start_date: Date.today-62,
   end_date: Date.today-62,
   user: user_3,
-  task_template: template_2
+  task_template: template_3
 )
 
 Task.create!(
@@ -243,7 +266,7 @@ Task.create!(
   start_date: Date.today-30,
   end_date: Date.today-30,
   user: user_3,
-  task_template: template_2
+  task_template: template_3
 )
 Task.create!(
   name: "Oil R2-D2",
@@ -255,7 +278,7 @@ Task.create!(
   start_date: Date.today,
   end_date: Date.today + 120,
   user: user_3,
-  task_template: template_2
+  task_template: template_3
 )
 
 
