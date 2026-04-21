@@ -17,7 +17,13 @@
   <div class="row g-4">
     <% tasks.each do |task| %>
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100 bg-white">
+        <div
+          class="card base-card card-hover border-0 shadow-sm h-100 bg-white"
+          data-controller="clickable"
+          data-clickable-url-value="<%= task_path(task) %>"
+          data-action="click->clickable#go"
+          style="cursor: pointer;"
+        >
           <div class="card-body">
             <h5 class="card-title d-flex gap-1">
               <%= render "task_title", task: task %>
