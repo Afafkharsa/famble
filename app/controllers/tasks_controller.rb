@@ -28,9 +28,11 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @users = current_user.family.users
+    @task.days = @task.days.reject(&:blank?)
 
-    raise
     authorize @task
+
+    create_child_tasks
 
     if @task.save
       redirect_to task_path(@task)
@@ -48,6 +50,7 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
     @users = current_user.family.users
+
     authorize @task
 
     if @task.update(task_params)
@@ -94,10 +97,33 @@ class TasksController < ApplicationController
       :start_date,
       :end_date,
       :task_points,
-      :days,
       :montly_frequency,
       :task_template,
-      :validation
+      :validation,
+      days: []
     )
+  end
+
+  def create_child_tasks
+    name_to_wday = {
+      "sunday" => 0, "monday" => 1, "tuesday" => 2,
+    "wednesday" => 3, "thursday" => 4, "friday" => 5, "saturday" => 6
+    }
+
+    p = task_params
+
+    wdays = @task.days.map { |n| name_to_wday[n.downcase] }.compact
+
+    tasks = []
+    (@task.start_date..@task.end_date).each do |date|
+      next unless wdays.include?(date.wday)
+
+      attrs = p.except(:start_date, :end_date, :days, :montly_frequency).merge(
+        start_date: date,
+        end_date: date
+      )
+
+      tasks << Task.create!(attrs)
+    end
   end
 end
