@@ -29,7 +29,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @users = current_user.family.users
 
-    raise
+    #raise
     authorize @task
 
     if @task.save
@@ -94,10 +94,10 @@ class TasksController < ApplicationController
       :start_date,
       :end_date,
       :task_points,
-      :days,
       :montly_frequency,
       :task_template,
-      :validation
+      :validation,
+      days: []
     )
   end
 end
