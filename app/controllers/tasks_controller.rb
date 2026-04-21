@@ -32,9 +32,8 @@ class TasksController < ApplicationController
 
     authorize @task
 
-    create_child_tasks
-
     if @task.save
+      create_child_tasks
       redirect_to task_path(@task)
     else
       render :new, status: :unprocessable_entity
@@ -106,16 +105,19 @@ class TasksController < ApplicationController
 
   def create_child_tasks
     name_to_wday = {
-      "sunday" => 0, "monday" => 1, "tuesday" => 2,
-    "wednesday" => 3, "thursday" => 4, "friday" => 5, "saturday" => 6
+      "sunday" => 0,
+      "monday" => 1,
+      "tuesday" => 2,
+      "wednesday" => 3,
+      "thursday" => 4,
+      "friday" => 5,
+      "saturday" => 6
     }
-
     p = task_params
-
     wdays = @task.days.map { |n| name_to_wday[n.downcase] }.compact
-
     tasks = []
-    (@task.start_date..@task.end_date).each do |date|
+
+    (@task.start_date + 1 .. @task.end_date).each do |date|
       next unless wdays.include?(date.wday)
 
       attrs = p.except(:start_date, :end_date, :days, :montly_frequency).merge(
