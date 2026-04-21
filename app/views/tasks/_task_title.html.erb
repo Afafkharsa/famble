@@ -1,5 +1,8 @@
+<!-- Edit link -->
 <%= link_to task.name, task_path(task),
     class:"link-success link-underline-opacity-0"%>
+
+<!-- Edit link -->
 <%= link_to edit_task_path(task) do %>
   <% if policy(task).edit?  %>
     <div style= "text-decoration: none; cursor: pointer; color: inherit;">
@@ -8,6 +11,23 @@
   <% end %>
 <% end %>
 
+<!-- Duplicate link -->
+<%= link_to new_task_path(
+      name: task.name,
+      description: task.description,
+      task_points: task.task_points,
+      days: task.days,
+      montly_frequency: task.montly_frequency,
+      user: task.user
+    ) do %>
+  <% if policy(task).new?  %>
+    <div style= "text-decoration: none; cursor: pointer; color: inherit;">
+      <i class="fa-solid fa-clone text-success"></i>
+    </div>
+  <% end %>
+<% end %>
+
+<!-- Delete link -->
 <%= link_to task_path(task),
   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
   <% if policy(task).destroy?  %>
