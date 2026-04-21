@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_13_212310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,16 +50,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
-  create_table "event_participations", force: :cascade do |t|
-    t.bigint "event_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id", "user_id"], name: "index_event_participations_on_event_id_and_user_id", unique: true
-    t.index ["event_id"], name: "index_event_participations_on_event_id"
-    t.index ["user_id"], name: "index_event_participations_on_user_id"
-  end
-
   create_table "events", force: :cascade do |t|
     t.string "title"
     t.datetime "start_time"
@@ -93,17 +83,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
-  create_table "point_adjustments", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "created_by_id", null: false
-    t.integer "amount", null: false
-    t.string "reason"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["created_by_id"], name: "index_point_adjustments_on_created_by_id"
-    t.index ["user_id"], name: "index_point_adjustments_on_user_id"
-  end
-
   create_table "recipe_meal_plans", force: :cascade do |t|
     t.bigint "recipe_id", null: false
     t.bigint "meal_plan_id", null: false
@@ -131,7 +110,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
     t.integer "reward_points"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "icon"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -144,7 +122,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
     t.boolean "redeemed"
     t.datetime "redeemed_at"
     t.bigint "reward_template_id"
-    t.string "icon"
     t.index ["reward_template_id"], name: "index_rewards_on_reward_template_id"
     t.index ["user_id"], name: "index_rewards_on_user_id"
   end
@@ -191,8 +168,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
     t.string "name"
     t.date "birthdate"
     t.bigint "family_id", null: false
-    t.datetime "points_reset_at"
-    t.string "color"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["family_id"], name: "index_users_on_family_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -201,13 +176,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_155809) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "users"
-  add_foreign_key "event_participations", "events"
-  add_foreign_key "event_participations", "users"
   add_foreign_key "events", "users"
   add_foreign_key "meal_plans", "families"
   add_foreign_key "messages", "chats"
-  add_foreign_key "point_adjustments", "users"
-  add_foreign_key "point_adjustments", "users", column: "created_by_id"
   add_foreign_key "recipe_meal_plans", "meal_plans"
   add_foreign_key "recipe_meal_plans", "recipes"
   add_foreign_key "rewards", "reward_templates"

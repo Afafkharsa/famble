@@ -6,7 +6,7 @@ export default class extends Controller {
 
   go(event) {
     // Prevent redirect if clicking on a link or button inside
-    if (event.target.closest("a, button")) return
+    if (event.target.closest("a, button, [data-controller='task-status']")) return
 
     window.location = this.urlValue
   }

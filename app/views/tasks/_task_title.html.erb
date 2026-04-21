@@ -1,8 +1,4 @@
-<!-- Edit link -->
-<%= link_to task.name, task_path(task),
-    class:"link-success link-underline-opacity-0"%>
-
-<!-- Edit link -->
+<span class="text-success"><%= task.name %></span>
 <%= link_to edit_task_path(task) do %>
   <% if policy(task).edit?  %>
     <div style= "text-decoration: none; cursor: pointer; color: inherit;">
