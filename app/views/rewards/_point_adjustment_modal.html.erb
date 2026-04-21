@@ -1,0 +1,64 @@
+<div class="modal fade" id="pointAdjustmentModal" tabindex="-1"
+     data-point-adjustment-target="modal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content pts-modal__content">
+      <button type="button" class="btn-close pts-modal__close"
+              data-bs-dismiss="modal" aria-label="Close"></button>
+
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="avatar-initials pts-modal__avatar"
+             data-point-adjustment-target="avatar"></div>
+        <div>
+          <p class="pts-modal__title" data-point-adjustment-target="title"></p>
+          <p class="pts-modal__subtitle" data-point-adjustment-target="subtitle"></p>
+        </div>
+      </div>
+
+      <%= form_with url: point_adjustments_path, method: :post do |f| %>
+        <%= f.hidden_field :kind,    data: { "point-adjustment-target": "kindInput" } %>
+        <%= f.hidden_field :user_id, data: { "point-adjustment-target": "memberIdInput" } %>
+
+        <div class="mb-3">
+          <%= f.label :amount, "Points", class: "form-label fw-bold small" %>
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="pts-modal__num-btn"
+                    data-action="click->point-adjustment#step"
+                    data-delta="-1">&minus;</button>
+            <%= f.number_field :amount, value: 5, min: 1, max: 99,
+                  class: "form-control text-center fw-bold fs-5 pts-modal__num-input",
+                  data: { "point-adjustment-target": "amount" } %>
+            <button type="button" class="pts-modal__num-btn"
+                    data-action="click->point-adjustment#step"
+                    data-delta="1">+</button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :reason, "Reason", class: "form-label fw-bold small" %>
+          <select class="form-select mb-2"
+                  data-point-adjustment-target="reasonSelect"
+                  data-action="change->point-adjustment#clearText"></select>
+          <p class="text-center small text-muted my-1">or</p>
+          <%= f.text_field :reason, class: "form-control",
+                placeholder: "Type your own reason...",
+                data: {
+                  "point-adjustment-target": "reasonText",
+                  action: "input->point-adjustment#clearSelect"
+                } %>
+          <p class="text-danger small mt-1 d-none"
+             data-point-adjustment-target="errorMsg">
+            Please select or type a reason
+          </p>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button type="button" class="pts-modal__submit"
+                  data-point-adjustment-target="submitBtn"
+                  data-action="click->point-adjustment#submit"></button>
+          <button type="button" class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal">Cancel</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :recipes
+  resources :point_adjustments, only: [:create]
+
 
   resources :chats, only: [:index, :create, :show, :destroy] do
     resources :messages, only: [:create]

@@ -1,10 +1,17 @@
-<div class="card-body border border-dark-subtle mt-3 mx-auto col-md-6 bg-white">
-    <h1 class="mt-4 mb-2 ms-4 d-flex gap-3">New task
-      <%= link_to task_templates_path do %>
-        <div style= "text-decoration: none; cursor: pointer; color: inherit;">
-          <i class="fa-regular fa-file-lines text-black fs-3"></i>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-9 col-lg-7">
+      <div class="form-page-wrapper">
+        <div class="form-card">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <h2 class="form-card__title mb-0">New task</h2>
+            <%= link_to task_templates_path, class: "text-decoration-none text-secondary ms-auto" do %>
+              <i class="fa-regular fa-file-lines fs-5"></i>
+            <% end %>
+          </div>
+          <%= render "form", task: @task %>
         </div>
-      <% end %>
-    </h1>
-  <%= render "form", task: @task %>
+      </div>
+    </div>
+  </div>
 </div>

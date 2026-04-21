@@ -1,63 +1,24 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 d-flex align-items-center gap-4">
-      Family Rewards
-      <%= link_to new_reward_path, class: "text-decoration-none text-secondary" do %>
-        <i class="bi bi-plus-circle fs-4"></i>
-      <% end %>
-      <%= link_to  reward_templates_path, class: "text-decoration-none text-secondary"  do %>
-        <i class="fa-regular fa-rectangle-list fs-4"></i>
-      <% end %>
-    </h1>
-  </div>
-
-  <div class="d-flex flex-column" >
-    <% current_user.family.users.each do |member| %>
-
-      <div class="col-12 mb-4">
-        <div class="d-flex align-items-center mb-3 flex-wrap">
-          <% if member.photo.attached? %>
-            <%= image_tag member.photo, class: "rounded-circle me-2", style: "width: 48px; height: 48px; object-fit: cover;" %>
-          <% else %>
-            <i class="bi bi-person-circle fs-2 me-2 text-secondary"></i>
-          <% end %>
-          <h4 class="mb-0 me-2"><%= member.name || member.email %></h4>
-          <span class="badge bg-success fs-6 rounded-2">
-            <%= member.available_points %> pts available
-          </span>
-          <span class="badge bg-primary ms-2 rounded-1">
-            <%= member.earned_points %> earned
-          </span>
-          <span class="badge bg-danger ms-2 rounded-1">
-            <%= member.spent_points %> spent
-          </span>
-          <span class="ms-2 mb-1">
-            <a class="btn badge border-0 text-secondary fs-6" data-bs-toggle="collapse"
-            href="#multiCollapse<%= member.id %>" role="button" aria-expanded="false"
-            aria-controls="multiCollapse<%= member.id %>">
-              See/Hide rewards <i class="fa-solid fa-angle-down"></i>
-            </a>
-          </span>
-        </div>
-
-        <div class="container text-center" >
-          <div class="collapse multi-collapse" id="multiCollapse<%= member.id %>">
-            <div class="row">
-                <% member_rewards = @rewards.select { |r| r.user_id == member.id } %>
-                <% if member_rewards.any? %>
-                  <% member_rewards.each do |reward| %>
-                    <div class="col-md-4 p-1 mb-3 <%= 'border-success' if reward.redeemed? %>"
-                        style="height: 180px;" >
-                    <%= render "reward", reward: reward%>
-                    </div>
-                  <% end %>
-                <% else %>
-                  <p class="text-muted">No rewards yet for this member.</p>
-                <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="container mt-4" data-controller="point-adjustment">
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h1 class="mb-0">Family Rewards</h1>
+    <%= link_to new_reward_path, class: "text-decoration-none text-secondary" do %>
+      <i class="bi bi-plus-circle fs-4"></i>
+    <% end %>
+    <%= link_to reward_templates_path, class: "text-decoration-none text-secondary" do %>
+      <i class="fa-regular fa-rectangle-list fs-4"></i>
     <% end %>
   </div>
+
+  <div class="row g-3">
+    <% current_user.family.users.each do |member| %>
+      <div class="col-lg-3 col-md-6">
+        <%= render "member_column",
+              member: member,
+              rewards: @rewards.select { |r| r.user_id == member.id },
+              color: member.color %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render "point_adjustment_modal" %>
 </div>

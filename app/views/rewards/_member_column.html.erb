@@ -1,0 +1,104 @@
+<% initials = (member.name || member.email).split(' ').map { |w| w[0].upcase }.first(2).join %>
+
+<%# ── Member header ── %>
+
+<div class="member-header" style="background: <%= color %>;">
+  <% if member.role == "parent" %>
+    <svg class="member-header__crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 20h20"/><path d="M4 20l1-11 5 5 3-7 3 7 5-5 1 11"/>
+      <circle cx="4" cy="7" r="1.2"/><circle cx="12" cy="4" r="1.2"/><circle cx="20" cy="7" r="1.2"/>
+    </svg>
+  <% end %>
+
+  <% if member.photo.attached? %>
+    <%= image_tag member.photo, class: "avatar-initials", style: "object-fit: cover;" %>
+  <% else %>
+    <div class="avatar-initials"><%= initials %></div>
+  <% end %>
+
+  <p class="member-header__name"><%= member.name || member.email %></p>
+
+  <div class="member-header__pills">
+    <span class="badge rounded-pill pts-pill--avail"><%= member.available_points %> available</span>
+    <span class="badge rounded-pill pts-pill--earned"><%= member.earned_points %> earned</span>
+  </div>
+
+  <% if current_user.role == "parent" %>
+    <div class="pts-controls">
+      <button class="pts-btn pts-btn--add" type="button"
+              data-action="click->point-adjustment#open"
+              data-kind="add"
+              data-name="<%= member.display_name %>"
+              data-initials="<%= initials %>"
+              data-member-id="<%= member.id %>"
+              data-color="<%= color %>">+</button>
+      <span class="pts-controls__label">points</span>
+      <button class="pts-btn pts-btn--rem" type="button"
+              data-action="click->point-adjustment#open"
+              data-kind="deduct"
+              data-name="<%= member.display_name %>"
+              data-initials="<%= initials %>"
+              data-member-id="<%= member.id %>"
+              data-color="<%= color %>">&minus;</button>
+    </div>
+  <% end %>
+</div>
+
+<%# ── Point history (shell — no transaction model yet) ── %>
+<% history = member.point_history %>
+<div class="plog">
+  <button class="plog-toggle" type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#plog-<%= member.id %>"
+          aria-expanded="false">
+    <span class="plog-toggle__label">
+      Point history <span class="plog-toggle__count"><%= history.size %></span>
+    </span>
+    <span class="plog-toggle__arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </span>
+  </button>
+  <div class="collapse" id="plog-<%= member.id %>">
+    <% if history.any? %>
+      <% history.each do |entry| %>
+        <% positive = %w[earn add].include?(entry[:kind]) %>
+        <div class="log-entry <%= positive ? 'log-entry--pos' : 'log-entry--neg' %>">
+          <div class="log-dot <%= positive ? 'log-dot--pos' : 'log-dot--neg' %>">
+            <%= positive ? "+" : "−" %>
+          </div>
+          <div class="log-body">
+            <p class="log-reason"><%= entry[:reason] %></p>
+            <p class="log-date"><%= entry[:date]&.strftime("%b %-d") %></p>
+          </div>
+          <span class="log-pts <%= positive ? 'log-pts--pos' : 'log-pts--neg' %>">
+            <%= positive ? "+#{entry[:amount]}" : "−#{entry[:amount]}" %>
+          </span>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="plog-empty">No history yet.</p>
+    <% end %>
+  </div>
+</div>
+
+
+<%# ── Rewards list ── %>
+<div class="content-list">
+  <p class="content-list__title">Rewards</p>
+
+  <% if rewards.any? %>
+    <% rewards.each do |reward| %>
+      <%= render "reward", reward: reward, member: member, color: color %>
+    <% end %>
+  <% else %>
+    <p class="text-center text-muted small fst-italic p-3">No rewards yet.</p>
+  <% end %>
+
+  <%= link_to new_reward_path, class: "add-content-row" do %>
+    <div class="add-content-row__icon">+</div>
+    <span class="add-content-row__label">Add reward</span>
+  <% end %>
+</div>
