@@ -29,6 +29,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @users = current_user.family.users
 
+    raise
     authorize @task
 
     if @task.save
