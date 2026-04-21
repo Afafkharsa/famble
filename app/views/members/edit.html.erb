@@ -1,6 +1,29 @@
-<div class="card-body">
-  <button type="button" class="btn-close float-end me-3" data-bs-dismiss="modal"></button>
-    <h1 class="mt-4 mb-2 text-center fw-bold">Edit Member</h1>
 
-    <%= render "form" %>
-</div>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal-backdrop fade show"></div>
+    <div class="modal d-block" tabindex="-1" style="display: block;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fs-2 fw-bold text-center" >Edit Member
+              <%= link_to family_member_path(@family, @member),
+                  data: { turbo_method: :delete,
+                  turbo_confirm: "Are you sure?" },
+                  class:"text-dark" do %>
+              <i class="bi bi-trash fs-5 ms-3"></i>
+              <% end %>
+            </h5>
+
+        <%# Close modal  %>
+            <button type="button" class="btn-close"
+                    onclick="const frame = this.closest('turbo-frame');
+                    frame.src = ''; frame.innerHTML = '';">
+            </button>
+          </div>
+          <div class="modal-body">
+            <%= render "form" %>
+          </div>
+      </div>
+    </div>
+  </div>
+<% end %>

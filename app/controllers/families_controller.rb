@@ -37,8 +37,8 @@ class FamiliesController < ApplicationController
 
     if @member.persisted?
       respond_to do |format|
-      #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
-      format.turbo_stream
+        format.turbo_stream
+        #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
       end
     else
       render :new, status: :unprocessable_entity
@@ -57,9 +57,9 @@ class FamiliesController < ApplicationController
 
     if @member.update(member_params)
       respond_to do |format|
-        #format.html { redirect_to family_path(@family),
-        #notice: "อัปเดตเรียบร้อย!", status: :see_other }
         format.turbo_stream
+        format.html { redirect_to family_path(@family),
+        notice: "Member updated!", status: :see_other }
       end
     else
       render :index, status: :unprocessable_entity
@@ -70,9 +70,9 @@ class FamiliesController < ApplicationController
     #@member = @family.users.find(params[:id])
     @member.destroy
     respond_to do |format|
+      format.turbo_stream
       #format.html { redirect_to family_path(@family),
       #status: :see_other, notice: "Member deleted" }
-      format.turbo_stream
     end
   end
 
