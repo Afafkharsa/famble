@@ -18,7 +18,7 @@
     <% tasks.each do |task| %>
       <div class="col-md-4">
         <div
-          class="card base-card card-hover h-100"
+          class="card card-hover border-0 shadow-sm h-100 bg-white"
           data-controller="clickable"
           data-clickable-url-value="<%= task_path(task) %>"
           data-action="click->clickable#go"
