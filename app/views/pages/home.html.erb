@@ -3,77 +3,273 @@
 <% end %>
 
 <% if current_user && current_user.role %>
-  <div class="container d-flex flex-column min-vh-100 py-4" style="min-height: calc(100vh - 56px);">
+  <div class="dashboard-shell container my-4 p-4">
 
-    <!-- Top main button -->
-    <div class="row mb-4">
-      <div class="col-12">
-        <%= link_to calendars_path, class: "btn-date w-100" do %>
-          <p class="mb-2">
-            <strong><%= Date.today.strftime("%A, %B %d") %></strong>
+  <%# --- Welcome card --- %>
+  <section class="bg-white rounded-4 p-4 mb-3 border border-subtle">
+    <div class="d-flex justify-content-between align-items-start mb-3 gap-3">
+      <div>
+        <p class="text-muted small mb-1"><%= Date.today.strftime("%A, %-d %B") %></p>
+        <%= link_to families_path, class: "text-decoration-none text-dark" do %>
+          <h1 class="fs-2 fw-medium mb-1">The <%= @family.name %> family <i class="bi bi-chevron-right" style="font-size:1rem;opacity:0.4;"></i></h1>
+        <% end %>
+        <p class="text-muted small mb-0"><%= @members.size %> members</p>
+      </div>
+    </div>
+
+    <div class="row g-2">
+      <% @members.each do |member| %>
+        <div class="col-6 col-md-3">
+          <%= link_to family_member_path(@family, member),
+                data: { turbo_frame: "modal" },
+                class: "text-decoration-none text-dark" do %>
+            <div class="member-chip d-flex align-items-center gap-2 p-2 rounded-3"
+                 style="background: <%= member.avatar_color %>;">
+              <span class="member-chip__avatar rounded-circle overflow-hidden bg-white d-flex align-items-center justify-content-center fw-medium flex-shrink-0">
+                <% if member.photo.attached? %>
+                  <%= image_tag member.photo, style: "width:100%;height:100%;object-fit:cover;" %>
+                <% else %>
+                  <%= member.initials %>
+                <% end %>
+              </span>
+              <div class="min-w-0">
+                <p class="mb-0 small fw-medium"><%= member.display_name %></p>
+                <p class="mb-0 text-muted" style="font-size: 0.7rem;">
+                  <%= member.role.presence || "member" %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# --- Stat strip --- %>
+  <div class="row g-2 mb-3 stat-strip">
+    <div class="col-6 col-md-3">
+      <%= link_to tasks_path, class: "text-decoration-none text-dark" do %>
+        <div class="stat-card rounded-4 p-3 h-100" style="background: #BDE3C3;">
+          <p class="small text-muted mb-1">Tasks today</p>
+          <div class="fs-4 fw-medium"><%= @tasks_today_done %> of <%= @tasks_today.size %></div>
+          <p class="text-muted mb-0" style="font-size: 0.7rem;">across the family</p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <%= link_to meal_plans_path, class: "text-decoration-none text-dark" do %>
+        <div class="stat-card rounded-4 p-3 h-100" style="background: #F8F7BA;">
+          <p class="small text-muted mb-1">Meals planned</p>
+          <div class="fs-4 fw-medium">
+            <%= @meals_today_count %>
+            <span class="text-muted fw-normal" style="font-size: 0.7rem;">today</span>
+          </div>
+          <p class="text-muted mb-0" style="font-size: 0.7rem;">
+            <%= @todays_meal_plan ? "planned for today" : "nothing planned yet" %>
           </p>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
 
-    <!-- Row 2: 3 buttons -->
-    <div class="row g-4 mb-3" style="flex: 1;">
-
-      <div class="col-md-4 d-flex">
-        <%= link_to recipes_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('recipes_button.jpg')});" do %>
-          <div class="button-title">
-            Recipes
+    <div class="col-6 col-md-3">
+      <%= link_to calendars_path, class: "text-decoration-none text-dark" do %>
+        <div class="stat-card rounded-4 p-3 h-100" style="background: #A3CCDA;">
+          <p class="small text-muted mb-1">Events this week</p>
+          <div class="fs-4 fw-medium">
+            <%= @week_events.size %>
+            <% if @next_event %>
+              <span class="text-muted fw-normal" style="font-size: 0.7rem;">
+                next <%= @next_event.start_time.strftime("%-l:%M %p") %>
+              </span>
+            <% end %>
           </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-4 d-flex">
-        <%= link_to tasks_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('tasks_button.jpg')});" do %>
-          <div class="button-title">
-            Tasks
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-4 d-flex">
-        <%= link_to rewards_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('rewards_button.jpg')});" do %>
-          <div class="button-title">
-            Rewards
-          </div>
-        <% end %>
-      </div>
+          <p class="text-muted mb-0" style="font-size: 0.7rem;">
+            <%= @next_event&.title || "nothing scheduled" %>
+          </p>
+        </div>
+      <% end %>
     </div>
 
-    <!-- Row 3: 3 buttons -->
-    <div class="row g-4 mb-3" style="flex: 1;">
-
-      <div class="col-md-4 d-flex">
-        <%#= link_to families_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('family_button.jpg')});" do %>
-        <%= link_to family_members_path(current_user.family), class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('family_button.jpg')});" do %>
-          <div class="button-title">
-            Family
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-4 d-flex">
-        <%= link_to calendars_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('calendar_button.jpg')});" do %>
-          <div class="button-title">
-            Calendar
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-md-4 d-flex">
-        <%= link_to chats_path, class: "dashboard-button text-decoration-none", style: "background-image: url(#{asset_path('chatbot_button.jpg')});" do %>
-          <div class="button-title">
-            Chatbot
-          </div>
-        <% end %>
-      </div>
+    <div class="col-6 col-md-3">
+      <%= link_to rewards_path, class: "text-decoration-none text-dark" do %>
+        <div class="stat-card rounded-4 p-3 h-100" style="background: #F5D2D2;">
+          <p class="small text-muted mb-1">Family points</p>
+          <div class="fs-4 fw-medium"><%= @family_points %></div>
+          <p class="text-muted mb-0" style="font-size: 0.7rem;">across all members</p>
+        </div>
+      <% end %>
     </div>
+  </div>
+
+  <%# --- Today's menu + Everyone's tasks --- %>
+  <div class="row g-3 mb-3">
+
+    <%# Today's menu %>
+    <div class="col-md-6">
+      <section class="bg-white rounded-4 p-3 h-100 border border-subtle" style="cursor:pointer;"
+               data-controller="clickable" data-clickable-url-value="<%= meal_plans_path %>" data-action="click->clickable#go">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="fs-6 fw-medium mb-0">Today's menu</h2>
+          <%= link_to meal_plans_path, class: "text-muted text-decoration-none", style: "font-size: 0.7rem;" do %>
+            View all <i class="bi bi-arrow-right"></i>
+          <% end %>
+        </div>
+        <% if @todays_recipe_meal_plans.any? %>
+          <div class="d-flex flex-column gap-2">
+            <% @todays_recipe_meal_plans.each do |rmp| %>
+              <% bg = { "Breakfast" => "#F8F7BA", "Lunch" => "#BDE3C3", "Dinner" => "#F5D2D2" }[rmp.meal_type] || "#F4F4F4" %>
+              <div class="menu-row d-flex align-items-center gap-2 p-2 rounded-3" style="background: <%= bg %>;">
+                <span class="menu-row__badge rounded-3 bg-white d-flex align-items-center justify-content-center fw-medium">
+                  <%= rmp.meal_type.to_s.first %>
+                </span>
+                <div class="flex-grow-1 min-w-0">
+                  <p class="mb-0 text-muted" style="font-size: 0.7rem;"><%= rmp.meal_type %></p>
+                  <p class="mb-0 small fw-medium text-truncate"><%= rmp.recipe.name %></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-muted small mb-0">No meals planned for today.</p>
+        <% end %>
+      </section>
+    </div>
+
+    <%# Everyone's tasks %>
+    <div class="col-md-6">
+      <section class="bg-white rounded-4 p-3 h-100 border border-subtle" style="cursor:pointer;"
+               data-controller="clickable" data-clickable-url-value="<%= tasks_path %>" data-action="click->clickable#go">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="fs-6 fw-medium mb-0">Everyone's tasks</h2>
+          <%= link_to tasks_path, class: "text-muted text-decoration-none", style: "font-size: 0.7rem;" do %>
+            View all <i class="bi bi-arrow-right"></i>
+          <% end %>
+        </div>
+
+        <% if @tasks_today.any? %>
+          <div class="d-flex flex-column gap-1">
+            <% @tasks_today.includes(:user).order(validation: :desc, start_date: :asc).each do |task| %>
+              <div class="task-row d-flex align-items-center gap-2 p-2 rounded-3">
+                <% if task.validation %>
+                  <span class="task-row__check d-flex align-items-center justify-content-center rounded bg-dark text-white">&#10003;</span>
+                <% else %>
+                  <span class="task-row__check rounded border border-dark bg-white"></span>
+                <% end %>
+
+                <span class="task-row__avatar rounded-circle overflow-hidden d-flex align-items-center justify-content-center fw-medium flex-shrink-0"
+                      style="background: <%= task.user.avatar_color %>;">
+                  <% if task.user.photo.attached? %>
+                    <%= image_tag task.user.photo, style: "width:100%;height:100%;object-fit:cover;" %>
+                  <% else %>
+                    <span style="font-size:0.55rem;">
+                      <%= task.user.initials %>
+                    </span>
+                  <% end %>
+                </span>
+
+                <span class="flex-grow-1 small text-truncate <%= 'text-decoration-line-through text-muted' if task.validation %>">
+                  <%= task.name %>
+                </span>
+
+                <span class="badge bg-light text-muted fw-normal">+<%= task.task_points %></span>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-muted small mb-0">No tasks scheduled for today.</p>
+        <% end %>
+      </section>
+    </div>
+  </div>
+
+  <%# --- Family calendar --- %>
+  <section class="bg-white rounded-4 p-3 mb-3 border border-subtle" style="cursor:pointer;"
+           data-controller="clickable" data-clickable-url-value="<%= calendars_path %>" data-action="click->clickable#go">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fs-6 fw-medium mb-0">Family calendar</h2>
+      <%= link_to calendars_path, class: "text-muted text-decoration-none", style: "font-size: 0.7rem;" do %>
+        <%= Time.current.beginning_of_week.strftime("%-d") %>
+        &ndash;
+        <%= Time.current.end_of_week.strftime("%-d %b") %>
+        &middot; <%= @week_events.size %> events
+        <i class="bi bi-arrow-right"></i>
+      <% end %>
+    </div>
+
+    <% if @week_events.any? %>
+      <div class="row g-2">
+        <% @week_events.each do |event| %>
+          <div class="col-md-6">
+            <div class="event-row d-flex align-items-center gap-3 p-2 rounded-3"
+                 style="background: <%= event.user.avatar_color %>33;">
+              <div class="event-row__date text-center">
+                <p class="mb-0 text-muted" style="font-size: 0.65rem;">
+                  <%= event.start_time.strftime("%a") %>
+                </p>
+                <p class="mb-0 fw-medium"><%= event.start_time.strftime("%-d") %></p>
+              </div>
+
+              <div class="flex-grow-1 min-w-0 ps-2 border-start">
+                <p class="mb-0 small fw-medium text-truncate"><%= event.title %></p>
+                <p class="mb-0 text-muted" style="font-size: 0.7rem;">
+                  <%= event.start_time.strftime("%-l:%M %p") %>
+                </p>
+              </div>
+
+              <span class="event-row__avatar rounded-circle overflow-hidden border border-white d-flex align-items-center justify-content-center fw-medium"
+                    style="background: <%= event.user.avatar_color %>;">
+                <% if event.user.photo.attached? %>
+                  <%= image_tag event.user.photo, style: "width:100%;height:100%;object-fit:cover;" %>
+                <% else %>
+                  <span style="font-size:0.55rem;"><%= event.user.initials %></span>
+                <% end %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted small mb-0">No events scheduled this week.</p>
+    <% end %>
+  </section>
+
+  <%# --- Rewards & Points --- %>
+  <section class="bg-white rounded-4 p-3 mb-3 border border-subtle" style="cursor:pointer;"
+           data-controller="clickable" data-clickable-url-value="<%= rewards_path %>" data-action="click->clickable#go">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fs-6 fw-medium mb-0">Rewards & Points</h2>
+      <%= link_to rewards_path, class: "text-muted text-decoration-none", style: "font-size: 0.7rem;" do %>
+        View all <i class="bi bi-arrow-right"></i>
+      <% end %>
+    </div>
+    <div class="row g-2">
+      <% @members.each do |member| %>
+        <div class="col-6 col-md-3">
+          <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: <%= member.avatar_color %>20;">
+            <span class="rounded-circle overflow-hidden d-flex align-items-center justify-content-center fw-medium flex-shrink-0"
+                  style="width:32px;height:32px;background:<%= member.avatar_color %>;">
+              <% if member.photo.attached? %>
+                <%= image_tag member.photo, style: "width:100%;height:100%;object-fit:cover;" %>
+              <% else %>
+                <span style="font-size:0.65rem;"><%= member.initials %></span>
+              <% end %>
+            </span>
+            <div class="min-w-0">
+              <p class="mb-0 small fw-medium text-truncate"><%= member.display_name %></p>
+              <p class="mb-0 text-muted" style="font-size: 0.7rem;">
+                <i class="fa-solid fa-award" style="font-size:0.6rem;"></i>
+                <%= member.available_points %> pts available
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
 
   </div>
+
 <% elsif current_user && !current_user.role %>
   <div class="container py-5">
     <div class="row g-4 mb-4">
