@@ -334,7 +334,8 @@ recipe_1 = Recipe.create!(
   INGREDIENTS
   keywords: "pasta, italian, meat",
   calories: 450,
-  allergens: "gluten"
+  allergens: "gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/spaghetti_bolognese.jpg'))
 )
 
 recipe_2 = Recipe.create!(
@@ -355,7 +356,8 @@ recipe_2 = Recipe.create!(
   DESCRIPTION
   keywords: "salad, chicken, healthy",
   calories: 350,
-  allergens: "dairy, gluten"
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/chicken_caesar_salad.jpg'))
 )
 
 recipe_3 = Recipe.create!(
@@ -375,7 +377,8 @@ recipe_3 = Recipe.create!(
   DESCRIPTION
   keywords: "vegan, quick, asian",
   calories: 250,
-  allergens: "soy"
+  allergens: "soy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/vegetable_stir_fry.jpg'))
 )
 
 recipe_4 = Recipe.create!(
@@ -395,7 +398,8 @@ recipe_4 = Recipe.create!(
   DESCRIPTION
   keywords: "breakfast, sweet, easy",
   calories: 300,
-  allergens: "gluten, dairy, eggs"
+  allergens: "gluten, dairy, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/pancakes.jpg'))
 )
 
 recipe_5 = Recipe.create!(
@@ -417,7 +421,8 @@ recipe_5 = Recipe.create!(
   DESCRIPTION
   keywords: "fish, healthy, dinner",
   calories: 400,
-  allergens: "fish"
+  allergens: "fish",
+  photo: File.open(File.join(Rails.root,'app/assets/images/grilled_salmon.jpg'))
 )
 
 recipe_6 = Recipe.create!(
@@ -439,7 +444,8 @@ recipe_6 = Recipe.create!(
   DESCRIPTION
   keywords: "breakfast, healthy, eggs",
   calories: 320,
-  allergens: "gluten, eggs"
+  allergens: "gluten, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/avocado_toast.jpg'))
 )
 
 recipe_7 = Recipe.create!(
@@ -459,7 +465,8 @@ recipe_7 = Recipe.create!(
   DESCRIPTION
   keywords: "breakfast, meal prep, healthy",
   calories: 350,
-  allergens: "dairy, gluten"
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/oats.jpg'))
 )
 
 recipe_8 = Recipe.create!(
@@ -482,7 +489,8 @@ recipe_8 = Recipe.create!(
   DESCRIPTION
   keywords: "lunch, soup, vegetarian",
   calories: 220,
-  allergens: "dairy"
+  allergens: "dairy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/tomato_soup.jpg'))
 )
 
 recipe_9 = Recipe.create!(
@@ -503,7 +511,8 @@ recipe_9 = Recipe.create!(
   DESCRIPTION
   keywords: "lunch, wrap, quick",
   calories: 380,
-  allergens: "gluten, eggs"
+  allergens: "gluten, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/wrap.jpg'))
 )
 
 recipe_10 = Recipe.create!(
@@ -529,7 +538,8 @@ recipe_10 = Recipe.create!(
   DESCRIPTION
   keywords: "dinner, curry, chicken",
   calories: 480,
-  allergens: "none"
+  allergens: "none",
+  photo: File.open(File.join(Rails.root,'app/assets/images/chicken_tikka_masala.jpg'))
 )
 
 recipe_11 = Recipe.create!(
@@ -553,7 +563,8 @@ recipe_11 = Recipe.create!(
   DESCRIPTION
   keywords: "dinner, mexican, beef",
   calories: 520,
-  allergens: "dairy, gluten"
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/tacos.jpg'))
 )
 
 recipe_12 = Recipe.create!(
@@ -575,7 +586,8 @@ recipe_12 = Recipe.create!(
   DESCRIPTION
   keywords: "snack, vegan, healthy",
   calories: 180,
-  allergens: "sesame"
+  allergens: "sesame",
+  photo: File.open(File.join(Rails.root,'app/assets/images/hummus.jpg'))
 )
 
 recipe_13 = Recipe.create!(
@@ -594,19 +606,21 @@ recipe_13 = Recipe.create!(
   DESCRIPTION
   keywords: "snack, smoothie, quick",
   calories: 290,
-  allergens: "peanuts, dairy"
+  allergens: "peanuts, dairy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/smoothie.jpg'))
 )
 
-puts "Generating AI photo..."
+# puts "Generating AI photo..."
 
-[recipe_1, recipe_2, recipe_3, recipe_4, recipe_5,
- recipe_6, recipe_7, recipe_8, recipe_9, recipe_10,
- recipe_11, recipe_12, recipe_13].each do |recipe|
-  ImageGeneratorService.generate_and_attach(recipe)
-  sleep 2
-end
 
-puts "Generated photo successful!"
+# [recipe_1, recipe_2, recipe_3, recipe_4, recipe_5,
+#  recipe_6, recipe_7, recipe_8, recipe_9, recipe_10,
+#  recipe_11, recipe_12, recipe_13].each do |recipe|
+#   ImageGeneratorService.generate_and_attach(recipe)
+#   sleep 2
+# end
+
+# puts "Generated photo successful!"
 
 
 puts "Creating reward templates..."
