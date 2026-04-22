@@ -38,12 +38,19 @@
         <% end %>
       </div>
 
-      <div class="modal-footer mt-4 d-flex gap-2">
-        <!--<button class="btn btn-dark w-100">Add an Event</button>-->
-        <%= link_to "Add an event", new_event_path(date: @date), class: "btn btn-outline-warning w-100", data: { turbo: false } %>
-        <%= link_to "Add a task", new_task_path(date: @date), class: "btn btn-outline-primary w-100", data: { turbo: false } %>
-        <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn btn-outline-success w-100", data: { turbo: false } %>
-      </div>
+      <% if policy(Event).new? || policy(Task).new? || policy(MealPlan).new? %>
+        <div class="modal-footer mt-4 d-flex gap-2">
+          <% if policy(Event).new? %>
+            <%= link_to "Add an event", new_event_path(date: @date), class: "btn btn-outline-warning w-100", data: { turbo: false } %>
+          <% end %>
+          <% if policy(Task).new? %>
+            <%= link_to "Add a task", new_task_path(date: @date), class: "btn btn-outline-primary w-100", data: { turbo: false } %>
+          <% end %>
+          <% if policy(MealPlan).new? %>
+            <%= link_to "Choose recipe", recipes_path(date: @date), class: "btn btn-outline-success w-100", data: { turbo: false } %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 <% end %>

@@ -4,46 +4,81 @@
       <%= link_to root_path, class: "navbar-brand h3 p-0 m-0" do %>
         Famble
       <% end %>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation" >
-        <span class="navbar-toggler-icon"></span>
-      </button>
     <% else %>
       <%= link_to root_path, class: "navbar-brand h3 p-0 m-0 text-white" do %>
         Famble
       <% end %>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation"
-              data-bs-theme="dark">
-        <span class="navbar-toggler-icon"></span>
-      </button>
     <% end %>
 
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation"
+            <%= "data-bs-theme=dark" unless current_user && current_user.role %>>
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto d-md-flex align-items-center">
+      <ul class="navbar-nav ms-auto d-md-flex align-items-center gap-1">
         <% if user_signed_in? %>
-          <li class="nav-item px-2">
-            <%= link_to families_path,
-                class: "nav-link fw-bold border border-2 border-secondary rounded-pill py-1" do %>
-              <i class="fa-regular fa-user"></i> <%= current_user.name %>
+          <li class="nav-item">
+            <%= link_to tasks_path, class: "nav-link" do %>
+              <i class="bi bi-check2-square"></i> Tasks
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to calendars_path, class: "nav-link" do %>
+              <i class="fa-solid fa-calendar-days"></i> Calendar
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to rewards_path, class: "nav-link" do %>
+              <i class="fa-solid fa-award"></i> Rewards
             <% end %>
           </li>
           <li class="nav-item">
             <%= link_to meal_plans_path, class: "nav-link" do %>
-              <i class="fa-solid fa-utensils"></i> My Meal Plans
+              <i class="fa-solid fa-utensils"></i> Meal Plans
             <% end %>
           </li>
           <li class="nav-item">
             <%= link_to recipes_path, class: "nav-link" do %>
-              <i class="fa-solid fa-mortar-pestle"></i> My Recipes
+              <i class="fa-solid fa-mortar-pestle"></i> Recipes
             <% end %>
           </li>
           <li class="nav-item">
-              <%= link_to destroy_user_session_path, data: {turbo_method: :delete} , class: "nav-link" do%>
-                <i class="fa-solid fa-right-from-bracket"></i> Sign out
+            <%= link_to chats_path(chat: { status: "Pending", title: "Untitled" }),
+                data: { turbo_method: :post },
+                class: "nav-link" do %>
+              <i class="bi bi-stars"></i> FamblAI
+            <% end %>
+          </li>
+
+          <li class="nav-item dropdown ms-2">
+            <% initials = (current_user.name || current_user.email).split(' ').map { |w| w[0].upcase }.first(2).join %>
+            <button class="navbar-avatar" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account">
+              <% if current_user.photo.attached? %>
+                <%= image_tag current_user.photo, class: "navbar-avatar__img" %>
+              <% else %>
+                <div class="navbar-avatar__initials" style="background: <%= current_user.color %>;">
+                  <%= initials %>
+                </div>
               <% end %>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border-radius: 12px; font-size: 13px; min-width: 160px;">
+              <li>
+                <%= link_to family_member_path(current_user.family, current_user),
+                    data: { turbo_frame: "modal" },
+                    class: "dropdown-item d-flex align-items-center gap-2" do %>
+                  <i class="fa-regular fa-user"></i> Profile
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider my-1"></li>
+              <li>
+                <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                  <i class="fa-solid fa-right-from-bracket"></i> Sign out
+                <% end %>
+              </li>
+            </ul>
           </li>
         <% else %>
           <li class="nav-item">

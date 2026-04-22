@@ -2,12 +2,17 @@
 
   <%# ---Today's Meal Plan part--- %>
   <div class="meal-plan-section mb-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
+    <div class="d-flex align-items-center gap-3 mb-4">
       <h1 class="fw-bold mb-0">Today's Meal Plan</h1>
-      <%= link_to "Add Meal", new_meal_plan_path, class: "btn btn-outline-primary border-radius-5 px-3" %>
+      <% if policy(MealPlan).new? %>
+        <%= link_to new_meal_plan_path, class: "text-decoration-none text-secondary" do %>
+          <i class="bi bi-plus-circle fs-4"></i>
+        <% end %>
+      <% end %>
     </div>
 
-    <div class="table-responsive shadow-lg rounded-3 bg-white p-3">
+    <div class="shadow-sm rounded-3 p-3" style="background: #f5f6f8; overflow: visible;">
       <table class="table table-borderless align-middle text-center mb-0">
         <thead class="text-secondary small">
           <tr class="fs-6">
@@ -20,44 +25,50 @@
         </thead>
 
         <tbody>
-          <%# Searching for today plan %>
-            <% if @today_plan %>
+          <% if @today_plan %>
             <tr>
-              <td class="fw-bold fs-6 text-start ps-3 align-middle text-secondary text-success pb-4" style="width: 100px; padding: 25px 0;">
+              <td class="fw-bold fs-6 text-start ps-3 align-middle text-success pb-4" style="width: 100px; padding: 25px 0;">
                 <%= @today_plan.day.strftime("%A, %d %b") %>
               </td>
 
               <% meal_types = ["Breakfast", "Lunch", "Dinner", "Snack"] %>
               <% meal_types.each do |type| %>
-              <td class="p-1">
-                <%# Search for meal_type for today %>
-                <% meals = @today_plan.recipe_meal_plans.select { |rmp| rmp.meal_type == type } %>
+                <td class="p-1" style="overflow: visible;">
+                  <% meals = @today_plan.recipe_meal_plans.select { |rmp| rmp.meal_type == type } %>
 
-                <% if meals.any? %>
-                  <% meals.each do |rmp| %>
-                    <div class="text-center">
-                      <%= link_to recipe_path(rmp.recipe), class:"text-decoration-none" do %>
-
-                      <div class="small fw-bold mt-1 d-flex justify-content-center gap-2">
-                        <%= rmp.recipe.name %>
-                      <%# Edit meal plan  %>
-                        <%= link_to edit_recipe_meal_plan_path(rmp), class:"text-dark" do %>
-                        <i class="bi bi-pencil-square"></i>
-                        <% end %>
-                      <%# Delet meal plan  %>
-                        <%=link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-dark" do %>
-                        <i class="bi bi-trash"></i>
+                  <% if meals.any? %>
+                    <% meals.each do |rmp| %>
+                      <div class="meal-item-card">
+                        <%= link_to rmp.recipe.name, recipe_path(rmp.recipe), class: "meal-item-card-name" %>
+                        <% if policy(MealPlan).new? %>
+                          <div class="dropdown reward-three-dot reward-three-dot--show">
+                            <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+                              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
+                                <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
+                              </svg>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 12px; min-width: 130px; border-radius: 10px;">
+                              <li>
+                                <%= link_to edit_recipe_meal_plan_path(rmp), class: "dropdown-item d-flex align-items-center gap-2" do %>
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                  Edit
+                                <% end %>
+                              </li>
+                              <li>
+                                <%= link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                  Delete
+                                <% end %>
+                              </li>
+                            </ul>
+                          </div>
                         <% end %>
                       </div>
-
-
-                    </div>
                     <% end %>
+                  <% elsif policy(MealPlan).new? %>
+                    <%= link_to "+", new_meal_plan_path(day: Date.today, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle fs-5" %>
                   <% end %>
-                <% else %>
-                  <%= link_to "+", new_meal_plan_path(day:Date.today, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle fs-5" %>
-                <% end %>
-              </td>
+                </td>
               <% end %>
             </tr>
           <% end %>
@@ -69,7 +80,7 @@
   <%# -- Weekly's Meal Plan part--- %>
   <div class="meal-plan-section">
     <h1 class="fw-bold mb-4">Weekly's Meal Plan</h1>
-    <div class="d-flex justify-content-between table-responsive shadow-lg rounded-3 bg-white p-3">
+    <div class="shadow-sm rounded-3 p-3" style="background: #f5f6f8; overflow: visible;">
       <table class="table table-borderless align-middle text-center mb-0">
         <thead class="text-secondary small">
           <tr class="fs-6">
@@ -82,45 +93,53 @@
         </thead>
 
         <tbody>
-          <%# Looping weekly meal plan %>
-            <% @weekly_plans.each do |meal_plan| %>
-              <tr style="border-bottom: 1px solid #dee2e6;">
-                <td class="fw-bold text-start ps-3 fs-6 align-middle text-secondary text-success  pt-5 pb-5" style="width: 100px; padding: 25px 0;">
-                  <%= meal_plan.day.strftime("%A, %d %b") %>
-                </td>
+          <% @weekly_plans.each do |meal_plan| %>
+            <tr style="border-bottom: 1px solid #dee2e6;">
+              <td class="fw-bold text-start ps-3 fs-6 align-middle text-success pt-4 pb-4" style="width: 100px;">
+                <%= meal_plan.day.strftime("%A, %d %b") %>
+              </td>
 
-                <% meal_types = ["Breakfast", "Lunch", "Dinner", "Snack"] %>
-                <% meal_types.each do |type| %>
-                  <td class="p-1">
-                    <% meals = meal_plan.recipe_meal_plans.select { |rmp| rmp.meal_type == type } %>
+              <% meal_types = ["Breakfast", "Lunch", "Dinner", "Snack"] %>
+              <% meal_types.each do |type| %>
+                <td class="p-1" style="overflow: visible;">
+                  <% meals = meal_plan.recipe_meal_plans.select { |rmp| rmp.meal_type == type } %>
 
-                    <% if meals.any? %>
+                  <% if meals.any? %>
                     <% meals.each do |rmp| %>
-                      <div class="recipe-thumbnail text-center">
-                        <%= link_to recipe_path(rmp.recipe), class:"text-decoration-none" do %>
-
-                          <div class="small fw-bold mt-1 d-flex justify-content-center gap-2">
-                          <%= rmp.recipe.name %>
-                        <%# Edit meal plan  %>
-                          <%= link_to edit_recipe_meal_plan_path(rmp), class:"text-dark" do %>
-                          <i class="bi bi-pencil-square"></i>
-                          <% end %>
-                        <%# Delet meal plan  %>
-                          <%=link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },  class:"text-dark" do %>
-                          <i class="bi bi-trash"></i>
-                          <% end %>
-                        </div>
-
-                      </div>
+                      <div class="meal-item-card">
+                        <%= link_to rmp.recipe.name, recipe_path(rmp.recipe), class: "meal-item-card-name" %>
+                        <% if policy(MealPlan).new? %>
+                          <div class="dropdown reward-three-dot reward-three-dot--show">
+                            <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+                              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
+                                <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
+                              </svg>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 12px; min-width: 130px; border-radius: 10px;">
+                              <li>
+                                <%= link_to edit_recipe_meal_plan_path(rmp), class: "dropdown-item d-flex align-items-center gap-2" do %>
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                  Edit
+                                <% end %>
+                              </li>
+                              <li>
+                                <%= link_to recipe_meal_plan_path(rmp), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                  Delete
+                                <% end %>
+                              </li>
+                            </ul>
+                          </div>
                         <% end %>
-                      <% end %>
-                    <% else %>
-                      <%= link_to "+", new_meal_plan_path(day: (Date.today +1), meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle fs-5" %>
+                      </div>
                     <% end %>
-                  </td>
-                <% end %>
-              </tr>
-            <% end %>
+                  <% elsif policy(MealPlan).new? %>
+                    <%= link_to "+", new_meal_plan_path(day: meal_plan.day, meal_types: type), class: "btn btn-outline-light text-muted btn-sm rounded-circle fs-5" %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     </div>

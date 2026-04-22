@@ -1,29 +1,31 @@
-<!-- Substribing to action cable -->
 <%= turbo_stream_from @chat %>
 
 <div class="container py-4">
+  <div class="chat-layout">
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="chat-head">
+      <div class="chat-head-icon">
+        <svg viewBox="0 0 16 16" width="20" height="20">
+          <path d="M8 0.5 L 9 6 L 14.5 7 L 9 8 L 8 13.5 L 7 8 L 1.5 7 L 7 6 Z" fill="#FD1015"/>
+          <circle cx="13" cy="13" r="1.2" fill="#FD1015"/>
+        </svg>
+      </div>
+      <div>
+        <p class="chat-head-title">Famble AI</p>
+        <p class="chat-head-sub">Your family assistant</p>
+      </div>
+      <div class="chat-head-status">
+        <span class="chat-head-dot"></span> Online
+      </div>
+    </div>
 
-    <h2 class="text-shadow" id="chat_title">
-      <% unless @chat.title == "Untitled" %>
-        <%= @chat.title %>
-      <% end %>
-    </h2>
+    <div id="messages" class="chat-messages">
+      <%= render "messages/messages", messages: @chat.messages %>
+    </div>
 
-    <%= link_to chats_path, class: "btn d-inline-flex align-items-center" do %>
-      <i class="bi bi-arrow-left me-2"></i>
-      Back to chats
-    <% end %>
+    <div id="new_message_container">
+      <%= render "messages/form", chat: @chat, message: @message %>
+    </div>
 
   </div>
-
-  <div id="messages">
-    <%= render "messages/messages", messages: @chat.messages %>
-  </div>
-
-  <div id="new_message_container" class="ps-3 pb-0 pt-3">
-    <%= render "messages/form", chat: @chat, message: @message %>
-  </div>
-
 </div>

@@ -1,86 +1,95 @@
-<div class="container py-5 col-8">
+<div class="container py-5 col-md-6">
 
-  <div class="card shadow-sm">
+  <div class="card base-card shadow-sm">
     <div class="card-body bg-white">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2><%= @task_template.name %></h2>
-        <div>
-          <%= link_to new_task_path(
+      <%= render "shared/back_link" %>
+
+      <div class="d-flex align-items-center gap-2 mt-2 mb-3">
+        <h2 class="mb-0"><%= @task_template.name %></h2>
+        <%= link_to new_task_path(
+          name: @task_template.name,
+          description: @task_template.description,
+          task_points: @task_template.task_points,
+          days: @task_template.days,
+          montly_frequency: @task_template.montly_frequency,
+          user: current_user
+        ), class: "text-decoration-none text-secondary" do %>
+          <i class="bi bi-plus-circle fs-4"></i>
+        <% end %>
+        <% if @task_template.family %>
+          <div class="dropdown reward-three-dot reward-three-dot--show">
+            <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
+                <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
+              </svg>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 12px; min-width: 130px; border-radius: 10px;">
+              <li>
+                <%= link_to edit_task_template_path(@task_template), class: "dropdown-item d-flex align-items-center gap-2" do %>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                  Edit
+                <% end %>
+              </li>
+              <li>
+                <%= link_to task_template_path(@task_template), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  Delete
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="d-flex gap-2 mt-1 mb-4">
+        <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2">
+          <% if @task_template.family %>
+            <i class="fa-solid fa-people-roof"></i>
+            <%= @task_template.family.name %>
+          <% else %>
+            <i class="fa-solid fa-chalkboard"></i>
+            Generic template
+          <% end %>
+        </span>
+        <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold px-3 py-2">
+          <i class="fa-solid fa-award"></i>
+          <%= @task_template.task_points > 0 ? "#{@task_template.task_points} points" : "#{@task_template.task_points} point" %>
+        </span>
+      </div>
+
+      <h5 class="fw-bold mt-4">Date and frequency</h5>
+      <div class="mb-3 text-secondary">
+        <% if @task_template.days.any? || @task_template.montly_frequency > 0 %>
+          Repeat:
+          <ul class="m-0">
+            <% @task_template.days.each do |day| %>
+              <li><%= day.capitalize %></li>
+            <% end %>
+            <% if @task_template.montly_frequency > 0 %>
+              <li><%= @task_template.montly_frequency %> months / year</li>
+            <% end %>
+          </ul>
+        <% else %>
+          No repeat
+        <% end %>
+      </div>
+
+      <h5 class="fw-bold mt-4">Description</h5>
+      <div class="mt-2 mb-5 text-secondary">
+        <%= @task_template.description? ? @task_template.description : "No description" %>
+      </div>
+
+      <% if @task_template.family %>
+        <%= link_to "Create task from template", new_task_path(
             name: @task_template.name,
             description: @task_template.description,
             task_points: @task_template.task_points,
             days: @task_template.days,
-            montly_frequency: @task_template.montly_frequency,
-            user: current_user
-          ) do %>
-            <div style= "text-decoration: none; cursor: pointer; color: inherit;">
-              <i class="fa-solid fa-plus text-body-secondary fs-4 ps-2"></i>
-            </div>
-          <% end %>
-        </div>
-        <div class="text-secondary">
-          ←
-          <%= link_to "Back to templates", task_templates_path, class: "link-secondary link-underline-secondary" %>
-        </div>
-      </div>
-
-      <div class = "d-flex gap-2 mt-1 mb-4">
-        <p>
-          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
-              <% if @family = @task_template.family %>
-                <i class="fa-solid fa-people-roof"></i>
-                <%= @task_template.family.name %>
-              <% else %>
-                <i class="fa-solid fa-chalkboard"></i>
-                Generic template
-              <% end %>
-          </span>
-        </p>
-        <p>
-          <span class="rounded-pill bg-secondary-subtle text-secondary fw-bold  px-3 py-2 me-1">
-            <i class="fa-solid fa-award"></i>
-            <%= @task_template.task_points > 0 ? "#{@task_template.task_points} points" : "#{@task_template.task_points} point"  %>
-          </span>
-        </p>
-      </div>
-
-      <h5 class="fw-bold mt-4">Date and frequency</h5>
-
-      <div class="mb-3 d-flex flex-column justify-content-start align-items-start">
-        <div class="text-secondary">
-          <% if @task_template.days.any? || @task_template.montly_frequency > 0 %>
-            No repeat
-          <% else %>
-            <% @task_template.days.each do |day| %>
-              <%= day %>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-
-      <h5 class="fw-bold mt-4">Description</h5>
-      <div class="mt-2 mb-5 text-secondary ">
-        <%= @task_template.description? ? @task_template.description : "No description" %>
-      </div>
-
-      <% if @family = @task_template.family %>
-        <div  class="d-flex mt-3 gap-2">
-          <%= link_to "Create task from template", new_task_path(
-              name: @task_template.name,
-              description: @task_template.description,
-              task_points: @task_template.task_points,
-              days: @task_template.days,
-              task_template: @task_template
-            ),
-            class: "btn btn-outline-secondary btn-sm rounded-pill" %>
-          <%= link_to "Edit template", edit_task_template_path(@task_template),
-            class: "btn btn-outline-warning btn-sm rounded-pill" %>
-          <%= link_to "Delete template", edit_task_template_path(@task_template),
-            data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-            class: "btn btn-outline-danger btn-sm rounded-pill" %>
-        </div>
+            task_template: @task_template.id
+          ),
+          class: "btn btn-outline-secondary btn-sm rounded-pill" %>
       <% end %>
     </div>
   </div>
 
-</div
+</div>

@@ -5,7 +5,6 @@ class FamiliesController < ApplicationController
 
 
   def index
-    # @family = current_user.family
     if @family.present?
       @members = @family.users.includes(:photo_attachment).order(created_at: :asc)
     else
@@ -14,7 +13,6 @@ class FamiliesController < ApplicationController
   end
 
   def show
-    # @family = current_user.family
     @member = @family.users.find(params[:id])
     render layout: false
   end
@@ -38,7 +36,7 @@ class FamiliesController < ApplicationController
     if @member.persisted?
       respond_to do |format|
         format.turbo_stream
-        #format.html { redirect_to family_path(@family), notice: "Added member successfully" }
+        format.html { redirect_to family_path(@family), notice: "Added member successfully" }
       end
     else
       render :new, status: :unprocessable_entity
@@ -46,7 +44,6 @@ class FamiliesController < ApplicationController
   end
 
   def edit
-    #@member = @family.users.find(params[:id])
     #authorize @member
     render layout: false
   end
@@ -67,12 +64,11 @@ class FamiliesController < ApplicationController
   end
 
   def destroy
-    #@member = @family.users.find(params[:id])
     @member.destroy
     respond_to do |format|
       format.turbo_stream
-      #format.html { redirect_to family_path(@family),
-      #status: :see_other, notice: "Member deleted" }
+      format.html { redirect_to family_path(@family),
+      status: :see_other, notice: "Member deleted" }
     end
   end
 

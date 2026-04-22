@@ -22,3 +22,49 @@
     font-weight: bold;
   }
 }
+
+// Consistent back link
+.back-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba($gray, 0.4);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 8px;
+
+  i { font-size: 12px; }
+
+  &:hover { color: rgba($gray, 0.7); }
+}
+
+// Round user avatar button
+.navbar-avatar {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+
+  &__img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__initials {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    color: rgba($gray, 0.7);
+  }
+}

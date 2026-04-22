@@ -1,57 +1,24 @@
 <div class="container py-5">
 
   <div class="meal-plan-section mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div class="d-flex gap-3">
-        <h1 class="fw-bold m-0 ms-3">My Family_Anakin</h1>
-        <i class="fa-solid fa-house text-light-emphasis d-block fs-1 mb-1"></i>
-      </div>
-
-      <button class="btn btn-outline-primary border-radius-5 d-flex align-items-center justify-content-center"
-                onclick="addNewMember('<%= new_family_member_path(@family) %>')"
-                style="width: 150px; height: 50px; border-width: 2px; font-weight: bold;">Add member</button>
+    <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <h1 class="fw-bold m-0">My Family</h1>
+      <%= link_to new_family_member_path(@family),
+            data: { turbo_frame: "modal" },
+            class: "text-decoration-none text-secondary" do %>
+        <i class="bi bi-plus-circle fs-4"></i>
+      <% end %>
     </div>
     <div id="member-list" class="row">
-    <%= render partial:"members/member", collection: @members, as: :member %>
+      <%= render partial: "members/member", collection: @members, as: :member %>
     </div>
 
     <div class="d-flex gap-3 ms-3 mt-5">
-      <%= link_to "Reward & Progress", rewards_path, class:"btn btn-success border-radius-5 align-items-center py-3", style:"w-auto;" %>
+      <%= link_to "Reward & Progress", rewards_path, class: "btn btn-success border-radius-5 align-items-center py-3", style: "w-auto;" %>
     </div>
   </div>
 
 </div>
 
-<script>
-  // Call the member by id
-  function loadMember(id) {
-    const familyId = <%= @family.id %>
-    const contentArea = document.getElementById('modal-content-area');
-    contentArea.innerHTML = '<div class="p-5 text-center">Loading...</div>';
-
-    // call to route of member#show
-    fetch(`/families/${id}/members/${id}`)
-      .then(response => response.text())
-      .then(html => {
-        contentArea.innerHTML = html;
-
-    });
-  }
-
-  function addNewMember(id) {
-  const contentArea = document.getElementById('modal-content-area');
-  contentArea.innerHTML = '<div class="p-5 text-center">Loading form...</div>';
-
-  fetch('/families/new')
-    .then(response => response.text())
-    .then(html => {
-      contentArea.innerHTML = html;
-
-      const modalElement = document.getElementById('memberModal');
-      // Use getOrCreateInstance to replace new
-      const myModal = bootstrap.Modal.getOrCreateInstance(modalElement);
-      myModal.show();
-    })
-    .catch(err => console.error("Error loading form:", err));
-  }
-</script>
+<%= turbo_frame_tag "modal" %>
