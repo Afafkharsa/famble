@@ -3,7 +3,8 @@
     <div class="col-12 col-md-9 col-lg-7">
       <div class="form-page-wrapper">
         <div class="form-card">
-          <h2 class="form-card__title">Edit task</h2>
+          <%= render "shared/back_link" %>
+          <h2 class="form-card-title">Edit task</h2>
           <%= render "form", task: @task %>
         </div>
       </div>
