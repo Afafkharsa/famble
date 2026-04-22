@@ -1,17 +1,19 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 d-flex align-items-center gap-4">
-      My Recipes
-      <%= link_to new_recipe_path, class: "text-decoration-none text-secondary" do %>
-        <i class="bi bi-plus-circle fs-4"></i>
-      <% end %>
-    </h1>
+  <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
+
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h1 class="mb-0">My Recipes</h1>
+    <%= link_to new_recipe_path, class: "text-decoration-none text-secondary" do %>
+      <i class="bi bi-plus-circle fs-4"></i>
+    <% end %>
   </div>
 
   <div class="mb-4">
-    <%= form_with url: recipes_path, method: :get, local: true, class: "d-flex" do %>
-      <%= text_field_tag :query, params[:query], placeholder: "Search recipes...", class: "form-control me-2 recipe-search-input" %>
-      <%= submit_tag "Search", class: "btn btn-outline-primary" %>
+    <%= form_with url: recipes_path, method: :get, local: true, class: "d-flex gap-2" do %>
+      <%= text_field_tag :query, params[:query],
+            placeholder: "Search recipes...",
+            class: "form-control recipe-search-input" %>
+      <%= submit_tag "Search", class: "recipe-search-btn" %>
     <% end %>
   </div>
 
@@ -19,43 +21,53 @@
     <div class="row g-4">
       <% @recipes.each do |recipe| %>
         <div class="col-md-4">
-          <div
-            class="card base-card card-hover h-100"
-            data-controller="clickable"
-            data-clickable-url-value="<%= recipe_path(recipe) %>"
-            data-action="click->clickable#go"
-            style="cursor: pointer;"
-          >
-            <div style="height: 150px;">
-              <% if recipe.photo.attached? %>
-                <%= image_tag recipe.photo,
-                    class: "w-100 h-100",
-                    style: "object-fit: cover; border-radius: 12px 12px 0 0;" %>
-              <% else %>
-                <div class="d-flex align-items-center justify-content-center h-100"
-                    style="background-color: #e9ecef; border-radius: 12px 12px 0 0;">
-                  <i class="fas fa-image text-secondary"></i>
-                </div>
-              <% end %>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title text-success"><%= recipe.name %></h5>
-              <p class="text-muted mb-1" style="font-size: 0.85rem;">
-                <i class="fas fa-fire me-1"></i><%= recipe.calories %> kcal &nbsp;| &nbsp;
-                <i class="fas fa-exclamation-triangle me-1"></i>
-                <%= recipe.allergens.present? ? recipe.allergens : "No allergens" %>
-              </p>
-              <p class="mb-2">
+          <div class="recipe-card"
+               data-controller="clickable"
+               data-clickable-url-value="<%= recipe_path(recipe) %>"
+               data-action="click->clickable#go"
+               style="cursor: pointer;">
+
+            <% if recipe.photo.attached? %>
+              <%= image_tag recipe.photo, class: "recipe-card-img" %>
+            <% else %>
+              <div class="recipe-card-placeholder">
+                <i class="bi bi-image"></i>
+              </div>
+            <% end %>
+
+            <div class="recipe-card-body">
+              <p class="recipe-card-name"><%= recipe.name %></p>
+
+              <div class="recipe-card-meta">
+                <span class="d-flex align-items-center gap-1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  <%= recipe.calories %> kcal
+                </span>
+                <span class="recipe-card-meta-sep">|</span>
+                <span class="d-flex align-items-center gap-1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                  <%= recipe.allergens.present? ? recipe.allergens : "none" %>
+                </span>
+              </div>
+
+              <div class="recipe-card-tags">
                 <% recipe.keywords.to_s.split(",").first(3).each do |keyword| %>
-                  <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 me-1">
-                    <%= keyword.strip %>
-                  </span>
+                  <span class="recipe-card-tag"><%= keyword.strip %></span>
                 <% end %>
-              </p>
-              <div class="mt-auto d-flex justify-content-end gap-2">
-                <%= link_to "Add to meal plan", new_meal_plan_path(recipe_id: recipe.id), class: "btn btn-outline-warning btn-sm rounded-pill" %>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <%= link_to "Add to meal plan",
+                      new_meal_plan_path(recipe_id: recipe.id),
+                      class: "recipe-card-action-btn" %>
               </div>
             </div>
+
           </div>
         </div>
       <% end %>
@@ -65,7 +77,6 @@
       <div class="mt-4">
         <p class="text-muted">No recipes saved yet. Ask the AI for a recipe!</p>
       </div>
-
       <div class="col-md-4 mt-4 text-center">
         <%= render "shared/ai_card" %>
       </div>

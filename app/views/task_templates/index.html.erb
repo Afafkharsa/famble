@@ -1,27 +1,43 @@
 <div class="container mt-4">
+  <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
   <div>
     <% if @family_templates.any? %>
-      <h2 class="mt-3">
-        My family task templates <%= link_to new_task_template_path do %>
-            <i class="fa-solid fa-plus text-body-secondary fs-4"
-            style= "text-decoration: none; cursor: pointer; color: inherit;" ></i>
+      <div class="d-flex align-items-center gap-3 mt-3 mb-3">
+        <h2 class="mb-0">My family task templates</h2>
+        <%= link_to new_task_template_path, class: "text-decoration-none text-secondary" do %>
+          <i class="bi bi-plus-circle fs-4"></i>
         <% end %>
-      </h2>
+      </div>
       <div class="row g-4 mt-1">
         <% @family_templates.each do |family_template| %>
           <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 bg-white">
+            <div class="card base-card task-card">
               <div class="card-body">
-                <h5 class="p-0 m-0 fs-6">
-                  <div  class="d-flex justify-content-between">
-                  <%= link_to family_template.name , task_template_path(family_template),
-                    class:"card-title text-secondary m-0 p-0 ",
-                    style: "text-decoration: none; cursor: pointer; color: inherit;" %>
-                  <%= link_to '<i class="fa-regular fa-rectangle-xmark"></i>'.html_safe, task_template_path(family_template),
-                    data: { turbo_method: :delete, turbo_confirm: "Do you really want to delete this template?" },
-                    class:"card-title text-secondary m-0 p-0",
-                    style: "text-decoration: none; cursor: pointer; color: inherit;" %>
-                </div>
+                <h5 class="p-0 m-0 fs-6 d-flex align-items-center">
+                  <%= link_to family_template.name, task_template_path(family_template),
+                    class: "card-title text-secondary m-0 p-0 flex-grow-1",
+                    style: "text-decoration: none;" %>
+                  <div class="dropdown reward-three-dot reward-three-dot--show">
+                    <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
+                        <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
+                      </svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 12px; min-width: 130px; border-radius: 10px;">
+                      <li>
+                        <%= link_to edit_task_template_path(family_template), class: "dropdown-item d-flex align-items-center gap-2" do %>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                          Edit
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to task_template_path(family_template), data: { turbo_method: :delete, turbo_confirm: "Delete this template?" }, class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                          Delete
+                        <% end %>
+                      </li>
+                    </ul>
+                  </div>
                 </h5>
               </div>
             </div>
@@ -48,7 +64,7 @@
     <div class="row g-4 mt-1">
       <% @generic_templates.each do |generic_template| %>
         <div class="col-md-3">
-          <div class="card border-0 shadow-sm h-100 bg-white">
+          <div class="card base-card">
             <div class="card-body">
               <h5 class="p-0 m-0 fs-6">
                 <%= link_to generic_template.name , task_template_path(generic_template),

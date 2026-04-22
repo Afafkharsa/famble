@@ -1,29 +1,55 @@
 
-<%= turbo_frame_tag "modal" do %>
-  <div class="modal-backdrop fade show"></div>
-    <div class="modal d-block" tabindex="-1" style="display: block;">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title fs-2 fw-bold text-center" >Edit Member111
+<div class="modal-backdrop fade show"></div>
+  <div class="modal d-block" tabindex="-1" style="display: block;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-2 fw-bold text-center">
+            <% if policy(@member).edit? %>
+              Edit Member
               <%= link_to family_member_path(@family, @member),
-                  data: { turbo_method: :delete,
-                  turbo_confirm: "Are you sure?" },
-                  class:"text-dark" do %>
-              <i class="bi bi-trash fs-5 ms-3"></i>
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                  class: "text-dark" do %>
+                <i class="bi bi-trash fs-5 ms-3"></i>
               <% end %>
-            </h5>
-
-        <%# Colse button of modal %>
-            <button type="button" class="btn-close"
-                    onclick="const frame = this.closest('turbo-frame');
-                    frame.src = ''; frame.innerHTML = '';">
-            </button>
-          </div>
-          <div class="modal-body">
+            <% else %>
+              My Profile
+            <% end %>
+          </h5>
+          <button type="button" class="btn-close"
+                  onclick="document.getElementById('modal').innerHTML = '';">
+          </button>
+        </div>
+        <div class="modal-body">
+          <% if policy(@member).edit? %>
             <%= render "form", member: @member %>
-          </div>
+          <% else %>
+            <div class="p-4">
+              <div class="mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle"
+                   style="width:80px;height:80px;background:<%= @member.color %>; font-size:28px;font-weight:700;">
+                <%= (@member.name || @member.email).split(' ').map { |w| w[0].upcase }.first(2).join %>
+              </div>
+              <div class="mb-3">
+                <p class="text-muted mb-1" style="font-size:12px;">Name</p>
+                <p class="fw-semibold mb-0"><%= @member.name.presence || "—" %></p>
+              </div>
+              <div class="mb-3">
+                <p class="text-muted mb-1" style="font-size:12px;">Email</p>
+                <p class="fw-semibold mb-0"><%= @member.email %></p>
+              </div>
+              <div class="mb-3">
+                <p class="text-muted mb-1" style="font-size:12px;">Role</p>
+                <p class="fw-semibold mb-0"><%= @member.role&.capitalize %></p>
+              </div>
+              <% if @member.birthdate.present? %>
+                <div class="mb-3">
+                  <p class="text-muted mb-1" style="font-size:12px;">Birthday</p>
+                  <p class="fw-semibold mb-0"><%= @member.birthdate.strftime("%B %d, %Y") %></p>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-<% end %>

@@ -3,12 +3,13 @@
     <div class="col-12 col-md-9 col-lg-7">
       <div class="form-page-wrapper">
         <div class="form-card">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <h2 class="form-card__title mb-0">New task</h2>
-            <%= link_to task_templates_path, class: "text-decoration-none text-secondary ms-auto" do %>
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <%= render "shared/back_link" %>
+            <%= link_to task_templates_path, class: "text-decoration-none text-secondary" do %>
               <i class="fa-regular fa-file-lines fs-5"></i>
             <% end %>
           </div>
+          <h2 class="form-card-title">New task</h2>
           <%= render "form", task: @task %>
         </div>
       </div>

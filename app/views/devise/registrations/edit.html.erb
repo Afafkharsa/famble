@@ -40,7 +40,7 @@
 
   <div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
 
-  <%= link_to "Back", :back %>
+  <%= render "shared/back_link" %>
 
   <h2>Sign up</h2>
 

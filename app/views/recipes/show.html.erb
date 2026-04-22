@@ -10,24 +10,33 @@
 
     <div class="card-body">
 
+      <%= render "shared/back_link" %>
+
       <div class="d-flex align-items-center my-3">
         <h1 class="card-title me-4 text-success"><%= @recipe.name %></h1>
 
-        <div class="d-flex align-items-center gap-1">
-          <%= link_to edit_recipe_path(@recipe), class: "btn text-secondary" do %>
-            <i class="fas fa-pen"></i>
-          <% end %>
-
-          <%= link_to recipe_path(@recipe),
-              data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-              class: "text-muted" do %>
-            <i class="bi bi-trash"></i>
-          <% end %>
+        <div class="dropdown reward-three-dot reward-three-dot--show ms-2">
+          <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
+              <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
+            </svg>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 12px; min-width: 130px; border-radius: 10px;">
+            <li>
+              <%= link_to edit_recipe_path(@recipe), class: "dropdown-item d-flex align-items-center gap-2" do %>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                Edit
+              <% end %>
+            </li>
+            <li>
+              <%= link_to recipe_path(@recipe), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Delete
+              <% end %>
+            </li>
+          </ul>
         </div>
 
-        <div class="ms-auto">
-          <%= link_to "", recipes_path, class: "btn-close link-underline link-underline-opacity-0 m-2 px-4", aria: { label: "Close" } %>
-        </div>
       </div>
 
       <p class="mb-3">

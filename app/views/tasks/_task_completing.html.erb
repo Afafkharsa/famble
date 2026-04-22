@@ -1,12 +1,11 @@
 <!-- STEP 2 Marked as done but not checked - parent -->
 <% if task.status && !task.validation && current_user.role =="parent" %>
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
+  <div class="rounded-pill fw-bold px-3 py-2"
+        style="background: rgba(248,247,186,0.6); color: #b5a800; cursor: pointer;"
         data-task-status-target="done"
-        data-turbo-confirm="Validate?"
         data-action="click->task-status#validate"
         type="button">
-    <i class="fa-solid fa-hourglass-half border-0">
-    </i> Waiting approval
+    <i class="fa-solid fa-circle-check border-0"></i> Validate?
   </div>
   <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
         data-task-status-target="approved">

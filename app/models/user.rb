@@ -18,7 +18,7 @@ class User < ApplicationRecord
   before_create :assign_color
 
   def earned_points
-    tasks.where(status: true).sum(:task_points) +
+    tasks.where(status: true, validation: true).sum(:task_points) +
       point_adjustments.where(kind: "add").sum(:amount)
   end
 

@@ -11,9 +11,6 @@ export default class extends Controller {
 
   complete(event) {
     event.preventDefault()
-    const confirmMessage = this.element.dataset.turboConfirm
-    if (confirmMessage && !confirm(confirmMessage)) return
-
     const url = `/tasks/${this.idValue}`
     const tokenMeta = document.querySelector("meta[name='csrf-token']")
     const token = tokenMeta ? tokenMeta.content : ""
@@ -46,9 +43,6 @@ export default class extends Controller {
 
   validate(event) {
     event.preventDefault()
-    const confirmMessage = this.element.dataset.turboConfirm
-    if (confirmMessage && !confirm(confirmMessage)) return
-
     this.doneTarget.disabled = true
 
     const url = `/tasks/${this.idValue}`
