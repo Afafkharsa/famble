@@ -334,7 +334,8 @@ recipe_1 = Recipe.create!(
   INGREDIENTS
   keywords: "pasta, italian, meat",
   calories: 450,
-  allergens: "gluten"
+  allergens: "gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/spaghetti_bolognese.jpg'))
 )
 
 recipe_2 = Recipe.create!(
@@ -355,7 +356,8 @@ recipe_2 = Recipe.create!(
   DESCRIPTION
   keywords: "salad, chicken, healthy",
   calories: 350,
-  allergens: "dairy, gluten"
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/chicken_caesar_salad.jpg'))
 )
 
 recipe_3 = Recipe.create!(
@@ -375,7 +377,8 @@ recipe_3 = Recipe.create!(
   DESCRIPTION
   keywords: "vegan, quick, asian",
   calories: 250,
-  allergens: "soy"
+  allergens: "soy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/vegetable_stir_fry.jpg'))
 )
 
 recipe_4 = Recipe.create!(
@@ -395,7 +398,8 @@ recipe_4 = Recipe.create!(
   DESCRIPTION
   keywords: "breakfast, sweet, easy",
   calories: 300,
-  allergens: "gluten, dairy, eggs"
+  allergens: "gluten, dairy, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/pancakes.jpg'))
 )
 
 recipe_5 = Recipe.create!(
@@ -415,16 +419,17 @@ recipe_5 = Recipe.create!(
   DESCRIPTION
   keywords: "fish, healthy, dinner",
   calories: 400,
-  allergens: "fish"
+  allergens: "fish",
+  photo: File.open(File.join(Rails.root,'app/assets/images/grilled_salmon.jpg'))
 )
 
 
-puts "Generating AI photo..."
+# puts "Generating AI photo..."
 
-[recipe_1, recipe_2, recipe_3, recipe_4, recipe_5].each do |recipe|
-  ImageGeneratorService.generate_and_attach(recipe)
-  sleep 2
-end
+# [recipe_1, recipe_2, recipe_3, recipe_4, recipe_5].each do |recipe|
+#   ImageGeneratorService.generate_and_attach(recipe)
+#   sleep 2
+# end
 
 puts "Generated photo successful!"
 
