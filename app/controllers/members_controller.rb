@@ -6,7 +6,7 @@ class MembersController < ApplicationController
 
   def show
     @member = @family.users.find(params[:id])
-    render layout: "false"
+    render layout: false
   end
 
   def new

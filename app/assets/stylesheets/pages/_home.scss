@@ -1,67 +1,43 @@
-//DATE BUTTON
-.btn-date {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  width: 100%;
-  padding: 1.5rem;
-
-  background-color: $blue;
-  color: white;
-  text-decoration: none;
-
-  border-radius: 8px;
-  border: none;
-
-  font-size: 1.5rem;
-  font-weight: 550;
-
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn-date:hover {
-  background-color: #6ba9bc;
-}
-
-// MAIN HOMEPAGE BUTTONS
-.dashboard-button {
-  position: relative;
+.dashboard-shell {
+  background: #F4F4F4;
   border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  font-weight: 600;
-  font-size: 1.8rem;
-
-  height: 350px;
-  width: 100%;
-
-  background-size: cover;
-  background-position: center;
 }
 
-// dark overlay
-.dashboard-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  transition: background 0.2s ease;
-  z-index: 1;
+.member-chip__avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
-// hover effect
-.dashboard-button:hover::before {
-  background: rgba(0, 0, 0, 0.55);
+.menu-row__badge {
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
-// text
-.button-title {
-  position: relative;
-  z-index: 2;
+.task-row__check {
+  width: 15px;
+  height: 15px;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.task-row__avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.event-row__date {
+  min-width: 32px;
+}
+
+.event-row__avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 0.65rem;
+  flex-shrink: 0;
 }

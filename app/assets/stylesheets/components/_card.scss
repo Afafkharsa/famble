@@ -22,7 +22,8 @@
 }
 
 .task-card:hover .reward-three-dot > [data-bs-toggle="dropdown"],
-.recipe-thumbnail:hover .reward-three-dot > [data-bs-toggle="dropdown"] {
+.recipe-thumbnail:hover .reward-three-dot > [data-bs-toggle="dropdown"],
+.meal-item-card:hover .reward-three-dot > [data-bs-toggle="dropdown"] {
   opacity: 1;
   background: $light-gray;
 }
