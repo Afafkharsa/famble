@@ -8,7 +8,7 @@
     <i class="fa-regular fa-circle border-0"></i> To do
   </div>
 <% if current_user.role =="parent" %>
-  <!-- -->
+  <!-- Approval for parent -->
   <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
               <%=  task.status && !task.validation ? "" : "d-none" %>"
        data-task-status-target="done"
@@ -19,7 +19,7 @@
     </i> Validate?
   </div>
 <% else %>
-  <!-- -->
+  <!-- Pending for child - not clickable -->
   <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
         data-task-status-target="done">
     <i class="fa-solid fa-hourglass-half border-0 disable">
