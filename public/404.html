@@ -1,67 +1,116 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>The page you were looking for doesn't exist (404)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
-  .rails-default-error-page {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
+    @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;500&display=swap");
 
-  .rails-default-error-page div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .rails-default-error-page div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+    :root {
+      --primary-color: #E8AFAF;
+      --bg-color: #fff;
+      --text-color: #1f1f1f;
+      --muted-text: rgba(0,0,0,0.55);
+      --fs-title: 38px;
+      --fs-text: 20px;
+      --button-padding: 14px 26px;
+    }
 
-  .rails-default-error-page h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
+    body {
+      min-height: 100vh;
+      display: flex;
+      font-family: "Fira Sans", sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
 
-  .rails-default-error-page div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+    .container {
+      margin: auto;
+      text-align: center;
+      max-width: 520px;
+      padding: 24px;
+    }
+
+    .icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(232, 175, 175, 0.15);
+      color: var(--primary-color);
+      font-size: 28px;
+    }
+
+    h1 {
+      font-size: var(--fs-title);
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+
+    p {
+      margin-top: 12px;
+      font-size: var(--fs-text);
+      color: var(--muted-text);
+      line-height: 1.5;
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 24px;
+      padding: var(--button-padding);
+      border: 1px solid var(--primary-color);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: 0.15s ease;
+    }
+
+    .button:hover {
+      background: var(--primary-color);
+      color: #fff;
+    }
   </style>
 </head>
 
-<body class="rails-default-error-page">
+<body>
   <!-- This file lives in public/404.html -->
-  <div class="dialog">
-    <div>
-      <h1>The page you were looking for doesn't exist.</h1>
-      <p>You may have mistyped the address or the page may have moved.</p>
+  <div class="container">
+
+    <div class="icon">
+      <i class="fa-solid fa-compass"></i>
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
+
+    <h1>Page not found</h1>
+    <p>404 error</p>
+
+    <div class="hint">
+      This wasn't on the meal plan... and we couldn't find it either.
+    </div>
+
+    <a class="button" href="/">
+      Back to home
+    </a>
+
   </div>
+
 </body>
 </html>
