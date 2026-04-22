@@ -1,12 +1,10 @@
 <div class="container py-5 col-md-6">
 
-  <div class="card shadow-sm">
+  <div class="card base-card shadow-sm">
     <div class="card-body bg-white">
-      <div class="text-secondary">
-          <%= link_to "← Back to tasks", tasks_path, class: "link-secondary link-underline-secondary" %>
-        </div>
+      <%= render "shared/back_link" %>
       <div class="mb-3 mt-4">
-        <h2 class="text-success d-flex gap-2">
+        <h2 class="text-success d-flex gap-2 show-title">
           <%= render "task_title", task: @task%>
         </h2>
       </div>

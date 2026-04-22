@@ -1,4 +1,13 @@
-<%= simple_form_for [chat, message] do |f| %>
-  <%= f.input :content, label: "Ask for a recipe", required: true, placeholder: "Suggest me a high protein recipe..." %>
-  <%= f.button :submit, "Send", class: "btn btn-primary" %>
-<% end %>
+<div class="chat-input-area">
+  <%= form_with model: [chat, message], class: "chat-input-row" do |f| %>
+    <%= f.text_area :content,
+        class: "chat-input-field",
+        placeholder: "Ask Famble AI anything about your family...",
+        rows: 1,
+        required: true %>
+    <button type="submit" class="chat-send-btn">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  <% end %>
+  <p class="chat-input-hint">Famble AI knows your meals, tasks, calendar, and rewards</p>
+</div>

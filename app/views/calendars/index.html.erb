@@ -1,83 +1,58 @@
 <div class="container mt-3">
-  <h1 class="text-center mb-3 fs-bold">Calendar</h1>
+  <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
 
-<div class="calendar-navigation mb-4">
-  <%= form_with url: calendars_path, method: :get, local: true, class: "d-flex gap-2 align-items-center" do |f| %>
-
-    <%# Select month %>
-    <%= f.select :month,
-        (1..12).map { |m| [I18n.l(Date.new(2026, m), format: '%B'), m] },
-        { selected: params[:month] || Date.today.month },
-        { class: "form-select bg-success", onchange: "this.form.requestSubmit()" } %>
-
-    <%# Select year 2 yrs before -  5 yrs after) %>
-    <%= f.select :year,
-        (Date.today.year - 2..Date.today.year + 5).to_a,
-        { selected: params[:year] || Date.today.year },
-        { class: "form-select bg-primary", onchange: "this.form.requestSubmit()" } %>
-
-    <%# Today Quick mode %>
-    <%= link_to 'Today', calendars_path, class: "btn btn-outline-primary" %>
-  <% end %>
-</div>
-
-  <%= month_calendar(events: []) do |date, items| %>
-  <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class:"text-decoration-none text-dark" do %>
-    <div class="day-link" style="height: 120px;" onclick="showDayDetail('<%= date %>')" >
-      <div class="date-number fs-5"><%= date.day %></div>
-  <% end %>
-    <%#Show how many Event %>
-      <% day_events = @events.select { |event| event.start_time.to_date == date } %>
-      <% if day_events.any? %>
-      <div class="d-block">
-        <%= link_to events_path, class:"text-decoration-none" do %>
-        <small class="text-warning fs-6 d-inline-block" ><i class="fa-regular fa-calendar-check fs-5 ms-1 me-2"></i><%= day_events.count %>  Events</small>
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="d-flex align-items-center gap-3">
+      <h1 class="fw-bold mb-0">Calendar</h1>
+      <% if policy(Event).new? %>
+        <%= link_to new_event_path, class: "text-decoration-none text-secondary" do %>
+          <i class="bi bi-plus-circle fs-4"></i>
         <% end %>
-      </div>
-      <% end %>
-
-    <%#Show how many Task %>
-      <% day_tasks = @tasks.select { |task| task.end_date.to_date == date } %>
-      <% if day_tasks.any? %>
-      <div class="d-block">
-        <%= link_to tasks_path, class:"text-decoration-none" do %>
-        <small class="text-primary fs-6"><i class="fa-solid fa-list-check fs-5 ms-1 me-2"></i><%= day_tasks.count %>  Tasks</small>
-        <% end %>
-      </div>
-      <% end %>
-
-
-    <%#Show how many meal_plan %>
-      <% day_meals = @meal_plans.select { |meal| meal.day == date } %>
-      <% if day_meals.any? %>
-      <div class="task-line">
-        <%= link_to meal_plans_path, class:"text-decoration-none" do %>
-        <small class="text-success fs-6">
-          <span class="fs-5">🍽️</span>
-          <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
-          <%= total_recipes %> <%= "Meal".pluralize(total_recipes) %>
-          <%#= day_meals.count %></small>
-        <% end %>
-      </div>
       <% end %>
     </div>
+    <%= form_with url: calendars_path, method: :get, local: true, class: "d-flex gap-2 align-items-center" do |f| %>
+      <%= f.select :month,
+          (1..12).map { |m| [I18n.l(Date.new(2026, m), format: '%B'), m] },
+          { selected: @start_date.month },
+          { class: "cal-jump-select", onchange: "this.form.requestSubmit()" } %>
+      <%= f.select :year,
+          (Date.today.year - 2..Date.today.year + 5).to_a,
+          { selected: @start_date.year },
+          { class: "cal-jump-select", onchange: "this.form.requestSubmit()" } %>
+    <% end %>
+  </div>
+
+  <%= month_calendar(start_date: @start_date, events: []) do |date, items| %>
+    <%= link_to day_detail_calendars_path(date: date), data: { turbo_frame: "modal" }, class: "d-block text-decoration-none h-100" do %>
+      <div class="cal__num"><%= date.day %></div>
+
+      <% day_events = @events.select { |event| event.start_time.to_date == date } %>
+      <% day_tasks  = @tasks.select  { |task|  task.end_date.to_date    == date } %>
+      <% day_meals  = @meal_plans.select { |meal| meal.day == date } %>
+      <% total_recipes = day_meals.sum { |meal| meal.recipe_meal_plans.count } %>
+
+      <div class="cal__events">
+        <% if day_tasks.any? %>
+          <span class="cal__event cal__event--task">
+            <span class="cal__dot"></span>
+            <%= day_tasks.count %> Task<%= day_tasks.count > 1 ? 's' : '' %>
+          </span>
+        <% end %>
+        <% if day_events.any? %>
+          <span class="cal__event cal__event--event">
+            <span class="cal__dot"></span>
+            <%= day_events.count %> Event<%= day_events.count > 1 ? 's' : '' %>
+          </span>
+        <% end %>
+        <% if day_meals.any? %>
+          <span class="cal__event cal__event--meal">
+            <span class="cal__dot"></span>
+            <%= total_recipes %> Meal<%= total_recipes > 1 ? 's' : '' %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 
-<%= turbo_frame_tag "modal" %>
-
-
-<script>
-  function openDayDetail(date) {
-    const contentArea = document.getElementById('modal-content-area');
-
-    //Fetch to route to get data on this date
-    fetch(`/calendars/day_detail?date=${date}`)
-      .then(response => response.text())
-      .then(html => {
-        contentArea.innerHTML = html;
-
-        const myModal = new bootstrap.Modal(document.getElementById('memberModal'));
-        myModal.show();
-      });
-  }
-</script>
+  <%= turbo_frame_tag "modal" %>
+</div>

@@ -334,7 +334,8 @@ recipe_1 = Recipe.create!(
   INGREDIENTS
   keywords: "pasta, italian, meat",
   calories: 450,
-  allergens: "gluten"
+  allergens: "gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/spaghetti_bolognese.jpg'))
 )
 
 recipe_2 = Recipe.create!(
@@ -355,7 +356,8 @@ recipe_2 = Recipe.create!(
   DESCRIPTION
   keywords: "salad, chicken, healthy",
   calories: 350,
-  allergens: "dairy, gluten"
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/chicken_caesar_salad.jpg'))
 )
 
 recipe_3 = Recipe.create!(
@@ -375,7 +377,8 @@ recipe_3 = Recipe.create!(
   DESCRIPTION
   keywords: "vegan, quick, asian",
   calories: 250,
-  allergens: "soy"
+  allergens: "soy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/vegetable_stir_fry.jpg'))
 )
 
 recipe_4 = Recipe.create!(
@@ -395,7 +398,8 @@ recipe_4 = Recipe.create!(
   DESCRIPTION
   keywords: "breakfast, sweet, easy",
   calories: 300,
-  allergens: "gluten, dairy, eggs"
+  allergens: "gluten, dairy, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/pancakes.jpg'))
 )
 
 recipe_5 = Recipe.create!(
@@ -410,23 +414,213 @@ recipe_5 = Recipe.create!(
     Pepper to taste
   INGREDIENTS
   description: <<~DESCRIPTION,
-    Fluffy breakfast pancakes perfect for weekend mornings.
-    Top with syrup or fresh fruits.
+    Season the salmon fillet with salt, pepper, and mixed herbs.
+    Heat olive oil in a pan over medium-high heat.
+    Cook the salmon for 4 minutes each side until golden.
+    Squeeze lemon juice over the fillet before serving.
   DESCRIPTION
   keywords: "fish, healthy, dinner",
   calories: 400,
-  allergens: "fish"
+  allergens: "fish",
+  photo: File.open(File.join(Rails.root,'app/assets/images/grilled_salmon.jpg'))
 )
 
+recipe_6 = Recipe.create!(
+  name: "Avocado Toast with Poached Eggs",
+  ingredients: <<~INGREDIENTS,
+    2 slices sourdough bread
+    1 ripe avocado
+    2 eggs
+    1 tsp white vinegar
+    1 tbsp lemon juice
+    Red pepper flakes to taste
+    Salt and pepper to taste
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Toast the sourdough slices until golden and crispy.
+    Mash the avocado with lemon juice, salt, and pepper.
+    Bring a pot of water with vinegar to a gentle simmer and poach the eggs for 3 minutes.
+    Spread avocado on toast, top with poached eggs, and finish with red pepper flakes.
+  DESCRIPTION
+  keywords: "breakfast, healthy, eggs",
+  calories: 320,
+  allergens: "gluten, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/avocado_toast.jpg'))
+)
 
-puts "Generating AI photo..."
+recipe_7 = Recipe.create!(
+  name: "Overnight Oats with Berries",
+  ingredients: <<~INGREDIENTS,
+    80g rolled oats
+    200ml milk
+    100g mixed berries (fresh or frozen)
+    2 tbsp honey
+    50g Greek yogurt
+    1 tbsp chia seeds
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Mix oats, milk, Greek yogurt, chia seeds, and honey in a jar.
+    Stir well, cover, and refrigerate overnight.
+    In the morning, top with fresh mixed berries and an extra drizzle of honey.
+  DESCRIPTION
+  keywords: "breakfast, meal prep, healthy",
+  calories: 350,
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/oats.jpg'))
+)
 
-[recipe_1, recipe_2, recipe_3, recipe_4, recipe_5].each do |recipe|
-  ImageGeneratorService.generate_and_attach(recipe)
-  sleep 2
-end
+recipe_8 = Recipe.create!(
+  name: "Tomato Basil Soup",
+  ingredients: <<~INGREDIENTS,
+    800g canned crushed tomatoes
+    1 onion, diced
+    3 cloves garlic, minced
+    200ml vegetable stock
+    100ml heavy cream
+    1 handful fresh basil
+    2 tbsp olive oil
+    Salt and pepper to taste
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Heat olive oil in a pot and sauté onion and garlic until soft.
+    Add crushed tomatoes and vegetable stock and simmer for 20 minutes.
+    Blend until smooth, stir in cream, and season with salt and pepper.
+    Serve topped with fresh basil leaves.
+  DESCRIPTION
+  keywords: "lunch, soup, vegetarian",
+  calories: 220,
+  allergens: "dairy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/tomato_soup.jpg'))
+)
 
-puts "Generated photo successful!"
+recipe_9 = Recipe.create!(
+  name: "Turkey Avocado Wrap",
+  ingredients: <<~INGREDIENTS,
+    1 large tortilla wrap
+    120g sliced turkey breast
+    1/2 avocado, sliced
+    1 handful romaine lettuce
+    1/2 tomato, sliced
+    1 tbsp mayonnaise
+    Salt and pepper to taste
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Lay the tortilla flat and spread mayonnaise evenly.
+    Layer turkey, avocado, lettuce, and tomato.
+    Season with salt and pepper, roll tightly, and slice in half.
+  DESCRIPTION
+  keywords: "lunch, wrap, quick",
+  calories: 380,
+  allergens: "gluten, eggs",
+  photo: File.open(File.join(Rails.root,'app/assets/images/wrap.jpg'))
+)
+
+recipe_10 = Recipe.create!(
+  name: "Chicken Tikka Masala",
+  ingredients: <<~INGREDIENTS,
+    400g chicken breast, cubed
+    400ml coconut milk
+    400g canned tomatoes
+    1 onion, diced
+    3 cloves garlic, minced
+    2 tsp garam masala
+    1 tsp turmeric
+    1 tsp cumin
+    2 tbsp olive oil
+    Fresh coriander to serve
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Heat oil and sauté onion and garlic until golden.
+    Add spices and cook for 1 minute until fragrant.
+    Add chicken and brown on all sides.
+    Pour in tomatoes and coconut milk, then simmer for 20 minutes.
+    Serve with rice and fresh coriander.
+  DESCRIPTION
+  keywords: "dinner, curry, chicken",
+  calories: 480,
+  allergens: "none",
+  photo: File.open(File.join(Rails.root,'app/assets/images/chicken_tikka_masala.jpg'))
+)
+
+recipe_11 = Recipe.create!(
+  name: "Beef Tacos",
+  ingredients: <<~INGREDIENTS,
+    300g ground beef
+    8 small corn tortillas
+    1 tsp cumin
+    1 tsp paprika
+    1/2 tsp chili powder
+    1 onion, diced
+    1 tomato, diced
+    100g shredded cheddar cheese
+    Sour cream and salsa to serve
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Cook ground beef with onion, cumin, paprika, and chili powder until browned.
+    Warm the tortillas in a dry pan for 30 seconds each side.
+    Fill each tortilla with beef, diced tomato, and shredded cheese.
+    Top with sour cream and salsa.
+  DESCRIPTION
+  keywords: "dinner, mexican, beef",
+  calories: 520,
+  allergens: "dairy, gluten",
+  photo: File.open(File.join(Rails.root,'app/assets/images/tacos.jpg'))
+)
+
+recipe_12 = Recipe.create!(
+  name: "Hummus with Veggie Sticks",
+  ingredients: <<~INGREDIENTS,
+    200g canned chickpeas
+    2 tbsp tahini
+    1 lemon, juiced
+    1 clove garlic
+    2 tbsp olive oil
+    2 carrots, cut into sticks
+    2 celery stalks, cut into sticks
+    1 cucumber, cut into sticks
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Blend chickpeas, tahini, lemon juice, garlic, and olive oil until smooth.
+    Season with salt and drizzle with olive oil to serve.
+    Arrange carrot, celery, and cucumber sticks alongside the hummus.
+  DESCRIPTION
+  keywords: "snack, vegan, healthy",
+  calories: 180,
+  allergens: "sesame",
+  photo: File.open(File.join(Rails.root,'app/assets/images/hummus.jpg'))
+)
+
+recipe_13 = Recipe.create!(
+  name: "Banana Peanut Butter Smoothie",
+  ingredients: <<~INGREDIENTS,
+    2 ripe bananas
+    2 tbsp peanut butter
+    250ml milk
+    1 tbsp honey
+    4 ice cubes
+  INGREDIENTS
+  description: <<~DESCRIPTION,
+    Add all ingredients to a blender.
+    Blend on high for 1 minute until smooth and creamy.
+    Pour into glasses and serve immediately.
+  DESCRIPTION
+  keywords: "snack, smoothie, quick",
+  calories: 290,
+  allergens: "peanuts, dairy",
+  photo: File.open(File.join(Rails.root,'app/assets/images/smoothie.jpg'))
+)
+
+# puts "Generating AI photo..."
+
+
+# [recipe_1, recipe_2, recipe_3, recipe_4, recipe_5,
+#  recipe_6, recipe_7, recipe_8, recipe_9, recipe_10,
+#  recipe_11, recipe_12, recipe_13].each do |recipe|
+#   ImageGeneratorService.generate_and_attach(recipe)
+#   sleep 2
+# end
+
+# puts "Generated photo successful!"
 
 
 puts "Creating reward templates..."
@@ -483,41 +677,55 @@ meal_plan_lion_king = MealPlan.find_or_create_by!(
 
 puts "Creating RecipeMealplans..."
 
-RecipeMealPlan.create!(
-  meal_plan: meal_plan_today,
-  recipe: recipe_1,
-  meal_type: "Breakfast"
-)
+# Today
+RecipeMealPlan.create!(meal_plan: meal_plan_today, recipe: recipe_6,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_today, recipe: recipe_12, meal_type: "Snack")
+RecipeMealPlan.create!(meal_plan: meal_plan_today, recipe: recipe_8,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_today, recipe: recipe_1,  meal_type: "Dinner")
 
-RecipeMealPlan.create!(
-  meal_plan: meal_plan_today,
-  recipe: recipe_5,
-  meal_type: "Lunch"
-)
+# Tomorrow
+RecipeMealPlan.create!(meal_plan: meal_plan_tomorrow, recipe: recipe_4,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_tomorrow, recipe: recipe_9,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_tomorrow, recipe: recipe_13, meal_type: "Snack")
+RecipeMealPlan.create!(meal_plan: meal_plan_tomorrow, recipe: recipe_5,  meal_type: "Dinner")
 
-RecipeMealPlan.create!(
-  meal_plan: meal_plan_today,
-  recipe: recipe_4,
-  meal_type: "Dinner"
-)
+# Lion King family
+RecipeMealPlan.create!(meal_plan: meal_plan_lion_king, recipe: recipe_10, meal_type: "Dinner")
 
-RecipeMealPlan.create!(
-  meal_plan: meal_plan_tomorrow,
-  recipe: recipe_3,
-  meal_type: "Lunch"
-)
+meal_plan_day2 = MealPlan.find_or_create_by!(day: Date.today + 2, family: family_1)
+meal_plan_day3 = MealPlan.find_or_create_by!(day: Date.today + 3, family: family_1)
+meal_plan_day4 = MealPlan.find_or_create_by!(day: Date.today + 4, family: family_1)
+meal_plan_day5 = MealPlan.find_or_create_by!(day: Date.today + 5, family: family_1)
+meal_plan_day6 = MealPlan.find_or_create_by!(day: Date.today + 6, family: family_1)
 
-RecipeMealPlan.create!(
-  meal_plan: meal_plan_tomorrow,
-  recipe: recipe_2,
-  meal_type: "Dinner"
-)
+# Day 2
+RecipeMealPlan.create!(meal_plan: meal_plan_day2, recipe: recipe_7,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_day2, recipe: recipe_2,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_day2, recipe: recipe_12, meal_type: "Snack")
+RecipeMealPlan.create!(meal_plan: meal_plan_day2, recipe: recipe_10, meal_type: "Dinner")
 
-RecipeMealPlan.create!(
-  meal_plan: meal_plan_lion_king,
-  recipe: recipe_1,
-  meal_type: "Dinner"
-)
+# Day 3
+RecipeMealPlan.create!(meal_plan: meal_plan_day3, recipe: recipe_6,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_day3, recipe: recipe_3,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_day3, recipe: recipe_13, meal_type: "Snack")
+RecipeMealPlan.create!(meal_plan: meal_plan_day3, recipe: recipe_11, meal_type: "Dinner")
+
+# Day 4
+RecipeMealPlan.create!(meal_plan: meal_plan_day4, recipe: recipe_4,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_day4, recipe: recipe_9,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_day4, recipe: recipe_5,  meal_type: "Dinner")
+
+# Day 5
+RecipeMealPlan.create!(meal_plan: meal_plan_day5, recipe: recipe_7,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_day5, recipe: recipe_8,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_day5, recipe: recipe_12, meal_type: "Snack")
+RecipeMealPlan.create!(meal_plan: meal_plan_day5, recipe: recipe_1,  meal_type: "Dinner")
+
+# Day 6
+RecipeMealPlan.create!(meal_plan: meal_plan_day6, recipe: recipe_6,  meal_type: "Breakfast")
+RecipeMealPlan.create!(meal_plan: meal_plan_day6, recipe: recipe_2,  meal_type: "Lunch")
+RecipeMealPlan.create!(meal_plan: meal_plan_day6, recipe: recipe_13, meal_type: "Snack")
+RecipeMealPlan.create!(meal_plan: meal_plan_day6, recipe: recipe_3,  meal_type: "Dinner")
 
 
 puts "Creating chats..."

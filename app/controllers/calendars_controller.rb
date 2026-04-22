@@ -1,5 +1,9 @@
 class CalendarsController < ApplicationController
   def index
+    year  = params[:year].present?  ? params[:year].to_i  : Date.today.year
+    month = params[:month].present? ? params[:month].to_i : Date.today.month
+    @start_date = Date.new(year, month, 1)
+
     @events = policy_scope(Event)
     @tasks = policy_scope(Task)
     @meal_plans = policy_scope(MealPlan)

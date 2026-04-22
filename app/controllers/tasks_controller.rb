@@ -20,7 +20,7 @@ class TasksController < ApplicationController
       description: params[:description],
       task_points: params[:task_points],
       days: params[:days],
-      task_template: params[:task_template]
+      task_template_id: params[:task_template]
     })
     authorize @task
   end
@@ -56,12 +56,6 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.html { redirect_to task_path(@task), notice: "Task updated." }
         format.json { render json: @task, status: :ok }
-      end
-      # Adding task points to user points
-      if @task.validation
-        @task.user.available_points += @task.task_points
-        @task.user.earned_points += @task.task_points
-        @task.user.save
       end
     else
       respond_to do |format|

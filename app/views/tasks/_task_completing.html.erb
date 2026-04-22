@@ -1,54 +1,35 @@
-<!-- STEP 2 Marked as done but not checked - parent -->
-<% if task.status && !task.validation && current_user.role =="parent" %>
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
-        data-task-status-target="done"
-        data-turbo-confirm="Validate?"
-        data-action="click->task-status#validate"
+<!-- To do -->
+  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+   <%=  task.status ? "d-none" : "" %>"
+        data-task-status-target="todo"
+        data-turbo-confirm="Mark complete?"
+        data-action="click->task-status#complete"
         type="button">
-    <i class="fa-solid fa-hourglass-half border-0">
-    </i> Waiting approval
+    <i class="fa-regular fa-circle border-0"></i> To do
   </div>
+<% if current_user.role =="parent" %>
+  <!-- Approval for parent -->
+  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+              <%=  task.status && !task.validation ? "" : "d-none" %>"
+       data-task-status-target="done"
+       data-turbo-confirm="Validate?"
+       data-action="click->task-status#validate"
+       type="button">
+    <i class="fa-solid fa-hourglass-half border-0">
+    </i> Validate?
+  </div>
+<% else %>
+  <!-- Pending for child - not clickable -->
   <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
-        data-task-status-target="approved">
-    <i class="fa-regular fa-circle-check border-0"></i> Done
+        data-task-status-target="done">
+    <i class="fa-solid fa-hourglass-half border-0 disable">
+    </i> Pending
   </div>
 
-<!-- STEP 2 Marked as done but not checked - child -->
-<% elsif task.status && !task.validation && current_user.role != "parent" %>
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
-    <i class="fa-solid fa-hourglass-half border-0 disable">
-    </i> Waiting approval
-  </div>
-<!-- STEP 3 Marked as done and checked -->
-<% elsif task.status && task.validation  %>
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
-    <i class="fa-regular fa-circle-check border-0 disable"></i> Done
-  </div>
-<!-- STEP 1 Not done -->
-<% else %>
-  <% if task.user == current_user or current_user.role =="parent" %>
-    <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2"
-          data-task-status-target="todo"
-          data-turbo-confirm="Mark complete?"
-          data-action="click->task-status#complete"
-          type="button">
-      <i class="fa-regular fa-circle border-0"></i> To do
-    </div>
-    <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
-          data-task-status-target="done"
-          data-turbo-confirm="Validate?"
-          data-action="click->task-status#validate"
-          type="button">
-      <i class="fa-solid fa-hourglass-half border-0">
-      </i> Waiting approval
-    </div>
-    <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 d-none"
-          data-task-status-target="approved">
-      <i class="fa-regular fa-circle-check border-0 disable"></i> Done
-    </div>
-  <% else %>
-    <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
-      <i class="fa-regular fa-circle border-0"></i> To do
-    </div>
-  <% end %>
 <% end %>
+  <!-- Approved -->
+<div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+            <%=  task.validation ? "" : "d-none" %>"
+      data-task-status-target="approved">
+  <i class="fa-regular fa-circle-check border-0 disable"></i> Done
+</div>

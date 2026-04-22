@@ -67,8 +67,13 @@ input::placeholder{
   }
 }
 
-.form-card__title {
+.form-card-title {
   font-family: $headers-font;
   font-size: 24px;
   margin-bottom: 22px;
+}
+
+.form-card .btn,
+.form-page-wrapper .btn {
+  font-weight: 400;
 }

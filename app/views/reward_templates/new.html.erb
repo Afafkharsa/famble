@@ -3,7 +3,8 @@
     <div class="col-12 col-md-9 col-lg-7">
       <div class="form-page-wrapper">
         <div class="form-card">
-          <h2 class="form-card__title">Add to Library</h2>
+          <%= render "shared/back_link" %>
+          <h2 class="form-card-title">Add to Library</h2>
           <%= form_with(model: @reward_template) do |f| %>
             <div class="mb-3">
               <%= f.label :name, "Name", class: "form-label" %>
@@ -35,9 +36,9 @@
               <span class="text-muted small ms-1">(optional)</span>
               <%= f.file_field :photo, class: "form-control", accept: "image/*" %>
             </div>
-            <div class="d-flex gap-2">
-              <%= f.submit "Add to Library", class: "btn btn-primary" %>
-              <%= link_to "Cancel", reward_templates_path, class: "btn btn-outline-secondary" %>
+            <div class="d-flex gap-2 mt-4">
+              <%= f.submit "Add to Library", class: "btn btn-primary rounded-4" %>
+              <%= link_to "Cancel", reward_templates_path, class: "btn btn-outline-secondary rounded-4" %>
             </div>
           <% end %>
         </div>

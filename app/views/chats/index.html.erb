@@ -1,41 +1,54 @@
-<div class="container py-4">
-  <h1 class="mb-4">My Chats</h1>
+<div class="container mt-4">
+  <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
 
-  <div class="d-flex justify-content-between align-items-start">
-    <div class="col-md-7">
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h1 class="mb-0">My Chats</h1>
+    <%= link_to chats_path(chat: { status: "Pending", title: "Untitled" }),
+        data: { turbo_method: :post },
+        class: "text-decoration-none text-secondary" do %>
+      <i class="bi bi-plus-circle fs-4"></i>
+    <% end %>
+  </div>
+
+  <div class="d-flex gap-4 align-items-start">
+    <div class="flex-grow-1">
       <% if @chats.any? %>
-        <div class="bg-white border rounded-3 mt-2 overflow-hidden">
+        <div class="bg-white border rounded-3 overflow-hidden">
           <% @chats.each do |chat| %>
-            <div
-              class="d-flex justify-content-between align-items-center p-3 chat-row"
-              data-controller="clickable"
-              data-clickable-url-value="<%= chat_path(chat) %>"
-              data-action="click->clickable#go"
-            >
-
-              <div class="flex-grow-1">
-                <%= link_to chat.title, chat_path(chat), class: "text-decoration-none" %>
-              </div>
-
+            <div class="d-flex justify-content-between align-items-center p-3 chat-row"
+                 data-controller="clickable"
+                 data-clickable-url-value="<%= chat_path(chat) %>"
+                 data-action="click->clickable#go">
+              <span class="text-decoration-none"><%= chat.title %></span>
               <%= button_to chat_path(chat),
                   method: :delete,
                   data: { turbo_confirm: "Delete this chat?" },
                   class: "btn btn-sm text-muted ms-3" do %>
                 <i class="bi bi-trash"></i>
               <% end %>
-
             </div>
           <% end %>
         </div>
       <% else %>
-        <div class="mt-4 text-muted">
-          <p>No chats yet.</p>
-        </div>
+        <p class="text-muted mt-4">No chats yet. Start one with Famble AI!</p>
       <% end %>
     </div>
 
-    <div class="col-md-4 mt-2 text-center">
-      <%= render "shared/ai_card" %>
+    <div style="width: 260px; flex-shrink: 0;">
+      <%= link_to chats_path(chat: { status: "Pending", title: "Untitled" }),
+          data: { turbo_method: :post },
+          class: "text-decoration-none" do %>
+        <div class="bg-white border rounded-4 p-4 text-center" style="border-color: rgba(14,0,0,0.08) !important;">
+          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-3"
+               style="width:48px;height:48px;background:linear-gradient(135deg,#A3CCDA,#BDE3C3);">
+            <svg viewBox="0 0 16 16" width="18" height="18">
+              <path d="M8 0.5 L 9 6 L 14.5 7 L 9 8 L 8 13.5 L 7 8 L 1.5 7 L 7 6 Z" fill="#FD1015"/>
+            </svg>
+          </div>
+          <p class="fw-bold mb-1" style="font-size:14px;">Chat with Famble AI</p>
+          <p class="text-muted mb-0" style="font-size:12px;">Ask for recipes, meal plans, tasks & more</p>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
