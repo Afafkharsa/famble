@@ -964,5 +964,50 @@ Message.create!(
   '
 )
 
+puts "Creating events..."
+
+Event.create!(
+  title: "Grocery shopping",
+  start_time: 2.days.ago + 18.hours,
+  user: user_1
+)
+
+Event.create!(
+  title: "Space movie marathon",
+  start_time: 5.days.ago + 21.hours,
+  user: user_1
+)
+
+Event.create!(
+  title: "Family dinner",
+  start_time: Date.today.to_datetime + 19.hours,
+  user: user_1
+)
+
+Event.create!(
+  title: "Family movie night",
+  start_time: Date.today.next_occurring(:saturday).to_datetime + 21.hours,
+  user: user_1
+)
+
+Event.create!(
+  title: "Lightsaber training",
+  start_time: Date.today.to_datetime + 2.days + 17.hours,
+  user: user_3
+)
+
+
+Event.create!(
+  title: "Playtime",
+  start_time: Date.today.to_datetime + 1.day + 16.hours,
+  user: user_6
+)
+
+Event.create!(
+  title: "Doctor appointment",
+  start_time: Date.today.to_datetime + 3.day + 16.hours,
+  user: user_2
+)
+
 
 puts "Finished! Created #{Task.count} tasks, #{Recipe.count} recipes and #{Reward.count} rewards, #{MealPlan.count} meal plans, #{RecipeMealPlan.count} recipemealplans, #{Chat.count} chat(s) and #{Message.count} messages!"
