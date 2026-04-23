@@ -5,9 +5,22 @@
                       family_member_path(@family, @member) :
                       family_members_path(@family)),
                       method: (@member.persisted? ? :patch : :post) do |f| %>
-    <% photo_name = "user_#{@member.name.downcase}.jpg" %>
+    <% if @member.name.present?
+        photo_name = "user_#{@member.name&.downcase}.jpg"
+      else
+        photo_name = "user_default.jpg"
+      end
+      %>
+<!--
+      <div class="text-center mb-4">
+  <%= image_tag photo_name, class: "mx-auto d-block", style: "width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;" %>
+  <small class="text-muted d-block mt-2">Click to change photo</small>
+</div>   -->
+
+
+
     <label for="member_photo_input" style="cursor: pointer;">
-      <div class="mx-auto mt-0 mb-4" style="width: 120px; height: 120px; border-radius: 50%; background-image: url('<%= asset_path(photo_name) %>'); background-size: cover; background-position: center; overflow: hidden; border: 2px solid #ccc;">
+      <div class="mx-auto d-block mt-0 mb-4" style="width: 120px; height: 120px; border-radius: 50%; background-image: url('<%= asset_path(photo_name) %>'); background-size: cover; background-position: center; overflow: hidden; border: 2px solid #ccc;">
       <small class="text-mute"></small>
     </label>
 

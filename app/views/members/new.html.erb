@@ -1,16 +1,19 @@
 
 <%= turbo_frame_tag "modal" do %>
-  <div class="modal-backdrop fade show"></div> <div class="modal d-block" tabindex="-1">
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal d-block" tabindex="-1" style="display: block;">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit Member</h5>
-          <%# Close button of modal %>
+          <h5 class="modal-title fs-2 fw-bold text-center">New Member</h5>
+
+      <%# Close button of modal %>
           <button type="button" class="btn-close"
-        onclick="const frame = this.closest('turbo-frame'); frame.src = ''; frame.innerHTML = '';">
+                  onclick="const frame = this.closest('turbo-frame'); frame.src = ''; frame.innerHTML = '';">
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-center">
+          <%#= render "form" %>
           <%= render "form", member: @member %>
         </div>
       </div>
