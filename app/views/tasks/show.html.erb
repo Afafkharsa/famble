@@ -2,7 +2,7 @@
 
   <div class="card base-card shadow-sm">
     <div class="card-body bg-white">
-      <%= render "shared/back_link" %>
+      <%= render "shared/back_link", url: root_path %>
       <div class="mb-3 mt-4">
         <h2 class="text-success d-flex gap-2 show-title">
           <%= render "task_title", task: @task%>

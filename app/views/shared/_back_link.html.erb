@@ -1,3 +1,10 @@
-<a href="#" onclick="history.back(); return false;" class="back-link">
-  <i class="bi bi-chevron-left"></i> Back
-</a>
+<% url = local_assigns[:url] %>
+<% if url %>
+  <%= link_to url, class: "back-link" do %>
+    <i class="bi bi-chevron-left"></i> Back
+  <% end %>
+<% else %>
+  <a href="#" onclick="history.back(); return false;" class="back-link">
+    <i class="bi bi-chevron-left"></i> Back
+  </a>
+<% end %>
