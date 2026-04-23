@@ -21,8 +21,11 @@
       --bg-color: #fff;
       --text-color: #1f1f1f;
       --muted-text: rgba(0,0,0,0.55);
-      --fs-title: 38px;
-      --fs-text: 20px;
+
+      --fs-title: clamp(28px, 5vw, 40px);
+      --fs-text: clamp(16px, 2.5vw, 18px);
+      --fs-hint: 20px;
+
       --button-padding: 14px 26px;
     }
 
@@ -69,8 +72,8 @@
 
     .hint {
       margin-top: 18px;
-      font-size: 14px;
-      opacity: 0.6;
+      font-size: var(--fs-hint);
+      opacity: 0.4;
     }
 
     .button {
@@ -100,11 +103,12 @@
     </div>
 
     <h1>Page not found</h1>
-    <p>404 error</p>
+    <p>
+      This wasn't on the meal plan... <br>
+      and we couldn't find it either.
+    </p>
 
-    <div class="hint">
-      This wasn't on the meal plan... and we couldn't find it either.
-    </div>
+    <div class="hint">404 error</div>
 
     <a class="button" href="/">
       Back to home
