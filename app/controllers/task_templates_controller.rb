@@ -20,7 +20,7 @@ class TaskTemplatesController < ApplicationController
     if @task_template.save
       redirect_to task_template_path(@task_template)
     else
-      render new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -49,6 +49,16 @@ class TaskTemplatesController < ApplicationController
 
   def set_family
      @family = current_user.family
+  end
+
+  def task_template_params
+    params.require(:task_template).permit(
+      :name,
+      :description,
+      :montly_frequency,
+      :task_points,
+      days: []
+    )
   end
 
 end

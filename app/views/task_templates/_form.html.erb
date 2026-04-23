@@ -7,8 +7,7 @@
       wrapper_html: { class: "mb-3" } %>
 
   <%= f.input :task_points, collection: 1..10, label: "Reward points",
-      selected: task_template.task_points || 1, prompt: "Points",
-      wrapper_html: { class: "mb-3" } %>
+      selected: 1, prompt: "Points", wrapper_html: { class: "mb-3" } %>
 
   <%= f.input :days,
       collection: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
