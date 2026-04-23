@@ -90,7 +90,7 @@ user_4 = User.create!(
   color: "#BDE3C3"
 )
 user_4.photo.attach(
-  io:  File.open(File.join(Rails.root,'app/assets/images/user_amidala.jpg')),
+  io:  File.open(File.join(Rails.root,'app/assets/images/user_padme.jpg')),
   filename: 'user_padme.jpg'
 )
 
