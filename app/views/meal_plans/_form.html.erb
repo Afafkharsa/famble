@@ -12,9 +12,6 @@
         wrapper_html: { class: "mb-3" } %>
   <% end %>
 
-  <%= f.input :photo, as: :file, label: "Photo",
-      wrapper_html: { class: "mb-4" } %>
-
   <div class="d-flex gap-2 mt-4">
     <%= f.submit class: "btn btn-primary rounded-4" %>
     <%= link_to "Cancel", meal_plans_path, class: "btn btn-outline-secondary rounded-4" %>

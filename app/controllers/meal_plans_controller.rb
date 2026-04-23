@@ -12,9 +12,10 @@ class MealPlansController < ApplicationController
   end
 
   def new
-    @meal_plan = MealPlan.new
+    @meal_plan = MealPlan.new(day: params[:day])
     authorize @meal_plan
-    @meal_plan.recipe_meal_plans.build
+    rmp = @meal_plan.recipe_meal_plans.build
+    rmp.meal_type = params[:meal_types] if params[:meal_types]
   end
 
   def create

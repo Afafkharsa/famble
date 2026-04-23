@@ -22,6 +22,7 @@ class ChatsController < ApplicationController
 
   def show
     @chat = current_user.chats.find(params[:id])
+    @chats = current_user.chats.where.not(title: "Untitled").order(created_at: :desc)
     @meal_plan = MealPlan.where(meal: @chat.title).last
     @meal_plans = current_user.family.meal_plans
     @message = Message.new

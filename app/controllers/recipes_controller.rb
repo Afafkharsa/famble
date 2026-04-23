@@ -41,7 +41,8 @@ class RecipesController < ApplicationController
           recipe: @recipe,
           meal_type: params[:recipe][:meal_plan_type]
         )
-        redirect_to meal_plan_path(@meal_plan), notice: "Recipe saved to meal plan!"
+        date_label = Date.parse(params[:recipe][:meal_plan_date]).strftime("%B %d")
+        redirect_to meal_plans_path, notice: "#{@recipe.name} added to #{params[:recipe][:meal_plan_type]} on #{date_label}!"
       else
         redirect_to recipes_path, notice: "Recipe saved!"
       end

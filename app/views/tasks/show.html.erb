@@ -4,7 +4,8 @@
     <div class="card-body bg-white">
       <%= render "shared/back_link", url: root_path %>
       <div class="mb-3 mt-4">
-        <h2 class="text-success d-flex gap-2 show-title">
+        <h2 class="text-success d-flex gap-2 show-title align-items-end">
+
           <%= render "task_title", task: @task%>
         </h2>
       </div>
@@ -12,21 +13,21 @@
       <div class = "d-flex justify-content-start gap-3 mt-1 mb-4"
            data-controller="task-status"
            data-task-status-id-value="<%= @task.id %>">
-        <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
+        <div class="rounded-pill bg-primary-subtle text-secondary fw-bold px-3 py-2">
             <i class="fa-regular fa-user"></i>
             <%= @task.user.name %>
         </div>
 
         <%= render "task_completing", task: @task, user: @user  %>
 
-        <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2">
+        <div class="rounded-pill bg-primary-subtle text-secondary fw-bold px-3 py-2">
           <i class="fa-solid fa-award"></i>
           <%= @task.task_points > 0 ? "#{@task.task_points} points" : "#{@task.task_points} point"  %>
         </div>
 
       </div>
 
-      <h5 class="fw-bold mt-4">Date and frequency</h5>
+      <h5 class="fw-bold mt-4">Date</h5>
 
       <div class="mb-3 d-flex flex-column justify-content-start align-items-start">
         <div class="text-secondary fw-bold">
@@ -40,28 +41,30 @@
             <%= @task.end_date %>
           <% end %>
         </div>
-        <div class="text-secondary mt-1">
-          <% if @task.days.any? || @task.montly_frequency > 0 %>
-            Repeat :
-            <ul class="m-0">
-              <li>
-                <% @task.days.each do |day| %>
-                  <%= day.capitalize %>
-                <% end %>
-              </li>
-              <li>
-                <%= @task.montly_frequency %> months / year
-              </li>
-            </ul>
-          <% else %>
-            No repeat
-          <% end %>
-        </div>
-      </div>
 
-      <h5 class="fw-bold mt-4">Description</h5>
-      <div class="mt-2 mb-2 text-secondary ">
-        <%= @task.description? ? @task.description : "No description" %>
+        <div class="d-md-flex justify-content-between col-md-12">
+          <div class="mt-1 col-md-3">
+            <% if @task.days.any? || @task.montly_frequency > 0 %>
+              <h5 class="fw-bold mt-4">Frequency</h5>
+              <span class="text-secondary">Days:</span>
+              <ul class="m-0 text-secondary ">
+                <% @task.days.each do |day| %>
+                  <li><%= day.capitalize %></li>
+                <% end %>
+              </ul>
+              <span class="text-secondary"><%= @task.montly_frequency %> months / year</span>
+            <% else %>
+              No repeat
+            <% end %>
+          </div>
+
+          <div class="mt-1 col-md-7">
+            <h5 class="fw-bold mt-4">Description</h5>
+            <div class="mt-2 mb-2 text-secondary ">
+              <%= @task.description? ? @task.description : "No description" %>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
