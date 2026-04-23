@@ -1,3 +1,70 @@
+// ── Sidebar ────────────────────────────────────────────────────
+.chat-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  padding: 16px 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 20px;
+}
+
+.chat-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 12px;
+  border-bottom: 0.5px solid rgba($gray, 0.08);
+  margin-bottom: 8px;
+}
+
+.chat-sidebar-new {
+  font-size: 16px;
+  color: rgba($gray, 0.4);
+  transition: color 0.15s;
+
+  &:hover { color: $blue; }
+}
+
+.chat-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: 12px;
+  color: rgba($gray, 0.7);
+  text-decoration: none;
+  border-radius: 0;
+  transition: background 0.12s, color 0.12s;
+  overflow: hidden;
+
+  &:hover {
+    background: rgba($blue, 0.06);
+    color: $gray;
+    text-decoration: none;
+  }
+
+  &--active {
+    background: rgba($blue, 0.1);
+    color: $blue;
+    font-weight: 600;
+  }
+}
+
+.chat-sidebar-item-icon {
+  font-size: 11px;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.chat-sidebar-item-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // ── Chat page layout ───────────────────────────────────────────
 .chat-layout {
   max-width: 800px;
@@ -86,6 +153,14 @@
 
 .msg-avatar-ai   { background: linear-gradient(135deg, $blue, $green); }
 .msg-avatar-user { background: #F5D2D2; color: rgba($gray, 0.6); }
+
+.msg-avatar img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
 
 // ── Bubbles ────────────────────────────────────────────────────
 .msg-bubble {
