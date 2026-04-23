@@ -3,7 +3,7 @@
     <div class="col-12 col-md-9 col-lg-7">
       <div class="form-page-wrapper">
         <div class="form-card">
-          <%= render "shared/back_link" %>
+          <%= render "shared/back_link", url: root_path %>
           <h2 class="form-card-title">New recipe</h2>
           <%= render "form", recipe: @recipe %>
         </div>
