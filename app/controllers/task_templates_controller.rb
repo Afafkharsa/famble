@@ -17,6 +17,8 @@ class TaskTemplatesController < ApplicationController
 
   def create
     @task_template = TaskTemplate.new(task_template_params)
+    @task_template.family = current_user.family
+
     if @task_template.save
       redirect_to task_template_path(@task_template)
     else
