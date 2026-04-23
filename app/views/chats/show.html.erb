@@ -1,28 +1,56 @@
 <%= turbo_stream_from @chat %>
 
 <div class="container py-4">
-  <div class="chat-layout">
+  <div class="d-flex gap-3 align-items-start">
 
-    <div class="chat-head">
-      <div class="chat-head-icon">
-        <i class="bi bi-stars" style="font-size:20px;color:white;"></i>
+    <%# Left sidebar — chat history %>
+    <div class="chat-sidebar">
+      <div class="chat-sidebar-header">
+        <span class="fw-bold" style="font-size:13px;">Chats</span>
+        <%= link_to chats_path(chat: { status: "Pending", title: "Untitled" }),
+            data: { turbo_method: :post },
+            class: "chat-sidebar-new",
+            title: "New chat" do %>
+          <i class="bi bi-plus-circle"></i>
+        <% end %>
       </div>
-      <div>
-        <p class="chat-head-title">Famble AI</p>
-        <p class="chat-head-sub">Your family assistant</p>
-      </div>
-      <div class="chat-head-status">
-        <span class="chat-head-dot"></span> Online
-      </div>
+
+      <% if @chats.any? %>
+        <% @chats.each do |chat| %>
+          <%= link_to chat_path(chat), class: "chat-sidebar-item #{'chat-sidebar-item--active' if chat == @chat}" do %>
+            <i class="bi bi-chat-text chat-sidebar-item-icon"></i>
+            <span class="chat-sidebar-item-title"><%= chat.title %></span>
+          <% end %>
+        <% end %>
+      <% else %>
+        <p class="text-muted px-3 pt-2" style="font-size:12px;">No previous chats.</p>
+      <% end %>
     </div>
 
-    <div id="messages" class="chat-messages">
-      <%= render "messages/messages", messages: @chat.messages %>
-    </div>
+    <%# Main chat area in a white container %>
+    <div class="flex-grow-1 bg-white rounded-4 shadow-sm p-4" style="min-width: 0;">
 
-    <div id="new_message_container">
-      <%= render "messages/form", chat: @chat, message: @message %>
-    </div>
+      <div class="chat-head">
+        <div class="chat-head-icon">
+          <i class="bi bi-stars" style="font-size:20px;color:white;"></i>
+        </div>
+        <div>
+          <p class="chat-head-title">Famble AI</p>
+          <p class="chat-head-sub">Your family assistant</p>
+        </div>
+        <div class="chat-head-status">
+          <span class="chat-head-dot"></span> Online
+        </div>
+      </div>
 
+      <div id="messages" class="chat-messages">
+        <%= render "messages/messages", messages: @chat.messages %>
+      </div>
+
+      <div id="new_message_container">
+        <%= render "messages/form", chat: @chat, message: @message %>
+      </div>
+
+    </div>
   </div>
 </div>
