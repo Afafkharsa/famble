@@ -91,7 +91,7 @@ user_4 = User.create!(
 )
 user_4.photo.attach(
   io:  File.open(File.join(Rails.root,'app/assets/images/user_amidala.jpg')),
-  filename: 'user_amidala.jpg'
+  filename: 'user_padme.jpg'
 )
 
 puts "Creating Lion King family..."
