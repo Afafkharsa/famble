@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "modal" do %>
   <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;" onclick="this.remove()">
-    <div style="background:white; margin:10% auto; padding:20px; width:400px; border-radius:8px;" onclick="event.stopPropagation()">
+    <div style="background:white; margin: 10px; auto; padding:20px; width:400px; border-radius:8px;" onclick="event.stopPropagation()">
       <button style="float:right" onclick="document.getElementById('modal').innerHTML=''">X</button>
       <%= yield %>
     </div>

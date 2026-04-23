@@ -5,10 +5,13 @@
                       family_member_path(@family, @member) :
                       family_members_path(@family)),
                       method: (@member.persisted? ? :patch : :post) do |f| %>
+    <% photo_name = "user_#{@member.name.downcase}.jpg" %>
+    <label for="member_photo_input" style="cursor: pointer;">
+      <div class="mx-auto mt-0 mb-4" style="width: 120px; height: 120px; border-radius: 50%; background-image: url('<%= asset_path(photo_name) %>'); background-size: cover; background-position: center; overflow: hidden; border: 2px solid #ccc;">
+      <small class="text-mute"></small>
+    </label>
 
-    <div class="mx-auto mb-4" style="width: 96px; height: 96px; border-radius: 50%;
-         background: #eee; overflow: hidden; border: 2px dashed #ccc;">
-      <%= f.input :photo, label: false %>
+      <%= f.input :photo, label: false, input_html: { id: "member_photo_input", style: "display: none;" } %>
     </div>
 
     <%= f.input :role, collection: ['Parent', 'Child'], prompt: "Select relationship",
