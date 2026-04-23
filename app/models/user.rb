@@ -32,7 +32,16 @@ class User < ApplicationRecord
   end
 
   def display_name
-    name.presence || email
+    name.presence || email.to_s.split("@").first
+  end
+
+  def avatar_color
+    color.presence || MEMBER_COLORS[id % MEMBER_COLORS.size]
+  end
+
+  def initials
+    source = name.presence || email.to_s
+    source.split(" ").map { |w| w[0]&.upcase }.first(2).join.presence || "?"
   end
 
   def point_history

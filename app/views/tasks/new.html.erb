@@ -4,7 +4,7 @@
       <div class="form-page-wrapper">
         <div class="form-card">
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <%= render "shared/back_link" %>
+            <%= render "shared/back_link", url: root_path %>
             <%= link_to task_templates_path, class: "text-decoration-none text-secondary" do %>
               <i class="fa-regular fa-file-lines fs-5"></i>
             <% end %>

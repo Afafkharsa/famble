@@ -1,7 +1,12 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>My Events</h1>
-    <%= link_to "Add New Event", new_event_path, class: "btn btn-outline-primary border-radius-5" %>
+  <%= link_to root_path, class: "back-link" do %><i class="bi bi-chevron-left"></i> Back<% end %>
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h1 class="mb-0">My Events</h1>
+    <% if policy(Event).new? %>
+      <%= link_to new_event_path, class: "text-decoration-none text-secondary" do %>
+        <i class="bi bi-plus-circle fs-4"></i>
+      <% end %>
+    <% end %>
   </div>
 
 

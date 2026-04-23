@@ -41,7 +41,7 @@
                       <div class="meal-item-card">
                         <%= link_to rmp.recipe.name, recipe_path(rmp.recipe), class: "meal-item-card-name" %>
                         <% if policy(MealPlan).new? %>
-                          <div class="dropdown reward-three-dot reward-three-dot--show">
+                          <div class="dropdown reward-three-dot">
                             <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
                               <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
                                 <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
@@ -109,7 +109,7 @@
                       <div class="meal-item-card">
                         <%= link_to rmp.recipe.name, recipe_path(rmp.recipe), class: "meal-item-card-name" %>
                         <% if policy(MealPlan).new? %>
-                          <div class="dropdown reward-three-dot reward-three-dot--show">
+                          <div class="dropdown reward-three-dot">
                             <button data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
                               <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="opacity: 0.4;">
                                 <circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/>
