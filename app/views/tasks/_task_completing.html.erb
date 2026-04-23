@@ -1,5 +1,5 @@
 <!-- To do -->
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+  <div class="rounded-pill bg-primary-subtle text-secondary fw-bold px-3 py-2
    <%=  task.status ? "d-none" : "" %>"
         data-task-status-target="todo"
         data-turbo-confirm="Mark complete?"
@@ -9,18 +9,18 @@
   </div>
 <% if current_user.role =="parent" %>
   <!-- Approval for parent -->
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+  <div class="rounded-pill bg-primary-subtle text-secondary fw-bold px-3 py-2
               <%=  task.status && !task.validation ? "" : "d-none" %>"
        data-task-status-target="done"
        data-turbo-confirm="Validate?"
        data-action="click->task-status#validate"
        type="button">
-    <i class="fa-solid fa-hourglass-half border-0">
+    <i class="fa-solid fa-hourglass-half border-0 ">
     </i> Validate?
   </div>
 <% else %>
   <!-- Pending for child - not clickable -->
-  <div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+  <div class="rounded-pill bg-primary-subtle text-secondary fw-bold px-3 py-2
               <%=  task.status && !task.validation ? "" : "d-none" %>"
         data-task-status-target="done">
     <i class="fa-solid fa-hourglass-half border-0 disable">
@@ -29,7 +29,7 @@
 
 <% end %>
   <!-- Approved -->
-<div class="rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2
+<div class="rounded-pill bg-primary-subtle text-secondary fw-bold px-3 py-2
             <%=  task.validation ? "" : "d-none" %>"
       data-task-status-target="approved">
   <i class="fa-regular fa-circle-check border-0 disable"></i> Done
