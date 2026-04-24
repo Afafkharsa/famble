@@ -14,9 +14,22 @@
         </div>
         <div class="modal-body text-center">
           <%#= render "form" %>
-          <%= render "form", member: @member %>
+          <%= render "form" %>
         </div>
       </div>
     </div>
   </div>
 <% end %>
+<!--
+<script>
+  function previewImage(event) {
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      const output = document.getElementById('avatar-preview');
+      output.src = reader.result;
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script> -->
