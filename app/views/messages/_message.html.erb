@@ -6,14 +6,17 @@
 ] %>
 
 <% if message.role == "user" %>
+  <% user = message.chat.user %>
+  <% user_initials = (user.name || user.email).split(' ').map { |w| w[0].upcase }.first(2).join %>
   <div class="msg msg-user">
-    <div class="msg-avatar msg-avatar-user" style="background: <%= message.chat.user.color %>; overflow: hidden;">
-      <% if message.chat.user.photo.attached? %>
-        <%= image_tag message.chat.user.photo, style: "width:100%;height:100%;object-fit:cover;" %>
-      <% else %>
-        <span style="font-size:10px;font-weight:700;color:rgba(14,0,0,0.5);">
-          <%= (message.chat.user.name || message.chat.user.email).split(' ').map { |w| w[0].upcase }.first(2).join %>
-        </span>
+    <div class="msg-avatar msg-avatar-user" style="background: <%= user.avatar_color %>; overflow: hidden; position: relative;">
+      <span style="font-size:10px;font-weight:700;color:rgba(14,0,0,0.5);">
+        <%= user_initials %>
+      </span>
+      <% if user.photo.attached? %>
+        <%= image_tag user.photo,
+            style: "width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;",
+            onerror: "this.style.display='none'" %>
       <% end %>
     </div>
     <div class="msg-bubble msg-bubble-user">
