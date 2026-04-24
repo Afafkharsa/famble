@@ -75,12 +75,8 @@ class MembersController < ApplicationController
   end
 
   def member_params
-    params.require(:user).permit(
-      :name,
-      :email,
-      :role,
-      :birthdate,
-      :photo
-    )
+    permitted = params.require(:user).permit(:name, :email, :role, :birthdate, :photo)
+    permitted.delete(:photo) if permitted[:photo].blank?
+    permitted
   end
 end
