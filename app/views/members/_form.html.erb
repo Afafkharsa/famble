@@ -6,42 +6,24 @@
                       family_members_path(@family)),
                       method: (@member.persisted? ? :patch : :post) do |f| %>
 
-  <%# if @member.photo.attached?
-        photo_name = @member.photo
+  <% if @member.photo.attached?
+        photo_url = url_for(@member.photo)
 
       elsif @member.name.present? && Rails.application.assets.find_asset("user_#{@member.name&.downcase}.jpg")
-          photo_name = "user_#{@member.name&.downcase}.jpg"
+          photo_url = asset_path("user_#{@member.name&.downcase}.jpg")
         else
-          photo_name = "user_default.jpg"
+          photo_url = asset_path("user_default.jpg")
         end
       %>
 
-    <%
-      user_photo = "user_#{@member.name&.downcase}.jpg"
-        if @member.name.present? && Rails.application.assets.find_asset(user_photo)
-          photo_name = user_photo
-        else
-          photo_name = "user_default.jpg"
-        end
-      %>
 
     <label for="member_photo_input" style="cursor: pointer;">
-      <div class="mx-auto d-block mt-0 mb-4" style="width: 120px; height: 120px; border-radius: 50%; background-image: url('<%= asset_path(photo_name) %>'); background-size: cover; background-position: center; overflow: hidden; border: 2px solid #ccc;">
+      <div class="mx-auto d-block mt-0 mb-4" style="width: 120px; height: 120px; border-radius: 50%; background-image: url('<%= asset_path(photo_url) %>'); background-size: cover; background-position: center; overflow: hidden; border: 2px solid #ccc;">
       <small class="text-mute"></small>
     </label>
 
     <%= f.input :photo, label: false, input_html: { id: "member_photo_input", style: "display: none;" } %>
-<!--
-    <img id="avatar-preview"
-     src="<%= @member.photo.attached? ? url_for(@member.photo) : '/user_default.jpg' %>"
-     class="rounded-circle"
-     width="120"> -->
 
-    <%#= f.input :photo, label: false, input_html:
-                { id: "member_photo_input",
-                style: "display: none;",
-                accept: "image/*",
-                onchange: "previewImage(event)" } %>
     </div>
 
     <%= f.input :role, collection: ['Parent', 'Child'],
